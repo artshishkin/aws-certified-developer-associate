@@ -13,7 +13,13 @@ AWS Certified Developer Associate - Tutorial by Stephane Maarek (Udemy)
     -  Set email
 -  Confirm -> Create
  
+#####  11. AWS Regions and AZs
 
+-  [Global Infrastructure](https://aws.amazon.com/about-aws/global-infrastructure/)
+-  Overview
+-  Regions and AZs
+-  AWS Regional Services ->
+    -  Region Table
     
 
 
