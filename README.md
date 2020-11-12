@@ -21,6 +21,41 @@ AWS Certified Developer Associate - Tutorial by Stephane Maarek (Udemy)
 -  AWS Regional Services ->
     -  Region Table
     
+#####  12. IAM Introduction
 
+#####  13. IAM Hands-On
 
-
+-  IAM - it's a Global Service
+-  Multi-factor authentication (MFA)
+    -  Activate MFA
+    -  Virtual -> Google Auth
+-  Users -> Add User
+    -  Programmatic access - `true`
+    -  AWS Management Console access - `true`
+    -  Next: Set permissions ->
+    -  Attach existing policies directly
+    -  AdministratorAccess
+    -  Next: Review ->
+    -  Create User
+    -  **Download CSV file with credentials**
+    -  Close
+-  Groups -> New Group
+    -  Name: admin
+    -  Next ->
+    -  Attach policy: AdministratorAccess 
+    -  Create group
+-  IAM->Groups->admin
+    -  Add Users to Group
+    -  add `art-admin`
+-  Go to users
+    -  remove `AdministratorAccess` from `Attached directly` as it is already in groups `Attached permissions`
+-  Apply an IAM Password Policy
+    -  Allow users to change their own password
+    -  Enable password expiration (90 days)
+-  Dashboard
+    -  Sign-in URL for IAM users in this account->
+    -  Customize : `artarkatesoft`
+    -  copy link
+    -  login
+    -  change password
+    
