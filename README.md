@@ -58,4 +58,19 @@ AWS Certified Developer Associate - Tutorial by Stephane Maarek (Udemy)
     -  copy link
     -  login
     -  change password
-    
+
+#####  15. EC2 Introduction
+
+-  EC2
+    -  Launch Instance
+    -  AMI - Amazon Machine Image
+        -  `Amazon Linux 2`
+    -  Step 5: Add Tags
+        -  Name: My Instance From Stephane Tutorial
+    -  Step 6: Configure Security Group
+        -  Security group name: aws-tutorial-first-ec2
+        -  Description: Created from my first EC2
+    -  Launch
+    -  Create a new key pair
+
+        
