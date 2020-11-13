@@ -89,3 +89,12 @@ AWS Certified Developer Associate - Tutorial by Stephane Maarek (Udemy)
 -  sometimes it is need to configure access (like chmod on Linux)        
 
 #####  21. EC2 Instance Connect
+
+#####  22. Introduction to Security Groups
+
+#####  23. Security Groups Deep Dive
+
+-  Security group can be attached to multiple instances (many-to-many)
+-  Locked down to a region/VPC combination
+-  **EC2 with same security group can access this EC2 no matter what IP it has** (??? Does not work with RDS ???)
+-  Referencing other security group diagram 
