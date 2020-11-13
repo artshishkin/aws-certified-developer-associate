@@ -144,4 +144,42 @@ systemctl start httpd
 systemctl enable httpd
 echo "Hello World $(hostname -f)" > /var/www/html/index.html
 ``` 
+
+#####  28. EC2 Instances Launch Types
+
+-  On Demand Instances
+-  Reserved: (minimum 1 year)
+    -  Reserved instances
+    -  Convertible Reserved instances
+    -  Scheduled Reserved instances
+-  Spot Instances
+-  Dedicated Instances
+-  Dedicated Hosts
+
+#####  29. EC2 Instances Launch Types Hands On 
+
+#####  30. EC2 Elastic Network Interfaces
+
+-  create EC2
+    -  Number of instances: 2
+    -  Subnet: choose ONE (1b for example)
+    -  Review and Launch
+    -  Look at network interface
+- create new Elastic Network Interface
+    -  Description: My secondary interface
+    -  Subnet: same (1b)
+    -  IPv4 Private IP: Auto-assign
+    -  Security group: the same
+    -  Create
+    -  Attach to the first ec2
+    -  Detach
+    -  Attach to the second ec2
+    -  You can:
+        -  Manage IP addresses (assign new address)
+        -  Change security groups
+        -  etc
+-  clean up:
+    -  detach secondary eni
+    -  delete eni
+    -  terminate 2 ec2 
     
