@@ -73,4 +73,19 @@ AWS Certified Developer Associate - Tutorial by Stephane Maarek (Udemy)
     -  Launch
     -  Create a new key pair
 
-        
+#####  17. How to SSH using Linux or Mac
+
+-  `ssh -i "certified-dev-assoc-course.pem" ec2-user@ec2-13-48-23-85.eu-north-1.compute.amazonaws.com`
+-  `chmod 0400`  
+
+#####  18. How to SSH using Windows
+
+-  `Putty`
+    -  use `PuttyGen` to convert .rem private key to .ppk
+    -  use .ppk
+
+#####  19. How to SSH using Windows 10
+
+-  sometimes it is need to configure access (like chmod on Linux)        
+
+#####  21. EC2 Instance Connect
