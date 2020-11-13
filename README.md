@@ -98,3 +98,27 @@ AWS Certified Developer Associate - Tutorial by Stephane Maarek (Udemy)
 -  Locked down to a region/VPC combination
 -  **EC2 with same security group can access this EC2 no matter what IP it has** (??? Does not work with RDS ???)
 -  Referencing other security group diagram 
+
+#####  24. Private vs Public vs Elastic IP
+
+#####  25. Private vs Public vs Elastic IP Hands On
+
+-  Elastic IP
+    -  Allocate
+    -  Associate
+    -  Test it
+    -  Disassociate
+    -  Release
+
+#####  26. Install Apache on EC2
+
+-  `sudo su`
+-  `yum update -y` - **-y** - do not prompt
+-  `yum install -y httpd.x86_64`
+-  `systemctl start httpd.service`
+-  `systemctl enable httpd.service` - starts after reboot
+-  `curl localhost:80`
+-  `publicIP:80` - wait,wait,wait,wait,wait,wait, - timeout **!CONFIGURE SECURITY GROUP!**
+-  `echo "Hello World" > /var/www/html/index.html`
+-  `hostname -f` - name of machine
+-  `echo "Hello World $(hostname -f)" > /var/www/html/index.html`
