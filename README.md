@@ -122,3 +122,26 @@ AWS Certified Developer Associate - Tutorial by Stephane Maarek (Udemy)
 -  `echo "Hello World" > /var/www/html/index.html`
 -  `hostname -f` - name of machine
 -  `echo "Hello World $(hostname -f)" > /var/www/html/index.html`
+
+#####  27. EC2 User Data
+
+-  script **only runs ONCE** at the instance **FIRST start**
+-  the EC2 User Data script runs with the **root** user
+-  hands on:
+    -  terminate old instance
+    -  launch new instance ->
+    -  security group: use existing
+    -  Configure Instance Details ->
+    -  Advanced Details -> 
+    -  User Data
+    -  [Specify instance user data at launch](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html)
+
+```shell script
+#!/bin/bash
+yum update -y
+yum install -y httpd
+systemctl start httpd
+systemctl enable httpd
+echo "Hello World $(hostname -f)" > /var/www/html/index.html
+``` 
+    
