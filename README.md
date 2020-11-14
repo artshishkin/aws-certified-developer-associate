@@ -329,4 +329,40 @@ echo "Hello World $(hostname -f)" > /var/www/html/index.html
     -  delete 2 unnecessary rules
     -  delete `my-second-target-group`
     -  to the `my-first-target-group` add missing target
+
+#####  37. Network Load Balancer (NLB) with Hands On
+
+-  Characteristics:
+    -  Forward TCP & UDP traffic to your instances
+    -  Handle millions of request per second
+    -  Less latency ~ 100 ms (vs 400 ms for ALB)  
+    -  NLB has **one static IP per AZ**
+    -  supports assigning Elastic IP (helpful for whitelisting specific IP)
+    -  NLB are used for extreme performance, TCP or UDP traffic
+    -  Not included in the AWS free tier
+-  Create NLB
+    -  Name: `MyFirstNLB`
+    -  AZ: all 3 AZs
+    -  Routing
+    -  Target Group
+        -  New
+        -  Name: my-target-group-nlb
+        -  interval: 10s
+    -  Register Targets: all 3
+    -  Create
+    -  then go to DNS name 
+        -> Nothing loads (need to configure security)
+-  Configure EC2 security
+    -  go to security group `aws-tutorial-first-ec2`
+    -  add rule:
+        -  from anywhere
+        -  port 80
+        -  TCP
+-  Test everything is OK now
+-  Clean Up
+    -  delete NLB
+    -  delete target group
+    -  delete rule from security group `aws-tutorial-first-ec2`
+    
+    
     
