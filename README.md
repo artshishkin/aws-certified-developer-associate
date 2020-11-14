@@ -364,5 +364,27 @@ echo "Hello World $(hostname -f)" > /var/www/html/index.html
     -  delete target group
     -  delete rule from security group `aws-tutorial-first-ec2`
     
-    
+#####  38. Elastic Load Balancer - Stickiness
+
+-  Target Groups
+    -  Edit Attributes
+        -  Enable
+        -  Stickiness duration: 2 minutes
+-  test it
+-  disable it
+
+#####  39. Elastic Load Balancer - Cross Zone Load Balancing
+
+1.  Characteristics
+    -  Classic Load Balancer
+        -  disabled by default
+        -  no charges for inter AZ if enabled
+    -  Application Load Balancer
+        -  always **ON** (can't be disabled)
+        -  no charges for inter AZ
+    -  Network Load Balancer
+        -  disabled by default
+        -  you pay charges ($) if enabled
+2.  Hands on          
+                    
     
