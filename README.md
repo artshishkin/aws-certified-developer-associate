@@ -272,5 +272,61 @@ echo "Hello World $(hostname -f)" > /var/www/html/index.html
     -  stop some instances
     -  play again
 -  Delete Load Balancer
-     
-        
+
+##### 36. Application Load Balancer (ALB) with Hands On
+
+-  Characteristics:
+    -  ALB - is Layer 7 (HTTP)
+    -  LB to multiple HTTP applications across machines (target groups)
+    -  LB to multiple applications on the same machine (ex: containers)
+    -  Support for HTTP/2 and WebSocket
+    -  Support redirects (ex: HTTP -> HTTPS)
+    -  Routing tables to different target groups
+        -  path (`example.com/users` & `example.com/posts`)  
+        -  hostname in URL (`users.example.com` & `posts.example.com`)
+        -  query string, headers (`example.com/users?id=123&order=false`)
+    -  ALBs are a great fit for microservices & container-based apps (ex: Docker, Amazon ECS)
+    -  Has a port mapping feature to redirect dynamic port in ECS
+    -  Target Groups
+        -  EC2 instances (can be managed by Auto Scaling Group) - HTTP
+        -  ECS tasks (managed by ECS itself) - HTTP
+        -  Lambda functions - HTTP request is translated into a JSON event
+        -  IP Addresses - must be private IPs
+    -  ALB can route to multiple target groups
+    -  Health Checks are at the target group level
+    -  Good to know
+        -  Fixed hostname (XXX.region.elb.amazonaws.com)
+        -  The application servers EC2 don't see client's IP directly
+            -  true IP of the client is inserted in the header `X-Forwarded-For`
+            -  we can also get port (`X-Forwarded-Port`) and proto (`X-Forwarded-Proto`)
+-  Create Load Balancer
+    -  Name: MyFirstALB
+    -  Availability Zones: all 3 zones
+    -  Security groups: we gonna reuse `my-first-load-balancer`
+    -  Target group
+        -  Name: `my-first-target-group`
+        -  Target type: instance
+        -  Advanced Health Check
+            - Interval: 10s
+    -  Register targets -> register only 2 targets (for now - 1a, 1b)
+    -  Create
+    -  Wait while `provisioning`
+    -  Copy DNS name and go to the that page -> OK
+-  Create another target group 
+    -  Name: `my-second-target-group`
+    -  add 1 instance `1c`
+-  Go to `MyFirstALB`
+    -  Listeners
+        -  1 Listener -> View/edit rules
+        -  Add rule
+            -  IF `Path` is `/test`
+            -  THEN `Forward to` -> `my-second-target-group`
+        -  Add rule
+            -  IF `Path` is `/constant`
+            -  THEN `return fixed response`
+            -  404, `OOOOPPPPPSSSS!!!`
+-  Clean up
+    -  delete 2 unnecessary rules
+    -  delete `my-second-target-group`
+    -  to the `my-first-target-group` add missing target
+    
