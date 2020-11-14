@@ -387,4 +387,16 @@ echo "Hello World $(hostname -f)" > /var/www/html/index.html
         -  you pay charges ($) if enabled
 2.  Hands on          
                     
+#####  40. Elastic Load Balancer - SSL Certificates
+
+-  Characteristics
+    -  Classic Load Balancer
+        -  supports only one SSL certificate
+        -  must use multiple CLB for multiple hostname with multiple SSL certificates
+    -  Application Load Balancer
+        -  supports multiple listeners with multiple SSL certificates
+        -  uses Server Name Indication (SNI) to make it work
+    -  Network Load Balancer
+        -  supports multiple listeners with multiple SSL certificates
+        -  uses Server Name Indication (SNI) to make it work
     
