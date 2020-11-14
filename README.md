@@ -233,3 +233,44 @@ echo "Hello World $(hostname -f)" > /var/www/html/index.html
     -  Application Security Group: allow traffic only from LB
         -  HTTP - 80
         -  Source: sg-... (load balancer)
+        
+#####  35. Classic Load Balancer (CLB) with Hands On
+
+-  Load Balancers
+    -  Create -> `Classic Load Balancer`
+        -  Name: `MyFirstCLB`
+        -  LB protocol: HTTP
+        -  LB port: 80
+        -  Instance protocol: HTTP
+        -  Instance port: 80
+        -  Next: Assign Security Group
+        -  SG name: `my-first-load-balancer`
+        -  Description: `My first load balancer security group`
+        -  Next: Configure Security Settings -> Warning for HTTP (that's OK for now)
+        -  Next: Configure Health Check
+        -  Ping Path: `/index.html` (OK for now) or just `/`
+        -  interval: set 10s
+        -  Healthy threshold: 5
+        -  Next: Add EC2 Instances
+            -  Choose `My second EC2` (or whatever EC2 you want)
+        -  Create
+-  now we can access **BOTH** CLB and EC2 on port 80
+    -  need to modify this:
+    -  go to security group `aws-tutorial-first-ec2`
+    -  modify source `0.0.0.0/0` to `my-first-load-balancer`
+-  Instances:
+    -  right mouse click -> Image and Templates
+    -  **Launch more like this**
+    -  add another from **different AZ**
+-  Load balancers
+    -  Edit Instances
+    -  Add newly created instances
+    -  Save
+-  Play with load balancer
+    -  visit url `http://myfirstclb-29850709.eu-north-1.elb.amazonaws.com/`
+    -  update page -> server name changes
+    -  stop some instances
+    -  play again
+-  Delete Load Balancer
+     
+        
