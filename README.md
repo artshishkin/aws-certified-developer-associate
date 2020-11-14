@@ -206,4 +206,30 @@ echo "Hello World $(hostname -f)" > /var/www/html/index.html
     -  goal is to survive a data center loss
     -  can be **passive** (for RDS **_Multi AZ_** for example)        
     -  can be **active** (horizontal scaling)        
-      
+
+#####  34. Elastic Load Balancing (ELB) Overview
+
+-  **Load balancers** are servers that forward internet traffic to multiple EC2s
+-  ELB (EC2 Load Balancer) - is a managed load balancer
+-  Health Check
+    -  `/health`
+    -  not `200 OK` - unhealthy
+    -  port (4567 for example)
+-  AWS Load Balancers
+    1.  Classic Load Balancer (v1 - old generation) - 2009
+        -  HTTP,HTTPS, TCP
+    2.  Application Load Balancer (v2 - new generation) - 2016
+        -  HTTP, HTTPS, WebSocket
+    3.  Network Load Balancer (v2 - new generation) - 2017
+        -  TCP, TLS (Secure TCP) & UDP
+-  You can setup ELBs
+    -  internal (private)
+    -  external (public)
+-  Security    
+    -  Load Balancers Security Groups
+        -  HTTP - 80
+        -  HTTPS - 443
+        -  Source: 0.0.0.0/0 - from everywhere
+    -  Application Security Group: allow traffic only from LB
+        -  HTTP - 80
+        -  Source: sg-... (load balancer)
