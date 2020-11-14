@@ -182,4 +182,28 @@ echo "Hello World $(hostname -f)" > /var/www/html/index.html
     -  detach secondary eni
     -  delete eni
     -  terminate 2 ec2 
-    
+
+####  Section 4: AWS Fundamentals: ELB + ASG
+
+#####  33. High Availability and Scalability
+
+-  **Scalability**:
+    -  **Vertical**:
+        -  junior -> senior
+        -  **_t2.micro -> t2.large_**
+        -  RDS: micro -> large
+        -  ElastiCache: can scale vertically too
+        -  non-distributed system
+        -  has limit (hardware limit)
+    -  **Horizontal**:
+        -  1 operator -> N operators
+        -  **_increase No of instances_**
+        -  distributed systems
+        -  EC2 - increase count
+-  **High Availability**:
+    -  hand-in-hand with horizontal scaling (usually)
+    -  means running app in >=2 AZs (data centers)
+    -  goal is to survive a data center loss
+    -  can be **passive** (for RDS **_Multi AZ_** for example)        
+    -  can be **active** (horizontal scaling)        
+      
