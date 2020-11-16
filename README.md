@@ -456,4 +456,31 @@ Names:
 -  Scale in
     -  change Desired Capacity back to 1
     -  Activity History: WaitingForELBConnectionDraining
-    -  after 300 sec instance was terminated   
+    -  after 300 sec instance was terminated
+
+#####  44. Auto Scaling Groups - Scaling Policies
+
+-  Auto Scaling Groups - Scaling Cooldowns
+-  Automatic Scaling -> Scaling Policies
+    -  Add policy
+        -  Target Tracking policy
+        -  Instances need **10**  seconds warm up before including in metric (for testing purpose)
+        -  Create
+-  Monitoring
+    -  EC2 ->
+    -  CPU Utilization -> see low
+-  Increase desired instances to 2
+    -  Details -> Edit -> Desired Capacity
+-  CloudWatch
+-  After certain period of Time 
+    -  ```Terminating EC2 instance: i-082c8ce5284deddd2```
+    -  Desired capacity made 1 by scaling policy
+-  Delete Target Tracking Policy
+-  Look at Creation Step Scaling    
+-  Look at Creation Simple Scaling
+-  Create Scheduled Action
+    -  ScaleAtXPM
+    -  delete then after tests
+        
+      
+       
