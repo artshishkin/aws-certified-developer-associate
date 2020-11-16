@@ -482,5 +482,44 @@ Names:
     -  ScaleAtXPM
     -  delete then after tests
         
+####  Section 5: EC2 Storage - EBS & EFS
+
+#####  46. EBS Intro Hands On
+
+-  Elastic Block Storage (EBS)
+-  Create new EC2
+    -  As usual
+    -  Step 4: Storage
+        -  Add New Volume
+            -  Size: 2 GiB
+            -  Delete on Termination: false
+    -  Tags:
+        -  Name: EBSDemo
+-  Volumes
+    -  2 volumes
+-  SSH to EC2
+    -  `lsblk`
+    -  [Making an Amazon EBS volume available for use on Linux](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-using-volumes.html)
+    -  `sudo file -s /dev/xvdf` - is there file system on drive?
+    -  `sudo file -s /dev/nvme1n1` - `data` - my drive does not have fs, need to format
+    -  `sudo mkfs -t ext4 /dev/nvme1n1` - create fs
+    -  `sudo mkdir /data`
+    -  `sudo mount /dev/nvme1n1 /data`
+    -  `cd /data`
+    -  `sudo touch Hello.txt`
+    -  `nano Hello.txt`
+    -  `hello world`
+    -  `sudo cp /etc/fstab /etc/fstab.orig`
+    -  `sudo nano /etc/fstab`
+    -  add `/dev/nvme1n1 /data ext4 defaults,nofail  0  2`
+    -  **or** with using UUID
+    -  add `UUID= ??? /data ext4 defaults,nofail  0  2`
+    -  `sudo umount /data` or `sudo umount -l /data` (if busy) 
+    -  `lsblk`
+    -  `sudo mount -a`
+    -  `lsblk` -> if `/data` is mounted then OK
+    
+        
+    
       
        
