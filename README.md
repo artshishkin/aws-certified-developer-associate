@@ -399,4 +399,61 @@ echo "Hello World $(hostname -f)" > /var/www/html/index.html
     -  Network Load Balancer
         -  supports multiple listeners with multiple SSL certificates
         -  uses Server Name Indication (SNI) to make it work
-    
+
+#####  41. Elastic Load Balancer - Connection Draining
+
+Names:
+-  CLB:
+    -  Connection Draining
+-  ALB, NLB:
+    -  Target group: Deregistration Delay    
+
+#####  43. Auto Scaling Groups Hands On
+
+-  Creating Auto Scaling
+    -  Auto Scaling Groups ->
+    -  Create
+    -  Name: MyFirstASG
+    -  Create Launch Template
+        -  Name: MyFirstTemplate
+        -  Template version description: My first template
+        -  Autoscaling guidance: false
+        -  Create new launch template
+            -  same as EC2 from previous sections (with User Data!!!)
+    -  in ASG console choose newly created ASG
+    -  Next
+    -  Subnets: choose all 3 AZs
+    -  Next
+    -  Load Balancing: ALB
+        -  Group:  `my-first-target-group`
+        -  Health checks:
+            -  EC2: true
+            -  ELB: true
+        -  Enable group metrics collection within CloudWatch: true
+    -  Next
+    -  Configure group size and scaling policies
+        -  Group size 
+            -  Desired capacity: 1
+            -  Minimum capacity: 1
+            -  Maximum capacity: 3
+        -  Scaling policies: None (for now, see next lesson)
+        -  Next->Next->Next->Create Auto Scaling group
+-  Playing  with ASG
+    -  ASG: MyFirstASG
+    -  Details
+    -  Activity:
+        -  Activity history
+    -  Instance management
+    -  Go to Target Groups -> see Targets -> healthy
+    -  Go to ASG -> MyFirstASG
+        -  Details -> Group Details -> Edit
+            - Desired Capacity: 2
+        -  Activity -> see Diff (starting new EC2) 
+        -  Instance Management
+            -  see both EC2 healthy
+    -  go to ALB DNS -> refresh -> monitor different IPs (make sure TargGr->GroupDetails->Stickiness is DISABLED)
+    -  Target Groups -> Targets (healthy, healthy)
+-  Scale in
+    -  change Desired Capacity back to 1
+    -  Activity History: WaitingForELBConnectionDraining
+    -  after 300 sec instance was terminated   
