@@ -519,7 +519,72 @@ Names:
     -  `sudo mount -a`
     -  `lsblk` -> if `/data` is mounted then OK
     
+#####  48. EBS vs Instance Store
+
+-  `c5d.large` - look but do not create
+-  `ephemeral0	/dev/nvme0n1` - this is instance store - physical drive not network like EBS 
+
+#####  49. EFS Overview
+
+-  `EBS` - **single** AZ
+-  `EFS` - **multi** AZs - Elastic File System
+-  expensive - ~3*gp2 drive, but __pay per use__
+
+#####  50. EFS Hands On
+
+1.  Services -> Storage -> EFS
+    -  Create File System -> Customize
+    -  Name: <leave empty>
+    -  All default
+    -  Network access:
+        -  all 3 AZs
+        -  create new security group
+            -  name: `my-efs-demo`
+            -  description: `SG for EFS`
+            -  no Inbound rule (for now)
+        -  delete default SGs for AZs
+        -  use SG `my-efs-demo` for all 3 AZs
+    -  Create
+2.  EC2 -> Launch instance
+    -  instance 1
+        -  Subnet: 1a
+        -  File Systems: do **NOT** add for now
+        -  Security Group -> create new
+            -  Name: `ec2-to-efs`
+            -  only SSH for now
+        -  Launch
+    -  instance 2
+        -  launch more like this (like previous)
+        -  Subnet: 1b
+        -  Launch
+3.  SSH to both instances
+    -  EFS console
+        -  my efs -> Attach
+        -  Using DNS
+        -  `sudo mount -t efs -o tls fs-06cb7797:/ efs` -> `mount: efs: mount point does not exist.`
+        -  need to install the **amazon-efs-utils package**
+            -  [Mounting EFS file systems](https://docs.aws.amazon.com/efs/latest/ug/mounting-fs.html)
+            -  [Installing the amazon-efs-utils Package on Amazon Linux](https://docs.aws.amazon.com/efs/latest/ug/installing-amazon-efs-utils.html)
+            -  `sudo yum install -y amazon-efs-utils`
+        -  `mkdir efs`
+        -  `sudo mount -t efs -o tls fs-06cb7797:/ efs` -> timeout -> `Connection reset by peer`
+        -  need to modify security group
+        -  modify `my-efs-demo` inbound rule
+            -  Type: NFS
+            -  Source: sg `ec2-to-efs`
+        -  `sudo mount -t efs -o tls fs-06cb7797:/ efs` -> OK
+        -  `cd efs`
+        -  `ll` -> no files
+        -  `sudo touch ReadArt.txt`
+        -  `ll` in both EC2s -> file present
+4.  Clean Up (**51. EBS & EFS - Section Cleanup**)
+    -  terminate both EC2 instances
+    -  delete file system
+    -  volumes - delete available
+    -  snapshots - delete snapshots (I have none)
+    -  delete security groups (**do not delete** default)
+         
         
-    
+         
       
        
