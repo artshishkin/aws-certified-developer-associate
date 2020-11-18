@@ -690,7 +690,17 @@ Names:
     -  Create
 2.  Clean Up
     -  Delete Redis Cluster    
-                
+
+####  Section 7: Route 53
+
+#####  63. Route 53 Hands On
+
+1.  Route 53 Console
+    -  Create record
+    -  `nslookup dockerapp.shyshkin.net`
+    -  **or**
+    -  `nslookup dockerapp.shyshkin.net 8.8.8.8`                 
+    -  `nslookup dockerapp.shyshkin.net dns.google`                 
      
 
          
