@@ -673,7 +673,24 @@ Names:
         -  Scheduling of modifications: Immediately
     -  delete Reader Endpoint
         
-            
+#####  60. ElastiCache Hands On
+
+1.  ElastiCache console
+    -  Redis
+    -  Name: `MyFirstRedis`
+    -  Description: `My first Redis instsance`
+    -  Node type: `cache.t2.micro` - free tier
+    -  Number of replicas: 0 (for study, otherwise pay money)
+        -  so we loose MultiAZ option
+    -  Subnet group:
+        -  Name: `my-first-subnet-group`
+    -  Encryption
+        -  `at-rest` blank
+        -  `in-transit` leave blank
+    -  Create
+2.  Clean Up
+    -  Delete Redis Cluster    
+                
      
 
          
