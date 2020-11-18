@@ -703,8 +703,33 @@ Names:
     -  `nslookup dockerapp.shyshkin.net dns.google`                 
      
 
-         
-        
+#####  64. Route 53 - EC2 Setup
+
+1.  [Instance metadata and user data](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html)
+    -  `http://169.254.169.254/latest/meta-data/`
+    -  `http://169.254.169.254` - aws metadata server
+2.  Create EC2 instance in one Region (for example Stockholm)
+    -  User Data
+        `#!/bin/bash
+         yum update -y
+         yum install -y httpd
+         systemctl start httpd
+         systemctl enable httpd
+         EC2_AVAIL_ZONE=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
+         echo "<h1>Hello World $(hostname -f) in AZ $EC2_AVAIL_ZONE </h1>" > /var/www/html/index.html`
+    -  new security group -> HTTP enable all       
+3.  Create EC2 in another region (Paris)          
+4.  Create EC2 in Asia (Tokyo)
+5.  Table
+    -  http://15.236.141.98/ - eu-west-3b
+    -  http://13.48.31.109/ - eu-north-1c
+    -  http://3.112.69.123/ - ap-northeast-1a
+6.  LoadBalancer
+    -  New ALB
+    -  new SG
+    -  new Target Group `DemoRoute53TG`
+    -  add Target to TG
+    - Review -> Create             
          
       
        
