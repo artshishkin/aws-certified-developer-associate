@@ -583,6 +583,51 @@ Names:
     -  volumes - delete available
     -  snapshots - delete snapshots (I have none)
     -  delete security groups (**do not delete** default)
+    
+####  Section 6: AWS Fundamentals: RDS + Aurora + ElastiCache
+
+#####  55. AWS RDS Hands On
+
+1.  RDS Console
+    -  Paris -> Free tier
+    -  MySQL
+    -  DB instance identifier (name) must be unique across region: `my-first-mysql`
+    -  Master username: `art`
+    -  Master password: `password`
+    -  DB instance size: `db.t2.micro`
+    -  Enable storage autoscaling: `false`
+    -  Public access: `Yes` (for study purpose)
+    -  VPC security group: `Create new`
+        -  name: `my-first-rds-sg`
+    -  Additional configuration
+        -  Initial database name: `mydb`
+    -  Create database
+2.  Use SQLectron
+    -  Add
+    -  Name: `My RDS database for AWS Udemy course (Stephane)`
+    -  Save
+    -  Connect
+3.  RDS Console -> `my-first-mysql`
+    -  Create read replica
+        -  `my-first-mysql-replica`
+    -  Create table
+        `CREATE TABLE Persons (
+             PersonID int,
+             LastName varchar(255),
+             FirstName varchar(255),
+             Address varchar(255),
+             City varchar(255)
+         );`
+    -  Insert row
+        `INSERT INTO `Persons` VALUES (1,'Shyshkin','Art','my address','my city');`
+4.  Connect to REPLICA
+    -  test table exists too
+    -  trying to insert another row
+        -  `INSERT INTO `Persons` VALUES (2,'Shyshkina','Kate','my address','my city');`
+    -  got an error
+        -  `The MySQL server is running with the --read-only option so it cannot execute this statement`
+     
+
          
         
          
