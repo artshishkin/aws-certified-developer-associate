@@ -626,6 +626,54 @@ Names:
         -  `INSERT INTO `Persons` VALUES (2,'Shyshkina','Kate','my address','my city');`
     -  got an error
         -  `The MySQL server is running with the --read-only option so it cannot execute this statement`
+
+#####  58. Aurora Hands On
+
+1.  RDS Console
+    -  create new database
+    -  Aurora -> MySQL compatibility
+    -  version 5.6.10a (Stephane version)
+    -  DB Cluster Identifier: `my-aurora-db`
+    -  Templates: `Production` (then I choosed `Dev/Test`)
+    -  DB instance size: use cheapest
+    -  Multi-AZ deployment:  yes
+    -  Initial database name: `aurora`
+    -  Enable deletion protection: true
+    -  KMS key ID (generated): `6c8e68f7-fb9b-4fa9-a680-bae90321affc`
+    -  Create database
+2.  Test it
+    -  `my-aurora-db.cluster-cha39fdqzzb3.eu-west-3.rds.amazonaws.com`
+    -  Endpoints
+        -  `my-aurora-db.cluster-cha39fdqzzb3.eu-west-3.rds.amazonaws.com` - writer
+        -  `my-aurora-db.cluster-ro-cha39fdqzzb3.eu-west-3.rds.amazonaws.com` - **ro** means read-only
+    -  Click `my-aurora-db-instance-1`
+        -  Endpoint is `my-aurora-db-instance-1.cha39fdqzzb3.eu-west-3.rds.amazonaws.com`
+        -  You can connect but **IT IS NOT RECOMMENDED WAY**
+        -  choose Endpoint for Writer (shown above)
+    -  Click `my-aurora-db-instance-1-eu-west-3b`
+        -  Endpoint is `my-aurora-db-instance-1-eu-west-3b.cha39fdqzzb3.eu-west-3.rds.amazonaws.com`
+        -  You can connect but **IT IS NOT RECOMMENDED WAY**
+        -  choose Endpoint for Reader (shown above)
+    -  Actions possible:
+        -  Add reader
+        -  Create cross-Region read replica
+        -  Create clone
+        -  Restore to point in time
+        -  Add replica auto-scaling
+    -  Actions -> Add replica auto-scaling
+        -  Policy name: `MyScalingAurora`
+        -  Avg CPU Utilization: 60
+        -  Rest leave default
+        -  Add policy
+3.  Clean Up
+    -  delete Writer Endpoint
+    -  `delete me`       
+    -  Modify Cluster ->
+        -  `Enable deletion protection` : false
+        -  Scheduling of modifications: Immediately
+    -  delete Reader Endpoint
+        
+            
      
 
          
