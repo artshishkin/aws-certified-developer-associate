@@ -730,6 +730,14 @@ Names:
     -  new Target Group `DemoRoute53TG`
     -  add Target to TG
     - Review -> Create             
-         
-      
+
+#####  65. Route 53 - TTL
+
+1.  Route53 Console
+    -  `ttldemo.shyshkin.net` -> to EC2 in Paris (15.236.141.98)
+    -  TTL -> 120 sec
+2.  `dig ttldemo.shyshkin.net`
+    -  got an answer with such a row `ttldemo.shyshkin.net.   46      IN      A       15.236.141.98`
+    -  46 is seconds left to request DNS of 120 sec (TTL 120) - IP Cached            
+3.  ttldemo changed to Tokyo but still got Paris while TTL expires       
        
