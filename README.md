@@ -900,4 +900,12 @@ multi.shyshkin.net.     33      IN      A       52.47.145.218
 ```               
 It works like **FAULT TOLERANCE ON THE CLIENT SIDE**                
     
-       
+#####  74. Section Cleanup
+
+1.  Route 53 Console
+    -  peek all unused records one-by-one
+    -  delete
+2.  Terminate all unused EC2s
+3.  Delete load balancer
+4.  Delete health checks 
+      
