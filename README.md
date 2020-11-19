@@ -870,6 +870,34 @@ Names:
 3.  Note
     -  **DEFAULT** should be present          
         
-        
+#####  73. Routing Policy - Multi Value
+
+1.  Create record
+    -  Multivalue answer
+    -  `multi.shyshkin.net`
+    -  Define multivalue answer record for Paris
+        -  IP: `Paris IP`
+        -  health check: Paris
+    -  Define multivalue answer record for Tokyo
+        -  IP: `Tokyo IP`
+        -  health check: Tokyo
+    -  ~~Define multivalue answer record for Stockholm~~
+        -  ~~IP: `DemoALBRoute53-187376732.eu-north-1.elb.amazonaws.com`~~
+        -  ~~health check: Stockholm~~
+        -  `Bad request.
+        (InvalidChangeBatch 400: ARRDATAIllegalIPv4Address (Value is not a valid IPv4 address) encountered with 'DemoALBRoute53-187376732.eu-north-1.elb.amazonaws.com')`
+    -  Define multivalue answer record for Stockholm
+           -  IP: `Stockholm EC2 IP`
+           -  health check: Stockholm
+2.  Testing
+    -  `dig multi.shyshkin.net`
+    -  it will show available IPs
+```
+;; ANSWER SECTION:
+multi.shyshkin.net.     33      IN      A       13.48.134.232
+multi.shyshkin.net.     33      IN      A       3.112.13.107
+multi.shyshkin.net.     33      IN      A       52.47.145.218
+```               
+It works like **FAULT TOLERANCE ON THE CLIENT SIDE**                
     
        
