@@ -721,9 +721,9 @@ Names:
 3.  Create EC2 in another region (Paris)          
 4.  Create EC2 in Asia (Tokyo)
 5.  Table
-    -  http://15.236.141.98/ - eu-west-3b
-    -  http://13.48.31.109/ - eu-north-1c
-    -  http://3.112.69.123/ - ap-northeast-1a
+    -  http://52.47.145.218/ - eu-west-3b
+    -  http://13.48.49.160/ - eu-north-1c
+    -  http://3.112.13.107/ - ap-northeast-1a
 6.  LoadBalancer
     -  New ALB
     -  new SG
@@ -777,4 +777,14 @@ Names:
         -  `Bad request.
             (InvalidChangeBatch 400: RRSet of type CNAME with DNS name shyshkin.net. is not permitted at apex in zone shyshkin.net.)`
         -  so we can not use CNAME for apex domain (root domain)
+
+#####  67. Routing Policy - Simple
+
+-  `simple.shyshkin.net`
+-  IPs:
+    -  52.47.145.218
+    -  13.48.49.160
+    -  3.112.13.107
+-  TTL: 60
+-  client randomly choose one of IP            
             
