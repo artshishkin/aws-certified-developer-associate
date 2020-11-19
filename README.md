@@ -847,3 +847,29 @@ Names:
 2.  Testing
     -  shut down EC2 in Stockholm so ALB health status will be unhealthy
     -  make sure Route 53 switches to Paris         
+
+#####  72. Routing Policy - Geolocation
+
+1.  Create record
+    -  Geolocation
+        -  `geolocation.shyshkin.net`
+    -  Define geolocation record Paris
+        -  IP: `Paris IP`
+        -  Location: `Europe` (can choose country)
+    -  Define geolocation record Tokyo
+        -  IP: `Tokyo IP`
+        -  Location: `Asia` (for test choose Ukraine)
+    -  Define geolocation record Stockholm
+        -  Alias to another record: `myalias.shyshkin.net` (ALB)
+        -  Location: `Default`
+2.  Testing
+    -  use VPN
+    -  from Europe -> should redirect to Paris
+    -  from Ukraine -> should be Tokyo
+    -  from anywhere else -> Stockholm
+3.  Note
+    -  **DEFAULT** should be present          
+        
+        
+    
+       
