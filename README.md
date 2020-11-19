@@ -816,4 +816,19 @@ Names:
         -  Stockholm LB Alias        
 2.  Testing
     -  using VPN (NordVPN, TouchVPN)
-    -  monitor different EC2 instances                
+    -  monitor different EC2 instances
+
+#####  70. Route 53 Health Checks
+
+1.  Route 53 Console
+    -  Health checks -> Create new
+    -  Name: `Paris Health Check`
+    -  Endpoint
+        -  IP: Paris IP (`52.47.145.218`)
+        -  Hostname: empty
+        -  Port: 80
+    -  create health check
+2.  Create Tokyo health check
+3.  Create Stockholm ALB health check
+    -  Domain name
+    -  Domain name: ALB DNS                     
