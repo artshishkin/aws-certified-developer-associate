@@ -786,5 +786,21 @@ Names:
     -  13.48.49.160
     -  3.112.13.107
 -  TTL: 60
--  client randomly choose one of IP            
+-  client randomly choose one of IP
+
+#####  68. Routing Policy - Weighted
+
+1.  Create Record:
+    -  Weighted
+    -  `weighted.shyshkin.net`
+    -  TTL 60
+    -  Define weighted record
+        -  Paris IP
+        -  Tokyo IP
+        -  Stockholm LB Alias
+        -  All with different weights (10, 20, 70 % _or_ 2,3,10 weight coefs, no matter)
+        -  without health check for now
+2.  Testing
+    -  go to  `weighted.shyshkin.net`
+    -  `dig weighted.shyshkin.net`                
             
