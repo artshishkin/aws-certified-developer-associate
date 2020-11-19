@@ -740,4 +740,41 @@ Names:
     -  got an answer with such a row `ttldemo.shyshkin.net.   46      IN      A       15.236.141.98`
     -  46 is seconds left to request DNS of 120 sec (TTL 120) - IP Cached            
 3.  ttldemo changed to Tokyo but still got Paris while TTL expires       
-       
+
+#####  66. Route 53 CNAME vs Alias  
+
+1.  Theory
+    -  CNAME - Points a hostname to any other hostname
+        -  mydemobalancer.shyshkin.net -> DemoALBRoute53-187376732.eu-north-1.elb.amazonaws.com
+        -  **ONLY FOR NON ROOT DOMAIN** (something.mydomain.com)
+    -  Alias - Points a hostname to an AWS Resource 
+        -  app.mydomain.com -> blabla.amazonaws.com
+        -  works for ROOT DOMAIN and NON ROOT DOMAIN (aka mydomain.com)
+        -  _Free of charge_
+        -  Native health check
+2.  Hands on
+    -  CNAME
+        - `myapp.shyshkin.net`
+        -  Record type: CNAME
+        -  Value/Route traffic to -> IP Addr or another... -> LoadBalancer DNS
+    -  Alias
+        -  `myalias.shyshkin.net`
+        -  Alias for ALB
+    -  Alias ROOT
+        -  Record name: empty (will be just `shyshkin.net`)
+        -  Value/Route traffic to:
+            -  Alias to another record in this hosted zone
+            -  `us-east-1` (only one that available)
+            -  `myalias.shyshkin.net` (or directly to LoadBalancer)
+        -  Record type: A
+    -  CNAME ROOT
+        -  Record name: empty (will be just `shyshkin.net`)
+        -  Value/Route traffic to:
+            -  IP Address or another value depending on the record type
+            -  `myalias.shyshkin.net`
+        -  Record type: CNAME
+        -  got an **Error**
+        -  `Bad request.
+            (InvalidChangeBatch 400: RRSet of type CNAME with DNS name shyshkin.net. is not permitted at apex in zone shyshkin.net.)`
+        -  so we can not use CNAME for apex domain (root domain)
+            
