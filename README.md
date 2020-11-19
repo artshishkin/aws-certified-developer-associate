@@ -908,4 +908,18 @@ It works like **FAULT TOLERANCE ON THE CLIENT SIDE**
 2.  Terminate all unused EC2s
 3.  Delete load balancer
 4.  Delete health checks 
+
+####   Section 8: VPC Fundamentals
+
+#####  75. VPC Fundamentals - Section Introduction
+
+#####  76. VPC, Subnets, IGW and NAT
+
+#####  77. NACL, SG, VPC Flow Logs
+
+#####  78. VPC Peering, Endpoints, VPN, DX
+
+#####  79. VPC Cheat Sheet & Closing Comments
+
+#####  80. Three Tier Architecture
       
