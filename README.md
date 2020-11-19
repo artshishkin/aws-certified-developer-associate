@@ -803,4 +803,17 @@ Names:
 2.  Testing
     -  go to  `weighted.shyshkin.net`
     -  `dig weighted.shyshkin.net`                
-            
+
+#####  69. Routing Policy - Latency
+
+1.  Create Record
+    -  Latency
+    -  `latency.shyshkin.net`
+    -  TTL 10
+    -  Define latency record
+        -  Paris IP
+        -  Tokyo IP
+        -  Stockholm LB Alias        
+2.  Testing
+    -  using VPN (NordVPN, TouchVPN)
+    -  monitor different EC2 instances                
