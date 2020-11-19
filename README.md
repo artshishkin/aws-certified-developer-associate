@@ -923,3 +923,36 @@ It works like **FAULT TOLERANCE ON THE CLIENT SIDE**
 
 #####  80. Three Tier Architecture
       
+####  Section 9: Amazon S3 Introduction
+
+#####  82. S3 Buckets and Objects
+
+1.  S3 Console
+    -  S3 is Global
+    -  but Buckets tight to a certain Region
+    -  Bucket's name must be **globally** unique
+    -  if we try to create bucket _test_ got an error
+        -  `Bucket with the same name already exists`
+        -  Must be unique among **ALL THE USERS**
+2.  Create S3 Bucket
+    -  Name: `the-bucket-of-art-2020`
+    -  Leave all other default values
+3.  Testing
+    -  Upload file
+    -  ~~Right Click -> Open~~ - you can open file (does not work for me)
+    -  `the-bucket-of-art-2020` -> tick file -> Actions -> Open
+        -  we can see image content
+        -  and url will be `https://the-bucket-of-art-2020.s3.eu-north-1.amazonaws.com/springsecurity.png?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEOz%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDGV1LWNlbnRyYWwtMSJIMEYCIQD0TFO3zC%2BtwX6yvnq1jtbCaW4l10InqaCaCQNGxHiqlgIhAOSo6%2FYWW9EbZvO%2BGG1oaDXvkMTC1yBQ04Vt1GfEXlrkKuYCCGUQARoMMzkyOTcxMDMzNTE2IgxkBwDyowgu9iOyjQIqwwLTRBeo7UdFGSTG9DFg8QD6MOchYG2jTQ5xO4V6QstLc%2BjZbKBFfqkBJewiNcwn3hUMLfVfplaSRmLpRDe3ozqvF1gkOcWMiE9tSPtY55HioU3ikGDhKFrMSsETO2awAv5xBthxXDZ%2Bd82Lobh4oKOQDCxGOe95vLwbVh4V3s1fd2GuiHDoDsonnC8%2FTKL7zDu0xVwC2x2fFOfRp2S9S5e8XLgL42gs%2BM7WWin%2FTuBxQPj5z9dBnSDjyIpLyIIC2Ydc1Qh6kgLEJ2MQ1Q8GkgP9Wi%2BwKpdOBGqljc4ob2EgA0qeDZof46QTt%2BAroPoIQPyI%2BhiLwCb1x%2FZl7Y%2FDv4j5uq8oj9hfUJuuJJ2qFLdx2yVL8Xg1yL%2FbwyZ20bsIWK2thruDm2A7wGxBSZcljUglIFFYb%2BLKvlmTUoBqqEc2fa7xdjCGu9n9BTquAtYxNKOZU4pUsyVxocGrjfTydhfP42rxW6WG%2F2nT5r8bVQF5tWzgUsMCMBua1su6TUDsFZJjZLwyuD2X%2FkLb%2B8TLGwF7Vy0rxaoPZcCg7Ecd28lz9LoUD%2B8k%2Fqfw9iECaoBswsmW7DQ6cgH8D%2BusjMbyVGj733nGsUYGXejWtke4qlP2M83CF90DyqiWVvgPT9xJMIhM9piL%2BeyOWe8AoJfdhnxB1%2FSUpxUvAOaw%2Fzgz7kqSjI6BozXq8oa2atVLVAruaebZHK1VyaCVXezVwar7fVm%2BggRe2CwCk4XLLNJmnqs3HSIABVZ69cO2hZYipSS%2F%2FgZ7smb%2BDGwpAu478INIpQAt3R2QY9daOfZKexTbuOaVEUziUtOq8rrSwUEXCqs%2BtE8DI18B21rCxtZ0&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20201119T210915Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIAVW7XGDOWBVDUS56U%2F20201119%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Signature=44139a1d2f529394d9a6ee59a24e16159099d2a141674b8d2cf26a2d9ca53482`
+    -  if we go inside image
+        -  Object URL: `https://the-bucket-of-art-2020.s3.eu-north-1.amazonaws.com/springsecurity.png`
+        -  got an XML with error description
+```xml
+<Error>
+<Code>AccessDenied</Code>
+<Message>Access Denied</Message>
+<RequestId>125F0F949DB840A7</RequestId>
+<HostId>4dY01dcGST3onp2ucHDbQkkQSD0zsinnZaQMygKSgMMnJ6gLsAxB9FPr9bmXJJ7Zq0VsdxUilvs=</HostId>
+</Error>
+```                        
+Reason: this file is not public. We can access it with pre-sign URL (with owner's credentials)
+   
