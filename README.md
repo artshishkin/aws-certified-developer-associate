@@ -831,4 +831,19 @@ Names:
 2.  Create Tokyo health check
 3.  Create Stockholm ALB health check
     -  Domain name
-    -  Domain name: ALB DNS                     
+    -  Domain name: ALB DNS
+
+#####  71. Routing Policy - Failover
+
+1.  Create Record
+    -  Failover
+        -  `failover.shyshkin.net`
+        -  TTL 30
+    -  Define failover record
+        -  to ALB in Stockholm `myalias.shyshkin.net` - Primary
+            -  Health check: Stockholm ALB Health Check                   
+        -  to Paris EC2 - Secondary
+        -  ~~to Tokyo EC2~~ - Secondary (not enabled)
+2.  Testing
+    -  shut down EC2 in Stockholm so ALB health status will be unhealthy
+    -  make sure Route 53 switches to Paris         
