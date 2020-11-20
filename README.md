@@ -955,4 +955,31 @@ It works like **FAULT TOLERANCE ON THE CLIENT SIDE**
 </Error>
 ```                        
 Reason: this file is not public. We can access it with pre-sign URL (with owner's credentials)
-   
+
+#####  83. S3 Versioning
+
+1.  Bucket console
+    -  Properties -> Edit
+        -  Bucket Versioning -> Enable
+2.  Objects
+    -  List versions
+        -  `springsecurity.png` (my file) - Version ID null
+    -  Upload one more time the same file
+        -  Version ID - `Zu2CZ.V0XnZcGdWnp7N.hye8HJyWdRa0`
+3.  Deleting latest version
+    -  delete `springsecurity.png`
+    -  Objects -> no more `springsecurity.png` **BUT**
+    -  List versions
+        -  latest file marked as `Delete marker`
+    -  tick on delete marker
+    -  delete -> `permanently delete`
+    -  now we see latest version (not deleted)
+4.  Deleting specific version
+    -  tick on version -> delete
+5.  Suspending versioning
+    -  Properties -> Bucket Versioning -> Suspend
+    -  Upload one new `springsecurity.png`
+    -  Added one with version ID: null
+    -  Upload one more time -> that replaces old one with Version ID null
+          
+                  
