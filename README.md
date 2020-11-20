@@ -1109,4 +1109,44 @@ Reason: this file is not public. We can access it with pre-sign URL (with owner'
         -  encryption: Amazon S3 key (SSE-S3)
         -  result: `Upload succeeded`
 3.  ACL for bucket
-4.  ACL for object            
+4.  ACL for object
+
+#####  87. S3 Websites
+
+1.  Create HTML files
+    -  index.html
+    -  error.html
+    -  upload them to the bucket
+2.  Enabling static website hosting  
+    -  Bucket
+    -  Properties
+    -  Static website hosting -> Edit
+    -  Index document:  index.html
+    -  Error document:  error.html
+3.  Go to `Bucket website endpoint`
+    -  `http://the-bucket-of-art-2020.s3-website.eu-north-1.amazonaws.com`
+    -  Got an error
+    -  `403 Forbidden`
+4.  Enabling public access
+    -  Permissions
+        -  Block public access
+            -  disable all blocks        
+    -  Must create a bucket policy
+        -  Bucket policy -> Edit
+        -  Use policy generator
+            -  Effect: Allow
+            -  Principal: *
+            -  Action: GetObject
+            -  ARN: bucketARN /*
+            -  Add Statement
+            -  Create policy
+        -  Copy statement content to the existing bucket policy
+5.  S3 Control panel
+    -  `the-bucket-of-art-2020	EU (Stockholm) eu-north-1	 Public        November 19, 2020, 22:54 (UTC+02:00)`
+    -  **Public**
+6.  Testing
+    -  `http://the-bucket-of-art-2020.s3-website.eu-north-1.amazonaws.com`
+    -  All OK
+    -  `http://the-bucket-of-art-2020.s3-website.eu-north-1.amazonaws.com/lol`
+    -  getting `error.html`          
+            
