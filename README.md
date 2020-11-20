@@ -982,4 +982,49 @@ Reason: this file is not public. We can access it with pre-sign URL (with owner'
     -  Added one with version ID: null
     -  Upload one more time -> that replaces old one with Version ID null
           
-                  
+#####  84. S3 Encryption
+
+1.  Methods
+    -  SSE-S3 - Server-Side Encryption by AWS  
+    -  SSE-KMS - leverage Key Management Service to manage encryption keys
+    -  SSE-C - when you want to manage your own encryption keys
+    -  Client Side Encryption
+2.  SSE-S3
+    -  **AES-256** ancryption type
+    -  Must set header: "x-amz-server-side-encryption":"AES256"
+    -  keys handled and managed by Amazon S3 (keys are stored on amazon servers)
+3.  SSE-KMS
+    -  KMS Advantages: user control + audit trail
+    -  Must set header: "x-amz-server-side-encryption":"aws:kms"
+4.  SSE-C
+    -  keys are fully managed by the customer outside of AWS
+    -  Amazon S3 does not store keys
+    -  **HTTPS must be used** (because you send keys over ethernet)
+    -  Encryption key must be provided in HTTP headers for every request made
+5.  Client Side Encryption (CSE)
+    -  Client library such as the `Amazon S3 Encryption Client`
+    -  Clients must:
+        -  encrypt data themselves before sending to S3 
+        -  decrypt data themselves when retrieving from S3 
+6.  Encryption in transit (SSL/TLS)    
+    -  Amazon S3 exposes:
+        -  HTTP endpoint: non encrypted
+        -  HTTPS endpoint: encryption in flight
+    -  You're free to use the endpoint you want, but HTTPS is recommended
+    -  Most clients would use the HTTPS endpoint by default
+    -  HTTPS is mandatory for SSE-C
+    -  Encryption in flight is also called SSL/TLS
+7.  Hands on
+    - go to details of my file
+        -  see `Server-side encryption None`
+    -  upload new file
+        -  Encryption: use Amazon SSE-S3
+    -  upload new file
+        -  Encryption: use AWS-KMS
+            -  key: `AWS managed key (aws/s3)`
+            -  `arn:aws:kms:eu-north-1:392971033516:alias/aws/s3`
+8.  Default Encryption
+    -  `the-bucket-of-art-2020`
+    -  Properties
+        - Default encryption: `SSE-S3`           
+      
