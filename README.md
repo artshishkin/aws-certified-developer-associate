@@ -1064,4 +1064,49 @@ Reason: this file is not public. We can access it with pre-sign URL (with owner'
         -  API calls can be logged in AWS CloudTrail
     -  User Security:
         -  MFA Delete: MFA (multi factor auth) can be required in versioned buckets to delete objects
-        -  Pre-Signed URLs: URLs that are valid only for a limited time (ex: premium video service for logged in users)             
+        -  Pre-Signed URLs: URLs that are valid only for a limited time (ex: premium video service for logged in users)
+
+#####  86. S3 Bucket Policies Hands On
+
+1.   Permissions
+    -  Bucket Policy -> Edit
+    -  Policy Generator
+        -  Select Policy Type: S3
+        -  Statement 1:
+            -  Deny
+            -  Principal: `*`
+            -  Actions: `PutObject`
+            -  ARN : `bucket ARN` + `/*` = `arn:aws:s3:::the-bucket-of-art-2020/*`
+            -  Add Conditions
+                -  if `x-amz-server-side-encryption` is null then deny Putting Object to the Bucket
+                -  Condition: `Null`
+                -  Key: `s3:x-amz-server-side-encryption`
+                -  Value: true
+                -  Add condition
+        -  Statement 2:
+            -  Deny
+            -  Principal: `*`
+            -  Actions: `PutObject`
+            -  ARN : `bucket ARN` + `/*` = `arn:aws:s3:::the-bucket-of-art-2020/*`
+            -  Add Conditions
+                -  if encryption is not `aes256` deny too
+                -  Condition: `StringNotEqual`
+                -  Key: `s3:x-amz-server-side-encryption`
+                -  Value: `AES256`
+                -  Add condition
+        -  Generate Policy
+            -  copy content of policy
+    -  Paste created policy
+    -  Save changes
+2.  Testing
+    -  upload new file (unencrypted)
+        -  encryption: None
+        -  result: `You don't have permissions to upload files and folders.`
+    -  upload encrypted by KMS
+        -  encryption: KMS
+        -  result: `You don't have permissions to upload files and folders.`
+    -  upload encrypted by AES256
+        -  encryption: Amazon S3 key (SSE-S3)
+        -  result: `Upload succeeded`
+3.  ACL for bucket
+4.  ACL for object            
