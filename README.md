@@ -1278,4 +1278,15 @@ Access-Control-Max-Age: 3000
 6.  Conclusion
     -  EC2 instance may have only **ONE** IAM Role at a time
     -  IAM Role may have **MULTIPLE** policies    
-    
+
+#####  98. AWS CLI Practice with S3
+
+1.  Google `aws s3 cli`
+    -  Available Commands
+        -  [ls](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/ls.html)
+            -  `aws s3 ls s3://the-bucket-of-art-2020 --recursive`
+        -  cp - copy
+        -  `aws s3 cp help` - documentation, `q` - to quit
+        -  `aws s3 cp s3://the-bucket-of-art-2020/springsecurity.png sprsec.png` - from s3 to local
+        -  mb - make bucket
+        -  rb - remove bucket (if empty)
