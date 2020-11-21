@@ -1148,5 +1148,53 @@ Reason: this file is not public. We can access it with pre-sign URL (with owner'
     -  `http://the-bucket-of-art-2020.s3-website.eu-north-1.amazonaws.com`
     -  All OK
     -  `http://the-bucket-of-art-2020.s3-website.eu-north-1.amazonaws.com/lol`
-    -  getting `error.html`          
-            
+    -  getting `error.html`
+    
+#####  88. S3 CORS
+
+-  Origin = `protocol://host:port`
+    -  `https://example.com`
+        -  protocol: `https`
+        -  host: `example.com`
+        -  port: 443
+-  CORS - Cross-Origin Resource Sharing
+-  Same origins:
+    -  `http://example.com/foo` & `http://example.com/foo`
+-  Different origins
+    -  `http://foo.example.com` & `http://bar.example.com`
+-  The requests won't be fulfilled unless the other origin allows for the requests, using CORS Headers (ex: Access-Control-Allow-Origin)    
+
+#####  89. S3 CORS Hands On
+
+1.  Modify `index.html`
+2.  Create `extra-page.html`
+3.  Upload them to the bucket (Origin bucket)
+4.  Test everything works fine
+    -  `http://the-bucket-of-art-2020.s3-website.eu-north-1.amazonaws.com`
+    -  `http://the-bucket-of-art-2020.s3-website.eu-north-1.amazonaws.com/extra-page.html` 
+5.  Create another bucket as website (Cross-Origin bucket)
+    -  `the-bucket-of-art-2020-assets`
+    -  publicly available
+    -  policy to get objects from everywhere
+    -  enable static website hosting
+    -  upload `extra-page.html`
+6.  Test second static website
+    -  `http://the-bucket-of-art-2020-assets.s3-website.eu-north-1.amazonaws.com/extra-page.html`
+7.  Delete `extra-page.html` from `Origin bucket`
+8.  Modify `index.html` to fetch this page from second website
+9.  Go to `http://the-bucket-of-art-2020.s3-website.eu-north-1.amazonaws.com/`
+    -  open Chrome Dev Tools `Console`
+    -  got an error
+        -  `Access to fetch at 'http://the-bucket-of-art-2020-assets.s3-website.eu-north-1.amazonaws.com/extra-page.html' from origin 'http://the-bucket-of-art-2020.s3-website.eu-north-1.amazonaws.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.`
+    -  need to enable CORS
+10.  Edit cross-origin resource sharing
+    -  config like `cors-config.json`
+11.  Testing
+    -  Chrome Dev Tools - Network
+    -  extra-page headers
+```
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: GET
+Access-Control-Allow-Origin: http://the-bucket-of-art-2020.s3-website.eu-north-1.amazonaws.com
+Access-Control-Max-Age: 3000
+```                  

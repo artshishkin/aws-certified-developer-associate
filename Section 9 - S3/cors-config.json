@@ -1,0 +1,15 @@
+[
+  {
+    "AllowedHeaders": [
+      "Authorizarion"
+    ],
+    "AllowedMethods": [
+      "GET"
+    ],
+    "AllowedOrigins": [
+      "http://the-bucket-of-art-2020.s3-website.eu-north-1.amazonaws.com"
+    ],
+    "ExposeHeaders": [],
+    "MaxAgeSeconds": 3000
+  }
+]

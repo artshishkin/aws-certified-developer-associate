@@ -9,4 +9,15 @@
 <p>Hello secured world</p>
 <img src="springsecurity.png" width="500"/>
 </body>
+
+<!--CORS Demo-->
+<div id="toFetch"/>
+<script>
+    let toFetch = document.getElementById(`toFetch`);
+
+    // fetch('extra-page.html')
+    fetch('http://the-bucket-of-art-2020-assets.s3-website.eu-north-1.amazonaws.com/extra-page.html')
+        .then((response) => response.text())
+        .then((html) => toFetch.innerHTML = html);
+</script>
 </html>
