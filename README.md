@@ -1290,3 +1290,41 @@ Access-Control-Max-Age: 3000
         -  `aws s3 cp s3://the-bucket-of-art-2020/springsecurity.png sprsec.png` - from s3 to local
         -  mb - make bucket
         -  rb - remove bucket (if empty)
+
+#####  99. IAM Roles and Policies Hands On
+
+1.  One can
+    -  Create policy
+    -  _or_
+    -  Add inline policy (through Role Permissions tab) - **just for that role**
+        -  it is not recommended, the better way is to manage policy globally
+2.  Create policy using Visual Editor
+    -  Service: S3
+    -  Actions -> Read
+        -  `GetObject`
+    -  Resources: 
+        -  ~~All resources (this is `*`)~~
+        -  Specific -> Add ARN
+            -  Bucket name: `the-bucket-of-art-2020`
+            -  Object name: Any (`*`)
+            -  Will receive: `arn:aws:s3:::the-bucket-of-art-2020/*`
+    -  Review policy
+        -  Name:  `MyTestS3CustomPolicy`
+        -  Create policy
+    -  Look at the JSON
+3.  Attach created policy to our role    
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::the-bucket-of-art-2020/*"
+        }
+    ]
+}
+```                    
+        
