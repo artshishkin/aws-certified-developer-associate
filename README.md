@@ -1211,4 +1211,27 @@ Access-Control-Max-Age: 3000
         -  ex: (PUT 200 => PUT 200 => GET 200 (might be older version))
     -  If we delete an object, we might still be able to retrieve it for a short time
         -  ex: (DELETE 200 => GET 200)
-3.  Note: there’s no way to request “strong consistency”                  
+3.  Note: there’s no way to request “strong consistency”
+
+####  Section 10: AWS CLI, SDK, IAM Roles & Policies
+
+#####  92. AWS CLI Setup on Windows
+
+-  [Installing, updating, and uninstalling the AWS CLI version 2 on Windows](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-windows.html)
+
+#####  96. AWS CLI Configuration
+
+1.  Creating new access key
+    -  IAM Console
+    -  Users
+        -  art_admin
+        -  Security Credentials
+        -  Create access key
+2.  Configuring aws cli
+    -  `aws configure`
+    -  enter all required fields
+3.  Config location
+    -  on Windows: `dir %USERPROFILE%\.aws` (using cmd)
+    -  on Windows: `ls $env:USERPROFILE\.aws` (using PowerShell)
+    -  on Linux or Mac: `ls ~/.aws`
+    
