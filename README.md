@@ -1234,4 +1234,48 @@ Access-Control-Max-Age: 3000
     -  on Windows: `dir %USERPROFILE%\.aws` (using cmd)
     -  on Windows: `ls $env:USERPROFILE\.aws` (using PowerShell)
     -  on Linux or Mac: `ls ~/.aws`
+4.  Testing
+    -  `aws s3 ls`    
+    
+#####  97. AWS CLI on EC2
+
+1.  Bad way
+    -  ssh to EC2
+    -  aws config through ssh
+    -  **NEVER PUT YOUR PERSONAL CREDENTIALS ON EC2**
+2.  Good way -  IAM Roles
+    -  start EC2 instance
+    -  ssh to it
+    -  `aws` - it is present on Amazon Linux 2 AMI
+    -  `aws --version`
+    -  `aws s3 ls`
+        -  Got an error: `Unable to locate credentials. You can configure credentials by running "aws configure".`
+3.  Creating IAM Role for EC2 instance
+    -  IAM Console
+    -  Roles
+    -  Create Role
+        -  EC2 instance
+        -  Permissions
+        -  Filter through s3
+        -  Policy: `AmazonS3ReadOnlyAccess`
+        -  Role Name: `MyFirstEC2Role`
+        -  Create role
+4.  Modify IAM role of EC2
+    -  EC2 management console
+    -  Security
+    -  Modify IAM role
+5.  Testing
+    -  from ec2 ssh
+    -  `aws s3 ls`
+    -  `aws s3 ls s3://the-bucket-of-art-2020`
+    -  `aws s3 mb s3://attempt-to-create-bucket` - make bucket
+        -  got an error
+        -  `make_bucket failed: s3://attempt-to-create-bucket An error occurred (AccessDenied) when calling the CreateBucket operation: Access Denied`                          
+    -  attach to role new policy:  `AmazonS3FullAccess`
+    -  now run again: `aws s3 mb s3://attempt-to-create-bucket`
+        -  success: `make_bucket: attempt-to-create-bucket`
+    -  `aws s3 rb s3://attempt-to-create-bucket` - remove bucket
+6.  Conclusion
+    -  EC2 instance may have only **ONE** IAM Role at a time
+    -  IAM Role may have **MULTIPLE** policies    
     
