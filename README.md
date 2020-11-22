@@ -1448,4 +1448,33 @@ Access-Control-Max-Age: 3000
             -  "Token" 
     -  if Role is not attached to the EC2 instance then there is no `meta-data/iam`
               
-             
+#####  104. AWS CLI Profiles
+
+1.  AWS folder content
+    -  `cat .aws/config` (Linux)
+    -  `type .aws/config` (Windows PowerShell) 
+        -  `[default]`
+        -  `region = eu-north-1`
+    -  `type .aws/credentials`
+        -  `[default]`
+        -  `aws_access_key_id = AKIAVW7XGDOWKR6HKHCY` (modified)
+        -  `aws_secret_access_key = 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` (modified)
+2.  Configuring profiles
+    -  `aws configure` - configure default profiles
+    -  `aws configure --profile my-first-profile`
+        -  `AWS Access Key ID [None]: DUMMYaccess`
+        -  `AWS Secret Access Key [None]: FOObarBUZZ`
+        -  `Default region name [None]: ma-mars-2`
+    -  `type .aws/credentials`
+3.  Using profile
+    -  `aws s3 ls` - use default     
+    -  `aws s3 ls --profile default` - use default
+    -  `aws s3 ls --profile my-first-profile` - use my-first-profile
+        -  `Could not connect to the endpoint URL: "https://s3.ma-mars-2.amazonaws.com/"` - fake region
+        -  changed region to `eu-north-1`
+        -  `An error occurred (InvalidAccessKeyId) when calling the ListBuckets operation: The AWS Access Key Id you provided does not exist in our records.` - fake Access Key ID
+        -  changed AccessKeyId to correct
+        -  `An error occurred (SignatureDoesNotMatch) when calling the ListBuckets operation: The request signature we calculated does not match the signature you provided. Check your key and signing method.`
+         
+    
+                    
