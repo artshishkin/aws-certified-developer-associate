@@ -1344,4 +1344,141 @@ Access-Control-Max-Age: 3000
         -  ListObjects:  allowed
         -  PutObject:  denied
     -  Run Simulation      
-            
+
+#####  101. AWS CLI Dry Run
+
+1.  google `aws ec2 api` for available commands
+2.  SSH into EC2 that has `FirstEC2Role`
+    -  `aws ec2 run-instances help`
+3.  Copy AMI ID of running instance through EC2 console
+    -  `ami-0b26bf4b43c8d995d`
+4.  Run command
+    -  `aws ec2 run-instances --dry-run --image-id ami-0b26bf4b43c8d995d`
+        -  `You must specify a region. You can also configure your region by running "aws configure".`
+        -  when I was configuring aws I did not set default region
+    -  `aws ec2 run-instances --dry-run --image-id ami-0b26bf4b43c8d995d --instance-type t3.micro --region eu-north-1`
+    -  Got an error
+        -  `An error occurred (UnauthorizedOperation) when calling the RunInstances operation: You are not authorized to perform this operation. Encoded authorization failure message: rJfXElUnzsu28AikT92`                
+5.  Modify role to enable run EC2s
+    -  attach our policy `MyTestS3CustomPolicy`
+    -  modify policy
+        -  `MyTestS3CustomPolicy` -> Edit policy
+            -  Visual editor -> Add additional permissions
+            -  Service: EC2
+            -  Access level -> in `Write` block
+                -  `RunInstances`
+            -  Resources: all resources (for simplicity)
+        -  Review policy
+        -  Save changes 
+6.  Run after policy modification
+    -  `aws ec2 run-instances --dry-run --image-id ami-0b26bf4b43c8d995d --instance-type t3.micro --region eu-north-1`
+    -  `An error occurred (DryRunOperation) when calling the RunInstances operation: Request would have succeeded, but DryRun flag is set.`
+    -  **OK**
+7.  Testing without `--dry-run`
+    -  `aws ec2 run-instances --image-id ami-0b26bf4b43c8d995d --instance-type t3.micro --region eu-north-1`
+    -  created new instance and launched it
+```json
+{
+    "Instances": [
+        {
+            "Monitoring": {
+                "State": "disabled"
+            },
+            "PublicDnsName": "",
+            "StateReason": {
+                "Message": "pending",
+                "Code": "pending"
+            },
+            "State": {
+                "Code": 0,
+                "Name": "pending"
+            },
+            "EbsOptimized": false,
+            "LaunchTime": "2020-11-22T13:58:25.000Z",
+            "PrivateIpAddress": "172.31.13.127",
+            "ProductCodes": [],
+            "VpcId": "vpc-d03187b9",
+            "CpuOptions": {
+                "CoreCount": 1,
+                "ThreadsPerCore": 2
+            },
+            "StateTransitionReason": "",
+            "InstanceId": "i-032aa6c4881957d2d",
+            "EnaSupport": true,
+            "ImageId": "ami-0b26bf4b43c8d995d",
+            "PrivateDnsName": "ip-172-31-13-127.eu-north-1.compute.internal",
+            "SecurityGroups": [
+                {
+                    "GroupName": "default",
+                    "GroupId": "sg-24aebf45"
+                }
+            ],
+            "ClientToken": "51053201-9008-45d8-a87c-77ea4bfa7305",
+            "SubnetId": "subnet-ade616e0",
+            "InstanceType": "t3.micro",
+            "CapacityReservationSpecification": {
+                "CapacityReservationPreference": "open"
+            },
+            "NetworkInterfaces": [
+                {
+                    "Status": "in-use",
+                    "MacAddress": "0e:7b:5a:0d:f7:94",
+                    "SourceDestCheck": true,
+                    "VpcId": "vpc-d03187b9",
+                    "Description": "",
+                    "NetworkInterfaceId": "eni-0b4e30b5258d87b5a",
+                    "PrivateIpAddresses": [
+                        {
+                            "PrivateDnsName": "ip-172-31-13-127.eu-north-1.compute.internal",
+                            "Primary": true,
+                            "PrivateIpAddress": "172.31.13.127"
+                        }
+                    ],
+                    "PrivateDnsName": "ip-172-31-13-127.eu-north-1.compute.internal",
+                    "InterfaceType": "interface",
+                    "Attachment": {
+                        "Status": "attaching",
+                        "DeviceIndex": 0,
+                        "DeleteOnTermination": true,
+                        "AttachmentId": "eni-attach-05e89b22aa52c4ff3",
+                        "AttachTime": "2020-11-22T13:58:25.000Z"
+                    },
+                    "Groups": [
+                        {
+                            "GroupName": "default",
+                            "GroupId": "sg-24aebf45"
+                        }
+                    ],
+                    "Ipv6Addresses": [],
+                    "OwnerId": "392971033516",
+                    "SubnetId": "subnet-ade616e0",
+                    "PrivateIpAddress": "172.31.13.127"
+                }
+            ],
+            "SourceDestCheck": true,
+            "Placement": {
+                "Tenancy": "default",
+                "GroupName": "",
+                "AvailabilityZone": "eu-north-1c"
+            },
+            "Hypervisor": "xen",
+            "BlockDeviceMappings": [],
+            "Architecture": "x86_64",
+            "RootDeviceType": "ebs",
+            "RootDeviceName": "/dev/xvda",
+            "VirtualizationType": "hvm",
+            "MetadataOptions": {
+                "State": "pending",
+                "HttpEndpoint": "enabled",
+                "HttpTokens": "optional",
+                "HttpPutResponseHopLimit": 1
+            },
+            "AmiLaunchIndex": 0
+        }
+    ],
+    "ReservationId": "r-08dec5fd1adf1b30d",
+    "Groups": [],
+    "OwnerId": "392971033516"
+}
+```    
+    
