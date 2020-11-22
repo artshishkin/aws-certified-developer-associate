@@ -1377,108 +1377,22 @@ Access-Control-Max-Age: 3000
 7.  Testing without `--dry-run`
     -  `aws ec2 run-instances --image-id ami-0b26bf4b43c8d995d --instance-type t3.micro --region eu-north-1`
     -  created new instance and launched it
-```json
-{
-    "Instances": [
-        {
-            "Monitoring": {
-                "State": "disabled"
-            },
-            "PublicDnsName": "",
-            "StateReason": {
-                "Message": "pending",
-                "Code": "pending"
-            },
-            "State": {
-                "Code": 0,
-                "Name": "pending"
-            },
-            "EbsOptimized": false,
-            "LaunchTime": "2020-11-22T13:58:25.000Z",
-            "PrivateIpAddress": "172.31.13.127",
-            "ProductCodes": [],
-            "VpcId": "vpc-d03187b9",
-            "CpuOptions": {
-                "CoreCount": 1,
-                "ThreadsPerCore": 2
-            },
-            "StateTransitionReason": "",
-            "InstanceId": "i-032aa6c4881957d2d",
-            "EnaSupport": true,
-            "ImageId": "ami-0b26bf4b43c8d995d",
-            "PrivateDnsName": "ip-172-31-13-127.eu-north-1.compute.internal",
-            "SecurityGroups": [
-                {
-                    "GroupName": "default",
-                    "GroupId": "sg-24aebf45"
-                }
-            ],
-            "ClientToken": "51053201-9008-45d8-a87c-77ea4bfa7305",
-            "SubnetId": "subnet-ade616e0",
-            "InstanceType": "t3.micro",
-            "CapacityReservationSpecification": {
-                "CapacityReservationPreference": "open"
-            },
-            "NetworkInterfaces": [
-                {
-                    "Status": "in-use",
-                    "MacAddress": "0e:7b:5a:0d:f7:94",
-                    "SourceDestCheck": true,
-                    "VpcId": "vpc-d03187b9",
-                    "Description": "",
-                    "NetworkInterfaceId": "eni-0b4e30b5258d87b5a",
-                    "PrivateIpAddresses": [
-                        {
-                            "PrivateDnsName": "ip-172-31-13-127.eu-north-1.compute.internal",
-                            "Primary": true,
-                            "PrivateIpAddress": "172.31.13.127"
-                        }
-                    ],
-                    "PrivateDnsName": "ip-172-31-13-127.eu-north-1.compute.internal",
-                    "InterfaceType": "interface",
-                    "Attachment": {
-                        "Status": "attaching",
-                        "DeviceIndex": 0,
-                        "DeleteOnTermination": true,
-                        "AttachmentId": "eni-attach-05e89b22aa52c4ff3",
-                        "AttachTime": "2020-11-22T13:58:25.000Z"
-                    },
-                    "Groups": [
-                        {
-                            "GroupName": "default",
-                            "GroupId": "sg-24aebf45"
-                        }
-                    ],
-                    "Ipv6Addresses": [],
-                    "OwnerId": "392971033516",
-                    "SubnetId": "subnet-ade616e0",
-                    "PrivateIpAddress": "172.31.13.127"
-                }
-            ],
-            "SourceDestCheck": true,
-            "Placement": {
-                "Tenancy": "default",
-                "GroupName": "",
-                "AvailabilityZone": "eu-north-1c"
-            },
-            "Hypervisor": "xen",
-            "BlockDeviceMappings": [],
-            "Architecture": "x86_64",
-            "RootDeviceType": "ebs",
-            "RootDeviceName": "/dev/xvda",
-            "VirtualizationType": "hvm",
-            "MetadataOptions": {
-                "State": "pending",
-                "HttpEndpoint": "enabled",
-                "HttpTokens": "optional",
-                "HttpPutResponseHopLimit": 1
-            },
-            "AmiLaunchIndex": 0
-        }
-    ],
-    "ReservationId": "r-08dec5fd1adf1b30d",
-    "Groups": [],
-    "OwnerId": "392971033516"
-}
-```    
-    
+
+#####  102. AWS CLI STS Decode
+
+1.  google `aws decode error message`
+    -  [decode-authorization-message](https://docs.aws.amazon.com/cli/latest/reference/sts/decode-authorization-message.html)
+2.  decode it
+    -  `aws sts decode-authorization-message --encoded-message <encoded message>`       
+    -  `aws sts decode-authorization-message --encoded-message MEhu185ys1NP7emfrQM58Ozd3-aWjA56nrYEJfzTOftZ66RWvRdE8G78P31nWULSlfHLGVs82ZUse8UfV2izv5rsr79JHus_qqRhESJBCpLdVqv5pP6L2VcXg0q-4DHbWa92kdLu9nDZ-Ab0wQIsUcTpyyUWjxaC3_XF_rCF0pPAYYIv2Dif6EmVjFqP50SPX0K1bV3WqoQX_nEqcbjRklIR3yGGPxCOJ6RbEkrJFBghLbkpc2Szzw4JZv2DggT0WxEoYzoie9dtD6lWjyqkbf6CKjR_obtUxZyeKk5Uzuxc_w79iNAGi5TICjp2IhKPVgSTsUPk3U538-ARwwVITAIuQjPGdZd99wq9GtCQ01D8SdqYwG5OB5HTncrkdOV7ObU5Gt2Mi3tzsezbnSDvOopMcgSZN9oUFJ6ACcA1FzOmT7rgcP1YQBw9EtMH_RpVBIf6VPHm02lgA8AwXBxn5dUnZZBX4HLMH9REuPLvBYVjGMMlYnqz8Dlp1srvPmidXMgEnmdaZTXsL8bFtmWjTnKKajxhhYnm7k21t2N3TBOBEyc-jWEORdVPkU47tAZfS3l0QYBoDfd-O4DvW2gJXmBikVznYRPvFam5TzAaNIhSev0LS7elkhHEqw6GdCof94EJTdrWteh5EHNOPkkrxqtCJN_Gy6EF8p4RE_lj-STlC7TFK6OpkIOiZVL0zN4`
+    -  running desktop aws cli gave response
+        -  [sts-desktop-response.json](https://github.com/artshishkin/aws-certified-developer-associate/blob/main/Section 10 - AWS CLI, SDK, IAM Roles &amp; Policies/sts-desktop-response.json)
+    -  running on ec2 gave an error
+        -  `An error occurred (AccessDenied) when calling the DecodeAuthorizationMessage operation: User: arn:aws:sts::392971033516:assumed-role/MyFirstEC2Role/i-001c5375a6b98650b is not authorized to perform: sts:DecodeAuthorizationMessage`
+    -  to enable `sts:DecodeAuthorizationMessage` just add or modify policy
+    -  run again -> **OK**
+    -  copy message except curly braces 
+    -  `echo `+ paste _copied message_ -> slightly better view
+    -  copy->paste it into file [sts-response.json](https://github.com/artshishkin/aws-certified-developer-associate/blob/main/Section 10 - AWS CLI, SDK, IAM Roles &amp; Policies/sts-response.json)
+    -  `Ctrl+Alt+L` -> better format
+        
