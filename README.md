@@ -1386,13 +1386,66 @@ Access-Control-Max-Age: 3000
     -  `aws sts decode-authorization-message --encoded-message <encoded message>`       
     -  `aws sts decode-authorization-message --encoded-message MEhu185ys1NP7emfrQM58Ozd3-aWjA56nrYEJfzTOftZ66RWvRdE8G78P31nWULSlfHLGVs82ZUse8UfV2izv5rsr79JHus_qqRhESJBCpLdVqv5pP6L2VcXg0q-4DHbWa92kdLu9nDZ-Ab0wQIsUcTpyyUWjxaC3_XF_rCF0pPAYYIv2Dif6EmVjFqP50SPX0K1bV3WqoQX_nEqcbjRklIR3yGGPxCOJ6RbEkrJFBghLbkpc2Szzw4JZv2DggT0WxEoYzoie9dtD6lWjyqkbf6CKjR_obtUxZyeKk5Uzuxc_w79iNAGi5TICjp2IhKPVgSTsUPk3U538-ARwwVITAIuQjPGdZd99wq9GtCQ01D8SdqYwG5OB5HTncrkdOV7ObU5Gt2Mi3tzsezbnSDvOopMcgSZN9oUFJ6ACcA1FzOmT7rgcP1YQBw9EtMH_RpVBIf6VPHm02lgA8AwXBxn5dUnZZBX4HLMH9REuPLvBYVjGMMlYnqz8Dlp1srvPmidXMgEnmdaZTXsL8bFtmWjTnKKajxhhYnm7k21t2N3TBOBEyc-jWEORdVPkU47tAZfS3l0QYBoDfd-O4DvW2gJXmBikVznYRPvFam5TzAaNIhSev0LS7elkhHEqw6GdCof94EJTdrWteh5EHNOPkkrxqtCJN_Gy6EF8p4RE_lj-STlC7TFK6OpkIOiZVL0zN4`
     -  running desktop aws cli gave response
-        -  [sts-desktop-response.json](https://github.com/artshishkin/aws-certified-developer-associate/blob/main/Section 10 - AWS CLI, SDK, IAM Roles &amp; Policies/sts-desktop-response.json)
+        -  [sts-desktop-response.json](https://github.com/artshishkin/aws-certified-developer-associate/blob/main/Section%2010%20-%20AWS%20CLI%2C%20SDK%2C%20IAM%20Roles%20%26%20Policies/sts-desktop-response.json)
     -  running on ec2 gave an error
         -  `An error occurred (AccessDenied) when calling the DecodeAuthorizationMessage operation: User: arn:aws:sts::392971033516:assumed-role/MyFirstEC2Role/i-001c5375a6b98650b is not authorized to perform: sts:DecodeAuthorizationMessage`
     -  to enable `sts:DecodeAuthorizationMessage` just add or modify policy
     -  run again -> **OK**
     -  copy message except curly braces 
     -  `echo `+ paste _copied message_ -> slightly better view
-    -  copy->paste it into file [sts-response.json](https://github.com/artshishkin/aws-certified-developer-associate/blob/main/Section 10 - AWS CLI, SDK, IAM Roles &amp; Policies/sts-response.json)
+    -  copy->paste it into file [sts-response.json](https://github.com/artshishkin/aws-certified-developer-associate/blob/main/Section%2010%20-%20AWS%20CLI%2C%20SDK%2C%20IAM%20Roles%20%26%20Policies/sts-response.json)
     -  `Ctrl+Alt+L` -> better format
-        
+ 
+#####  103. AWS EC2 Instance Metadata
+
+1.  Theory
+    -  it allows EC2 instances to **learn about themselves**
+    -  the URL is **http://169.254.169.254/latest/meta-data** (private in AWS, work only for EC2 instances)
+    -  Metadata = INFO about EC2 instance
+    -  Userdata = launch script of the EC2 instance
+2.  Hands on
+    -  ssh to ec2 instance
+    -  `curl http://169.254.169.254`
+        -  got list of api call versions
+    -  `curl http://169.254.169.254/latest`
+        -  `dynamic`
+        -  `meta-data`
+        -  `user-data` (may be absent)
+            -  `curl http://169.254.169.254/latest/user-data` -> same as UserData section
+    -  `curl http://169.254.169.254/latest/meta-data`
+        -  if ends with `/` then has more options (like directory)
+        -  `ami-id
+            ami-launch-index
+            ami-manifest-path
+            block-device-mapping/
+            events/
+            hibernation/
+            hostname
+            iam/
+            identity-credentials/
+            instance-action
+            instance-id
+            instance-life-cycle
+            instance-type
+            local-hostname
+            local-ipv4
+            mac
+            metrics/
+            network/
+            placement/
+            profile
+            public-hostname
+            public-ipv4
+            public-keys/
+            reservation-id
+            security-groups
+            services/`
+    -  `curl http://169.254.169.254/latest/meta-data/local-ipv4`
+    -  `curl http://169.254.169.254/latest/meta-data/iam/security-credentials/MyFirstEC2Role`
+        -  when we call api that needs credentials then behind the sceens ec2 call that endpoint to get
+            -  "AccessKeyId"
+            -  "SecretAccessKey"
+            -  "Token" 
+    -  if Role is not attached to the EC2 instance then there is no `meta-data/iam`
+              
+             
