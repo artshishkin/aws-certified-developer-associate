@@ -1327,4 +1327,21 @@ Access-Control-Max-Age: 3000
     ]
 }
 ```                    
-        
+
+#####  100. AWS Policy Simulator
+
+1.  Clean testing role
+    -  leave only `AmazonS3ReadOnlyAccess`
+2.  AWS Policy Simulator
+    -  Google it
+    -  [Testing IAM policies with the IAM policy simulator](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html)
+    -  [IAM Policy Simulator](https://policysim.aws.amazon.com/home/index.jsp?#)
+3.  Testing role
+    -  choose `FirstEC2Role`
+    -  S3
+    -  Actions:
+        -  GetObject:  allowed
+        -  ListObjects:  allowed
+        -  PutObject:  denied
+    -  Run Simulation      
+            
