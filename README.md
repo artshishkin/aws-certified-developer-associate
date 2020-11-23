@@ -1476,5 +1476,42 @@ Access-Control-Max-Age: 3000
         -  changed AccessKeyId to correct
         -  `An error occurred (SignatureDoesNotMatch) when calling the ListBuckets operation: The request signature we calculated does not match the signature you provided. Check your key and signing method.`
          
-    
+#####  105. AWS CLI with MFA
+
+1.  For tests create new user `art_mfa`
+    -  download `csv` with AccessKeyID and SecretAccessKey
+2.  Create local aws profile
+    -  `aws configure --profile art_mfa`
+3.  Test working
+    -  `aws s3 ls --profile art_mfa` - should list all buckets
+4.  Enable MFA
+    -  login as `art_mfa`
+    -  `art_mfa@artarkatesoft` -> `My security credentials`
+    -  `AWS IAM credentials` -> 
+    -  `Multi-factor authentication (MFA)` -> Assign MFA Device
+    -  Virtual MFA Device
+    -  **or**
+    -  IAM -> Users -> `art_mfa` -> Security Credentials -> Assigned MFA Device
+5.  Using **Long Term** credentials `art_mfa` still **has access**
+6.  Enabling **Short Term** MFA Token  
+    -  Copy Assigned MFA device ARN
+        -  `arn:aws:iam::392971033516:mfa/art_mfa`
+    -  Getting session token
+        -  `aws sts get-session-token help`
+        -  `aws sts get-session-token --serial-number arn:aws:iam::392971033516:mfa/art_mfa --token-code 436488`
+            -  `An error occurred (AccessDenied) when calling the GetSessionToken operation: MultiFactorAuthentication failed, unable to validate MFA code.  Please verify your MFA serial number is valid and associated with this user.`
+        -  `aws --profile art_mfa sts get-session-token --serial-number arn:aws:iam::392971033516:mfa/art_mfa --token-code 641369`
+            -  created [SessionToken](https://github.com/artshishkin/aws-certified-developer-associate/blob/main/Section%2010%20-%20AWS%20CLI%2C%20SDK%2C%20IAM%20Roles%20%26%20Policies/mfa-session-token.json)
+7.  Create new profile for short-term access
+    -  `aws configure --profile mfa`
+    -  `aws s3 ls --profile mfa`
+        -  Got an error
+        -  `An error occurred (InvalidAccessKeyId) when calling the ListBuckets operation: The AWS Access Key Id you provided does not exist in our records.`
+    -  modify profile
+        -  in `.aws/credentials` add token
+            -  `aws_session_token = IQoJb3JpZ2luX2VjEE...ewg0SEHQ==`
+    -  `aws s3 ls --profile mfa` -> **OK**            
+        
+        
+              
                     
