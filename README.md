@@ -1536,6 +1536,39 @@ Access-Control-Max-Age: 3000
         -  `X-Amz-Signature=37...`
         -  etc
     -  `https://the-bucket-of-art-2020.s3.eu-north-1.amazonaws.com/springsecurity.png?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEEMaDGV1LWNlbnRyYWwtMSJHMEUCIE1VzqonHlxCokHNf3udtSiENyo%2BXaPsrL9QWw3GCpq%2FAiEA1kn0juYDxw1%2FO%2Bpff6eZfib1wbWhmMUWq5ddMs7PEDAqmgMIvP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARABGgwzOTI5NzEwMzM1MTYiDBNmewBcyJVOI3ypZiruAuXDtOgAFsxJio1U1HWzXtYEnO1PihURLkOGhrj5W2q4YOWo9KuYIwzC2i76rMQ6mrHItOhkYtHj57pf6r5nX%2BO7xmDPmBudUIO6DapA4VEWhCVP4Uefyf7Rgfx5W0LK1%2Bn8SOttjiLGTBR57LN%2FDPGSqlyzCgSxwDDsemutd6Iz70m30%2FeZBc%2FyTke0TOs%2BEvl1heOqpOwAFJ36otKDTRkbLhuQYyGzrRk8WQ6ARS%2Bsb3tR%2FsRRN%2BQAVL2TbKQwS2O8KsVRjJpVS0O6NEBzXlaBd9W%2Fo2LrpZXj%2B5cCk0kXqI1ux5CCNmEvOvwtaDnqxByw9bN13V%2FYpB7KQuFlcaehSTL5AkMhyDYVdY10dJ7aOqzSY6CBpsZi35J%2B59gIDm1J2azzHsQGzQ%2Bgt9K9UDkSbYdqLSbV5Mtxdjxyk0yMzTxLrjrcqoxkEsRLXimTg%2F%2Bt1dhl9ogq84VW89bXPH%2BgwKBxaT1OoKsxCCZgEzDu4%2B39BTqzAtrEt13RRemiV3ZosVuJhSf2CVR9K0OL81Qu060rRn4tnRnBkLeDDBS%2FBl8RJa2zzbwXZLRc%2FUGTGI2Qx5IQTbwEXkyMf9eXatsUNOmlojuCmnHNRnNHQTMVFCbjfRfg4F288OHvrIpjIZKy%2FZV0kmJV6xD0SvaY0uXa0Y1XEsvaUJnBhbvxoY5NswCgVReZdO07qiCJR3sWhNQJcD5vdh5XCkWEYsUl1vvq3IJEJDkj5FqHhC0Y5oJxS1ukYpJLoACXhQOYhRNOuo2ZqD4QamxqMHDdz6j2pPUhUxCyyuCklGHY8wejCUCLJGhun3qqC6bcihrxmLk3jr0OiSsULIFA891otn%2Fa3V9Xp8atZrX23XXAgHOlQ%2BxLAEqJh2lN2IKSRP81a3A%2BcJeJXeOAi4EoOYE%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20201123T105644Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIAVW7XGDOWLCRX3FVQ%2F20201123%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Signature=f7b1723633750222ab7f35bc6628b0e2c9b68022343d3b56013c2f86277bf385`
-        
-              
+
+####  Section 11: Advanced S3 & Athena
+
+#####  c
+
+1.  Create new Bucket
+    -  `mfa-demo-art`
+    -  enable versioning
+    -  upload file
+    -  delete file
+    -  delete market
+2.  Copy MFA device serial number (arn)
+3.  Create access keys
+4.  Configure CLI
+    -  `aws configure --profile root-art`
+    -  use access keys from previous step
+    -  test all ok -> s3 ls
+5.  Configure MFADelete
+    -  `aws s3api put-bucket-versioning --bucket mfa-demo-art --versioning-configuration Status=Enabled,MFADelete=Enabled --mfa "arn-of-mfa-device mfa-code" --profile root-art`
+    -  **got an error**
+    -  `An error occurred (AccessDenied) when calling the PutBucketVersioning operation: This operation may only be performed by the bucket owner`
+    -  **MUST USE ROOT ACCOUNT**
+    -  configure previous steps using ROOT account    
+6.  Through Console try to delete file
+    -  then delete `Delete marker`    
+    -  `You can’t delete object versions because Multi-factor authentication (MFA) delete is enabled for this bucket.
+        To modify MFA delete settings, use the AWS CLI, AWS SDK, or the Amazon S3 REST API`    
+7.  Try to `Suspend versioning`
+    -  option is inactive
+8.  Disable MFADelete          
+    -  `aws s3api put-bucket-versioning --bucket mfa-demo-art --versioning-configuration Status=Enabled,MFADelete=Disabled --mfa "arn-of-mfa-device mfa-code" --profile root-art`
+    -  test deletion
+    -  test suspend versioning
+9.  Clean Up
+    -  delete access keys              
                     
