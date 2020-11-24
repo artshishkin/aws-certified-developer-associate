@@ -1688,11 +1688,40 @@ Hands on:
     -  Transition to Glacier after 60 days
     -  Transition to Glacier Deep Archive after 150 days
 -  Previous version    
-    -  Transition to Standart-IA after 30 days
+    -  Transition to Standard-IA after 30 days
     -  Transition to Glacier Deep Archive after 365 days
 -  Configure expiration
     -  expire current version: after 515 days
     -  permanently delete the previous version: after 730 days
     -  clean up incomplete multipart uploads after 7 days 
         
-    
+#####  119. S3 Event Notifications
+
+1.  Create bucket `art-event-notifiaction-demo`
+    -  versioning must be enabled
+2.  Create notification   
+    -  Events -> Add notification
+    -  Name: `DemoNotificationSQS`
+    -  Events: All objects create events
+    -  Create SQS
+        -  SQS Console
+            -  Name: demo-s3-event
+            -  Standard Queue
+            -  Pick up ARN
+    -  SQS queue ARN insert
+    -  Save
+    -  Got an Error
+    -  SQS Console -> Permissions
+        -  Effect: Allow
+        -  Principal: everybody
+        -  Action: SendMessage
+3.  Testing
+    -  upload file
+    -  got 2 messages in a queue    
+        -  service from aws to test connection
+        -  message of our upload into s3
+    -  View/Delete messages tot view content (deprecated)
+    -  Receive messages -> Poll for messages
+4.  Clean up
+    -  delete SQS Queue
+    -  delete bucket                
