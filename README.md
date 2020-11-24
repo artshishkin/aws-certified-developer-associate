@@ -1634,4 +1634,28 @@ Access-Control-Max-Age: 3000
         -  delete file in origin
         -  will be created delete marker in origin
         -  same marker will be created in replica
-        -  if we delete permanently this marker in origin it will still be present in replica 
+        -  if we delete permanently this marker in origin it will still be present in replica
+
+#####  114. S3 Pre-signed URLs
+
+-  `aws s3 presign help`
+-  `aws s3 presign s3://art-origin-bucket-in-stockholm/UC-MultithreadingParallelAsync-Dilip.pdf --expires-in 30`
+-  got pre-signed URL for 30sec
+-  `https://art-origin-bucket-in-stockholm.s3.eu-north-1.amazonaws.com/UC-MultithreadingParallelAsync-Dilip.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVW7XGDOWKR6HHHCY%2F20201124%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20201124T124935Z&X-Amz-Expires=30&X-Amz-SignedHeaders=host&X-Amz-Signature=6f2d4bb42f6b01b2dd675b8c976c466855674d236735381e877f7c69d6f86092`
+-  after expired got an error
+```xml
+<Error>
+<Code>AccessDenied</Code>
+<Message>Request has expired</Message>
+<X-Amz-Expires>30</X-Amz-Expires>
+<Expires>2020-11-24T12:50:05Z</Expires>
+<ServerTime>2020-11-24T12:52:22Z</ServerTime>
+<RequestId>B78A612EF182E2F3</RequestId>
+<HostId>7eigN9J23CTU2hc+Rd6FuneD3MDoaymtq8a54ygG7Au9E3+PfopeazdaktUrCAKEuZxHoDzqpoE=</HostId>
+</Error>
+``` 
+-  Stephane says it needs to configure
+    -  `aws configure set default.s3.signature_version s3v4` - allow generated URL to be compatible with KMS encrypted object
+    -  and you may have issues if not specify region, so
+    -  `aws s3 presign s3://art-origin-bucket-in-stockholm/UC-MultithreadingParallelAsync-Dilip.pdf --expires-in 30 --region eu-north-1`   
+       
