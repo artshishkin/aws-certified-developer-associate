@@ -1539,7 +1539,7 @@ Access-Control-Max-Age: 3000
 
 ####  Section 11: Advanced S3 & Athena
 
-#####  c
+#####  110. S3 MFA Delete
 
 1.  Create new Bucket
     -  `mfa-demo-art`
@@ -1571,4 +1571,24 @@ Access-Control-Max-Age: 3000
     -  test suspend versioning
 9.  Clean Up
     -  delete access keys              
-                    
+
+#####  112. S3 Access Logs
+
+1.  Create bucket `art-s3-access-logs` - where logs will be saved
+2.  Create bucket `art-s3-monitored-bucket` - bucket every action in which will be monitored
+3.  Modify `art-s3-monitored-bucket` for logging  
+    -  Server access logging -> Edit
+    -  Enable
+    -  Target bucket: `art-s3-access-logs`
+4.  Testing
+    -  enable versioning
+    -  add file
+    -  delete file
+    -  add file
+    -  delete file
+    -  permanently delete
+5.  After a couple of hours look at the `art-s3-access-logs`
+    -  got many logs files
+    -  similar to [s3access02.log](https://github.com/artshishkin/aws-certified-developer-associate/blob/main/Section%2011%20-%20Advanced%20S3%20And%20Athena/s3access02.log)
+        
+                         
