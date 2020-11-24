@@ -1658,4 +1658,20 @@ Access-Control-Max-Age: 3000
     -  `aws configure set default.s3.signature_version s3v4` - allow generated URL to be compatible with KMS encrypted object
     -  and you may have issues if not specify region, so
     -  `aws s3 presign s3://art-origin-bucket-in-stockholm/UC-MultithreadingParallelAsync-Dilip.pdf --expires-in 30 --region eu-north-1`   
-       
+
+#####  115. S3 Storage Tiers + Glacier
+
+[Amazon S3 Storage Classes](https://aws.amazon.com/s3/storage-classes/)       
+-  select file in a bucket
+-  Action
+-  Edit storage class
+
+|Storage class|Designed for|Availability Zones|Min storage duration|Min billable object size|Monitoring and auto-tiering fees|Retrieval fees|
+|---|---| :---: | :---: | :---: | :---: | :---: |
+|Standard|Frequently accessed data| ≥ 3 | - | - | - | - |
+|Standard-IA|Long-lived, infrequently accessed data|	≥ 3|	30 days|	128 KB|	-|  Per-GB fees apply|
+|One Zone-IA|	Long-lived, infrequently accessed, non-critical data|	1	|30 days|	128 KB|	-|	Per-GB fees apply|
+|Reduced redundancy|	Frequently accessed, non-critical data|	≥ 3|	-|	-|	-|	Per-GB fees apply|
+|Intelligent-Tiering|	Long-lived data with changing or unknown access patterns|	≥ 3|	30 days|	-	|Per-object fees apply|	-|
+|Glacier|	Long-term data archiving with retrieval times ranging from minutes to hours|	≥ 3|	90 days|	-	|-	|Per-GB fees apply|
+|Glacier Deep Archive|	Long-term data archiving with retrieval times within 12 hours|	≥ 3|	180 days|	-	|-	|Per-GB fees apply|
