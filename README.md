@@ -1675,3 +1675,24 @@ Access-Control-Max-Age: 3000
 |Intelligent-Tiering|	Long-lived data with changing or unknown access patterns|	≥ 3|	30 days|	-	|Per-object fees apply|	-|
 |Glacier|	Long-term data archiving with retrieval times ranging from minutes to hours|	≥ 3|	90 days|	-	|-	|Per-GB fees apply|
 |Glacier Deep Archive|	Long-term data archiving with retrieval times within 12 hours|	≥ 3|	180 days|	-	|-	|Per-GB fees apply|
+
+#####  116. S3 Lifecycle Policies
+
+Hands on:
+
+-  Bucket -> Management -> Lifecycle
+-  Create lifecycle rule -> MyFirstLifecycleRule
+-  No tags or prefix
+-  Current version
+    -  Transition to Standart-IA after 30 days
+    -  Transition to Glacier after 60 days
+    -  Transition to Glacier Deep Archive after 150 days
+-  Previous version    
+    -  Transition to Standart-IA after 30 days
+    -  Transition to Glacier Deep Archive after 365 days
+-  Configure expiration
+    -  expire current version: after 515 days
+    -  permanently delete the previous version: after 730 days
+    -  clean up incomplete multipart uploads after 7 days 
+        
+    
