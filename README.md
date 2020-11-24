@@ -1590,5 +1590,48 @@ Access-Control-Max-Age: 3000
 5.  After a couple of hours look at the `art-s3-access-logs`
     -  got many logs files
     -  similar to [s3access02.log](https://github.com/artshishkin/aws-certified-developer-associate/blob/main/Section%2011%20-%20Advanced%20S3%20And%20Athena/s3access02.log)
-        
-                         
+
+#####  113. S3 Replication (Cross Region and Same Region)
+
+1.  Theory
+    -  `CRR` - Cross-Region Replication
+    -  `SRR` - Same-Region Replication
+    -  Must be enabled versioning in both buckets
+    -  Buckets may be in different accounts
+    -  Copying is **Asynchronous**
+    -  Must give proper IAM permissions to S3
+    -  After activating only new objects are replicated
+    -  Any **DELETE** operation is **NOT REPLICATED**
+        -  if you delete without version ID, it adds a delete marker, not replicated
+        -  if you delete with version ID, it deletes in the source, not replicated
+        -  **MODIFIED** we can enable `Replicate delete markers`
+    -  There is **NO "chaining"**
+        -  if bucket 1 has replication into bucket 2, which has replication into bucket 3
+        -  then objects created in bucket 1 are **not replicated** into bucket 3
+2.  Hands on
+    -  create bucket `art-origin-bucket-in-stockholm`                  
+    -  create bucket `art-replica-bucket-in-paris`
+    -  upload file `file1` into origin
+    -  activate versioning in both buckets
+    -  Management (in origin)
+        -  enable CRR
+        -  entire bucket
+        -  destination - replica bucket
+        -  Replication rule name
+            -  ReplicaDemoRule
+        -  create new IAM role            
+    -  look at the IAM role
+        -  policy
+    -  origin has `file1`       
+    -  replica has **NO** `file1`
+    -  upload new file `file2` into origin
+    -  replica has `file2` TOO 
+    -  delete
+        -  from origin `file2`
+        -  in replica file **is not** deleted
+    -  enable `Replicate delete markers`
+        -  `Delete markers created by S3 delete operations will be replicated. Delete markers created by lifecycle rules are not replicated.`
+        -  delete file in origin
+        -  will be created delete marker in origin
+        -  same marker will be created in replica
+        -  if we delete permanently this marker in origin it will still be present in replica 
