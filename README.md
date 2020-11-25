@@ -1725,3 +1725,26 @@ Hands on:
 4.  Clean up
     -  delete SQS Queue
     -  delete bucket                
+
+#####  121. Athena Hands On
+
+1.  s3 bucket with access logs: `s3://art-s3-access-logs`
+2.  Athena Management Console
+    -  `Before you run your first query, you need to set up a query result location in Amazon S3. Learn more`
+    -  Settings -> Query result location: `s3://aws-art-athena-results/stockholm/`
+    -  [How do I analyze my Amazon S3 server access logs using Athena?](https://aws.amazon.com/premiumsupport/knowledge-center/analyze-logs-athena/)
+    -  run queries from [athena-s3-access-logs.sql](https://github.com/artshishkin/aws-certified-developer-associate/blob/main/Section%2011%20-%20Advanced%20S3%20And%20Athena/athena-s3-access-logs.sql)
+        -  create database
+        -  create table        
+        -  `select * from mybucket_logs where requester like '%art_admin';`
+        -  Tables -> `my-bucket-logs` -> 3 dots -> preview table (it will create select statement)
+        -  `select requesturi_operation, httpstatus, count(*) FROM mybucket_logs group by requesturi_operation, httpstatus;`
+        -  `SELECT * FROM mybucket_logs WHERE httpstatus = '403';`
+3.  Google:
+    -  `athena analyze elb logs`
+    -  `athena analyze cloudfront logs`
+    -  etc
+    -  [CSV Analysis with Amazon Athena](https://medium.com/avmconsulting-blog/csv-analysis-with-amazon-athena-b241f87f010c)
+        
+
+
