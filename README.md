@@ -1745,6 +1745,14 @@ Hands on:
     -  `athena analyze cloudfront logs`
     -  etc
     -  [CSV Analysis with Amazon Athena](https://medium.com/avmconsulting-blog/csv-analysis-with-amazon-athena-b241f87f010c)
-        
+4.  CSV Athena
+    -  create bucket `art-kate-library`
+    -  make sure `library.csv`'s encoding is **utf-8**
+        -  otherwise convert it (I used Notepad++) 
+    -  put `library.csv` into `s3://art-kate-library/csv`
+    -  in Athena Console create table
+        -  use sql commands from [athena-csv-analyze.sql](https://github.com/artshishkin/aws-certified-developer-associate/blob/main/Section%2011%20-%20Advanced%20S3%20And%20Athena/athena-csv-analyze.sql)
+    -  analyze data using SQL
+         
 
 
