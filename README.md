@@ -1754,5 +1754,58 @@ Hands on:
         -  use sql commands from [athena-csv-analyze.sql](https://github.com/artshishkin/aws-certified-developer-associate/blob/main/Section%2011%20-%20Advanced%20S3%20And%20Athena/athena-csv-analyze.sql)
     -  analyze data using SQL
          
+####  Section 12: CloudFront
 
+#####  124. CloudFront Hands On
+
+1.  Create bucket
+    -  `art-content-through-cloudfront-2020`
+    -  upload some files into it
+2.  Creating Distribution
+    -  CloudFront Management Console
+    -  create a distribution
+    -  Web type
+    -  Origin Domain name: our bucket name
+    -  Origin Path: empty
+    -  Restrict Bucket Access: **Yes**
+    -  Origin Access Identity: Create a New Identity
+        -  `access-identity-demo-cloudfront`
+    -  Grant Read Permissions on Bucket: Yes, update bucket policy
+    -  Viewer protocol policy: Redirect HTTP to HTTPS
+    -  Allowed HTTP Methods: GET, HEAD
+    -  Leave other parameters default
+3.  While creating
+    -  Security
+        -  look at the `Origin Access Identity` (created)
+    -  go to bucket
+        -  Permissions -> Bucket Policy -> look through
+4.  CloudFront Distributions
+    -  domain name: `blabla.cloudfront.net`
+    -  browse that `url/springsecurity.png`
+        -  got an `Access Denied` error
+        -  because of DNS Issue -> wait for about 3 hours
+    -  to fix this make files public
+        -  s3 console -> choose file -> make public 
+        -  got an error
+            `Failed to edit public access
+             For more information, see the Error column in the Failed to edit table below.`
+        -  bucket -> Block public access -> Edit
+            -  `Block all public access` -> untick all -> confirm
+        -  again: s3 console -> choose file -> make public
+    -  `http://d14hl7alrjeva1.cloudfront.net/springsecurity.png` -> OK
+    -  URL changes (307 Temporarily redirect)
+    -  `https://art-content-through-cloudfront-2020.s3.eu-north-1.amazonaws.com/springsecurity.png` -> OK
+5.  Wait for ~4 hours
+    -  `http://d14hl7alrjeva1.cloudfront.net/springsecurity.png` -> OK
+    -  DNS fixes and now no redirect
+    -  make file private again `springsecurity.png`
+        - s3 console -> choose file -> 
+            -  Access control list -> Edit
+            -  Everyone: untick Read
+    -  make bucket private again
+        -  permissions -> Block public access: all
+6.  Testing access through CloudFront
+    -  `http://d14hl7alrjeva1.cloudfront.net/springsecurity.png`
+    -  now we can access to files in private s3 **ONLY** through CloudFront     
+                   
 
