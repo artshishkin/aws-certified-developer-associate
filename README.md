@@ -1806,6 +1806,28 @@ Hands on:
         -  permissions -> Block public access: all
 6.  Testing access through CloudFront
     -  `http://d14hl7alrjeva1.cloudfront.net/springsecurity.png`
-    -  now we can access to files in private s3 **ONLY** through CloudFront     
+    -  now we can access to files in private s3 **ONLY** through CloudFront
+
+#####  125. CloudFront Caching & Caching Invalidations - Hands On
+
+1.  Upload `index.html`
+2.  Visit `http://d14hl7alrjeva1.cloudfront.net/index.html` -> OK -> 
+    -  CloudFront made cache
+    -  Behaviors -> default -> Edit
+        -  Cache Policy -> View policy details (ManagedCachingOptimized)
+        -  Minimum TTL:          1
+        -  Maximum TTL:          31536000
+        -  Default TTL:          86400
+3.  Update `index.html`
+    -  s3 -> open -> ensure that file is new
+4.  Visit `http://d14hl7alrjeva1.cloudfront.net/index.html`
+    -  got **OLD** version of `index.html` (cached)
+5.  Invalidate caches
+    -  Invalidations -> create invalidation
+    -  `*` - invalidate everything
+    -  wait while it is in progress
+    -  invalidation -> Details - to view details    
+6.  Visit `http://d14hl7alrjeva1.cloudfront.net/index.html`
+    -  updated
                    
 
