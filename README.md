@@ -1829,5 +1829,36 @@ Hands on:
     -  invalidation -> Details - to view details    
 6.  Visit `http://d14hl7alrjeva1.cloudfront.net/index.html`
     -  updated
-                   
+
+#####  126. CloudFront Security
+
+1.  CloudFront Geo Restriction
+    -  Whitelist
+    -  Blacklist
+2.  CloudFront and HTTPS
+3.  Hands On
+    -  OAI
+        -  s3 -> Permissions -> Bucket policy
+            -  only `arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E38HJLL6Y2K8VY` is Allowed to GetObject from s3
+        -  CloudFront -> Security -> Origin Access Identity (OAI)
+        -  Distributions -> Origins and Origin Groups
+            -  Origins -> Edit
+            -  Your Identities (make sure `access-identity-demo-cloudfront` is used)
+    -  Behaviors
+        -  Edit -> 
+        -  Viewer Protocol Policy -> Redirect HTTP to HTTPS
+    -  Restrictions
+        -  Edit
+            -  Restriction Type: Blacklist
+            -  Countries: UA--Ukraine
+        -  Visit
+            -  got an error
+            -  `The Amazon CloudFront distribution is configured to block access from your country.`
+            -  `We can't connect to the server for this app or website at this time.`
+            -  `There might be too much traffic or a configuration error.`
+            -  `Try again later, or contact the app or website owner.` 
+        -  VPN to USA
+            -  try to access -> OK
+        -  modify Restriction to be Whitelist in Ukraine     
+                       
 
