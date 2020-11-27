@@ -1900,5 +1900,26 @@ ECS - Elastic Container Service
         -  `cat /etc/ecs/esc.config`
         -  `docker ps` -> container `amazon/amazon-ecs-agent:latest` is running
         -  `docker logs ecs-agent` (or use container id)
+
+#####  131. ECS Task Definition
+
+-  ECS Console ->
+-  Create task definition
+-  launch type compatibility: EC2
+-  Name: `my-httpd`
+-  Task Role: now is empty  (None)
+-  Task Memory: 300
+-  Task CPU: 250
+-  Add container
+    -  Name: `httpd`
+    -  Image: `httpd:latest` <- from docker hub
+    -  Memory Limits (MiB): 300
+    -  Port mappings
+        -  Host port: 8080
+        -  Container port: 80
+    -  Other leave default
+    -  Add
+-  Create
+-  View JSON form of task definition 
             
             
