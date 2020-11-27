@@ -1922,4 +1922,43 @@ ECS - Elastic Container Service
 -  Create
 -  View JSON form of task definition 
             
-            
+#####  132. ECS Service
+
+-  Clusters -> `cluster-demo`
+-  Services -> Create
+    -  Launch type: EC2
+    -  Service name:  `httpd-service`
+    -  Service type: REPLICA - you can run as many tasks as possible
+    -  Number of task: 1
+    -  Minimum healthy percent: 0
+    -  Task placement: AZ Balanced Spread
+    -  Next
+    -  Load Balancer Type: None
+    -  Enable service discovery integration: **untick** for now
+    -  Next
+    -  Create service
+    -  View service
+-  Modify security group to access to port 8080
+-  go to `public_ip:8080` -> It Works!
+-  ssh to ec2 -> `docker ps` -> view container `httpd` is running
+    -  `curl localhost:8080` -> It Works!
+-  Scaling service -> for example run 2 tasks
+    -  Service -> update
+    -  Number of tasks: 2
+    -  Update service
+    -  **BUT**
+    -  Events:
+    -  `service httpd-service was unable to place a task because no container instance met all of its requirements.`
+    -  `The closest matching container-instance 5168782916c544ac83c45b1b3a8ef3ce is already using a port required by your task.`
+    -  `For more information, see the Troubleshooting section.`
+    -  for this we need to scale cluster
+-  Scaling cluster
+    -  Cluster : `cluster-demo`
+    -  ECS Instances
+    -  Button `Scale ECS Instances` (if present)
+    -  _OR_
+    -  Add additional ECS Instances using Auto Scaling or Amazon EC2.
+        -  Auto Scaling -> Auto Scaling Groups
+        -  Group details -> Edit
+        -  Desired Capacity: 2
+        -  Max capacity: 2          
