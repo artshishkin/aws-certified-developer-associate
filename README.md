@@ -1861,4 +1861,44 @@ Hands on:
             -  try to access -> OK
         -  modify Restriction to be Whitelist in Ukraine     
                        
+####  Section 13: ECS, ECR & Fargate - Docker in AWS
 
+ECS - Elastic Container Service
+
+#####  130. ECS Clusters
+
+1.  Create Cluster
+    -  ECS Management Service
+    -  Clusters ->
+    -  EC2 Linux plus Networking
+    -  Cluster name: `cluster-demo`
+    -  Provisioning Model: On-Demand (or Spot for cost saving)
+    -  EC2 instance type: t3.micro
+    -  Number of Instances: 1 (for now)
+    -  Root EBS Volume Size (GiB): 30 (minimum available)
+    -  Key Pair: `cert...`
+    -  VPC: reuse VPC
+    -  Subnets: choose all 3
+    -  Security group inbound rule: from everywhere to 22 (SSH)
+    -  Container instance IAM Role
+        -  create new
+2.  View ECS instances
+    -  Clusters -> ECS Instances -> 
+    -  EC2Instance
+        -  CPU Available: 2048
+        -  Memory Available: 957
+        -  Agent version
+        -  Docker version
+    -  EC2 Console
+        -  Auto Scaling group -> autocreated ASG
+        -  Instance management
+        -  if you want to scale your ASG you can do it here
+        -  Launch configurations
+            -  view User Data (it creates file `/etc/ecs/ecs.config` with `ECS_CLUSTER=cluster-demo  and ECS_BACKEND_HOST=`
+        -  IAM -> ecsInstanceRole -> policy
+    -  ssh into EC2
+        -  `cat /etc/ecs/esc.config`
+        -  `docker ps` -> container `amazon/amazon-ecs-agent:latest` is running
+        -  `docker logs ecs-agent` (or use container id)
+            
+            
