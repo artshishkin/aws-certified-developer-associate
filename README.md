@@ -2025,5 +2025,32 @@ ECS - Elastic Container Service
     -  `delete me`
 11.  Testing
     -  EC2 Console
-    -  ELB DNS -> go -> It works!           
-                                 
+    -  ELB DNS -> go -> It works!
+
+#####  134. ECR - Part I
+
+ECR - Elastic Container Repository
+
+1.  Install Docker
+    -  then verify `docker --version`
+2.  Create [Dockerfile](https://github.com/artshishkin/aws-certified-developer-associate/blob/main/Section%2013%20-%20ECS,%20ECR%20&%20Fargate%20-%20Docker%20in%20AWS/Dockerfile)
+3.  Build docker image
+    -  `docker build -t my-httpd-image .` - `.` - search in current directory
+4.  Create repository in ECR
+    -  ECS Console
+    -  Repositories -> Create repository
+    -  Name: demo
+    -  tag immutability: Disabled (for now)
+    -  Create repo
+5.  Push image to ECR
+    -  View push commands
+    -  `aws ecr get-login-password --region eu-north-1` - works for Windows 10 too
+    -  `aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 392971033516.dkr.ecr.eu-north-1.amazonaws.com`
+    -  `Login Succeded` - **COOL**
+    -  `docker build -t demo .`
+    -  `docker tag demo:latest 392971033516.dkr.ecr.eu-north-1.amazonaws.com/demo:latest`
+    -  `docker push 392971033516.dkr.ecr.eu-north-1.amazonaws.com/demo:latest`
+        -  OK
+        -  `latest: digest: sha256:33ae349033c29d5918f3a22256aa445c28fd9f9822e491198f9aa40429015e6e size: 2197`
+6.  We can Pull image from ECR
+    -  `docker pull 392971033516.dkr.ecr.eu-north-1.amazonaws.com/demo:latest`                   
