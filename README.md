@@ -1962,3 +1962,68 @@ ECS - Elastic Container Service
         -  Group details -> Edit
         -  Desired Capacity: 2
         -  Max capacity: 2          
+
+#####  133. ECS Service with Load Balancers
+
+1.  Changing task definition
+    -  Task Definitions -> `my-httpd`
+    -  Create New Revision
+    -  Scroll down to container -> httpd
+    -  Port Mapping -> Host post -> **EMPTY**
+    -  Create
+    -  View JSON format of Task Definition `my-httpd:2`
+        -  hostPort: 0 <- means random
+2.  Update service to use new Task Definition
+    -  Service `httpd-service` -> Update
+    -  Task Definition -> Revision 2 (latest)
+3.  Monitor events
+    - Service -> Events
+    -  `service httpd-service has stopped 2 running tasks: task 29e94b2acde9455fa89e7b8686617088 task 7934789c28394fddb673562de94c87ca.`
+    -  then
+    -  `service httpd-service has started 4 tasks: task c5abbfd2bbee4291a38c586ef2d20b4e task 00bc74075a8c4d8ab0a22fc35eb9cc63 task e75fce0d3aba49249b84c26ebb5c432d task 243847c41fae4da385a9c47e9cb6f1ae.`
+4.  View tasks
+    -  cluster
+    -  Tasks: 4 containers
+    -  ECS Instances
+        -  2 ec2 instances with 2 running containers each
+5.  View `docker ps`
+    -  ssh into ec2
+    -  `docker ps` - view different ports
+6.  Create new Load Balancer:
+    -  Application Load Balancer
+    -  Create New: `my-ecs-cluster-elb`
+    -  all AZs
+    -  Configure Security Groups: new `ecs-alb-sg` port 80 from everywhere
+    -  Configure routing (no need to but have to)
+        -  target group -> new -> `dummy-tg`
+    -  Next -> Review -> Create
+7.  Update Security Group
+    -  you must enable ALB to talk to EC2
+    -  EC2 Console -> Security Groups
+    -  `EC2ContainerService-cluster-demo-EcsSecurityGroup`
+    -  Edit Inbound Rules
+    -  All traffic from SG of ALB (`ecs-alb-sg`)
+    -  Description: Allow ALB to talk to any port on EC2 instance for dynamic port feature on ECS       
+8.  Adding Load Balancer
+    -  you can not update existing Service to use ALB
+    -  Create new Service
+        -  Name: `httpd-alb`
+        -  Number of Tasks: 4
+        -  Load Balancer:
+            -  `my-ecs-cluster-elb`
+        -  Container to load balance: `httpd:0:80` -> Add to Load Balancer
+            -  Production listener port: 80
+            -  Target group name: create new
+            -  Path pattern: `/`
+            -  Evaluation order: 1
+            -  Health check path: `/`
+        -  Next -> Next -> Create Service
+9.  Disable old service
+    -  `httpd-service` -> Update
+    -  Number of tasks: 0
+10.  Delete old service
+    -  `delete me`
+11.  Testing
+    -  EC2 Console
+    -  ELB DNS -> go -> It works!           
+                                 
