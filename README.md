@@ -2053,4 +2053,27 @@ ECR - Elastic Container Repository
         -  OK
         -  `latest: digest: sha256:33ae349033c29d5918f3a22256aa445c28fd9f9822e491198f9aa40429015e6e size: 2197`
 6.  We can Pull image from ECR
-    -  `docker pull 392971033516.dkr.ecr.eu-north-1.amazonaws.com/demo:latest`                   
+    -  `docker pull 392971033516.dkr.ecr.eu-north-1.amazonaws.com/demo:latest`
+    
+#####  135. ECR - Part II
+
+1.  Modify Task Definitions
+    -  `my-httpd` -> Create new revision
+    -  Edit container
+        -  image: full image name
+        -  `392971033516.dkr.ecr.eu-north-1.amazonaws.com/demo` - IMAGE URI
+        -  `392971033516.dkr.ecr.eu-north-1.amazonaws.com/demo:latest` - with TAG
+2.  Cluster modification
+    -  `cluster-demo` -> Services -> `httpd-alb`
+    -  Update -> revision: 3 (latest)
+3.  ECS Instances Count modification
+    -  Cluster -> ECS Instances -> Auto Scaling ->
+    -  `EC2ContainerService-cluster-demo-EcsIn...` 
+    -  Desired Capacity: 2
+4.  Load Balancers
+    -  `my-ecs-cluster-elb`
+    -  DNS: `http://my-ecs-cluster-elb-1778748836.eu-north-1.elb.amazonaws.com/`
+    -  Hello world from custom Docker image
+    -  `This image is running on ECS, here's some information about this container and task:`
+    -  Refresh page -> DockerId changes (we have 4 instances on 2 EC2s)                   
+                       
