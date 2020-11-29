@@ -2076,4 +2076,53 @@ ECR - Elastic Container Repository
     -  Hello world from custom Docker image
     -  `This image is running on ECS, here's some information about this container and task:`
     -  Refresh page -> DockerId changes (we have 4 instances on 2 EC2s)                   
-                       
+
+#####  136. Fargate
+
+1.  Create Cluster
+    -  Networking only
+    -  Name: `fargate-demo`
+    -  VPC: do not create, use that we already have                       
+2.  Create Service (attempt 1)
+    -  our test definition is not compatible with old one
+    -  `The selected task definition is incompatible with the selected launch type.`
+    -  `Please create a compatible new revision or select a different task definition.`
+    -  we need create new one
+3.  Create new Task Definition
+    -  Fargate
+    -  `fargate-task-definition-demo`
+    -  Task memory: 0.5 GB
+    -  Task CPU: 0.25 vCPU
+    -  Container name: `httpd`
+    -  Image: `392971033516.dkr.ecr.eu-north-1.amazonaws.com/demo:latest`
+    -  Memory limit: Hard Limit 512MiB
+    -  Port mapping: 80 tcp
+4.  Create Service (attempt 2)
+    -  Cluster: `fargate-demo`
+    -  Services -> Create
+    -  Service name: `farget-service-demo`
+    -  Number of tasks: 2
+    -  Minimum healthy percent: 0
+    -  Configure network
+        -  select existing VPC
+        -  all 3 subnets    
+        -  Select existing security group: `EC2ContainerService-cluster-d...` (all incoming traffic from ELB, plus SSH)
+        -  Load Balancer: ALB -> `my-ecs-cluster-elb`
+        -  Container to load balance: -> Container name : port -> httpd:80:80 -> **Add to Load Balancer**
+        -  Production listener port* : 80
+        -  Target group name: create new (default choice)
+        -  Path pattern: `/`
+            -  BUT got an error
+            -  `Path-pattern already in use for this listener`
+            -  go to LoadBalancer -> `my-ecs-cluster-elb` -> Listeners -> Rules -> View/edit rules ->
+            -  delete rule that we will not use anymore
+        -  Evaluation order: 1
+        -  Health check path: `/`
+    -  Set Auto Scaling (do not adjust for now)
+    -  Create service
+5.  Testing
+    -  Cluster : fargate-demo -> Tasks -> 2 tasks
+    -  go to ELB DNS -> refresh -> DockerId changes             
+
+    
+           
