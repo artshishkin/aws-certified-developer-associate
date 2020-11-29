@@ -2124,5 +2124,36 @@ ECR - Elastic Container Repository
     -  Cluster : fargate-demo -> Tasks -> 2 tasks
     -  go to ELB DNS -> refresh -> DockerId changes             
 
-    
+#####  137. ECS IAM Deep Dive & Hands On
+
+1.  Roles that created for us
+    -  IAM -> Roles
+    -  search `ecs` -> 4 roles
+        - ecsInstanceRole
+            -  attached to ec2 instances
+            -  Trust relationships -> Trusted entities: `The identity provider(s) ec2.amazonaws.com` - **EC2**
+            -  policy: `AmazonEC2ContainerServiceforEC2Role`
+            -  allows to connect to ecs service
+            -  to ecr (pull images from ecr)
+            -  logs (log to CloudWatch using ecs service)
+            -  base role that allow ECS **Agent** to perform everything it needs to do
+        -  ecsServiceRole
+            -  Trust relationships -> Trusted entities: `The identity provider(s) ecs.amazonaws.com` - **ECS**
+            -  policy: `AmazonEC2ContainerServiceRole`
+        -  ecsTaskExecutionRole
+            -  Trust relationships -> Trusted entities: `The identity provider(s) ecs-tasks.amazonaws.com` - **ECS-Tasks**
+            -  policy: `AmazonECSTaskExecutionRolePolicy`
+            -  get images from ecr and send logs to CloudWatch
+        -  AWSServiceRoleForECS
+            -  Trust relationships -> Trusted entities: `The identity provider(s) ecs.amazonaws.com` - **ECS**
+            -  policy: `AmazonECSServiceRolePolicy`
+            -  ec2, elasticloadbalancing, route53, servicediscovery, autoscaling, logs, cloudwatch
+2.  Create custom role
+    -  IAM -> Roles -> Create role ->
+    -  Elastic Container Service -> Select your use case ->
+    -  **Elastic Container Service Task** -> Next (Permissions)
+    -  AmazonS3ReadOnlyAccess
+    -  Role name: `MyCustomECSTaskRoleToReadS3`
+   
+          
            
