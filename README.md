@@ -2178,4 +2178,42 @@ ECR - Elastic Container Repository
             -  choose constraints
                 -  distinctInstance, memberOf
                
-           
+#####  139. ECS Auto Scaling
+
+1.  Capacity Provider
+    -  ECS Console -> `cluster-demo`
+    -  Capacity Providers -> Create
+    -  Name: `CapacityDemo`
+    -  ASG: `EC2ContainerService-cluster-demo-EcsInstanceAsg-1TJSQ84Q3ZVQ`
+    -  Target capacity: 70% - when it reached then Launch more ec2 instances
+    -  Managed termination protection: Disabled
+    -  Create
+2.  Modify ASG
+    -  desired capacity: 2
+    -  max capacity: 4
+3.  Create new service
+    -  name: `httpd-service-capacity`
+    -  capacity provider strategy: Capacity Provider
+    -  task-definition: `my-httpd`
+    -  number of tasks: **10**
+    -  Task placement: Custom -> ~~random~~ AZ Balanced Spread
+    -  Next ->
+    -  Load Balancer: no
+    -  Service Discovery: no
+    
+    -  ~~Set Auto Scaling~~: (**skip it**)
+        -  minimum: 1
+        -  desired: 10                     
+        -  maximum: 20
+        -  IAM role for Service Auto Scaling: `AWSServiceRoleForApplicationAut...`
+    
+    -  Create
+4.  Testing
+    -  `httpd-service-capacity`: 10 tasks are running
+    -  `cluster-demo` -> ECS Instances : 4 Instances
+5.  Clean up
+    -  delete `httpd-service-capacity`
+    -  delete Capacity Provider
+    -  ASG:
+        -  max: 2
+        -  desired: 0       
