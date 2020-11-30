@@ -2216,4 +2216,17 @@ ECR - Elastic Container Repository
     -  delete Capacity Provider
     -  ASG:
         -  max: 2
-        -  desired: 0       
+        -  desired: 0
+
+#####  141. ECS Section Cleanup
+
+-  Cluster `fargate-demo` -> `fargate-service-demo` -> delete me               
+-  Cluster `cluster-demo` -> `httpd-alb` -> delete me
+-  delete cluster `cluster-demo`
+-  delete cluster `fargate-demo`
+-  Repository -> delete repo `demo`
+-  you may delete task definitions (but may leave them because you will not billed for them)
+-  delete load balancer
+-  Target groups: 
+    -  dummy-tg -> delete
+    -  all ecs target groups -> delete         
