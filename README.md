@@ -2155,5 +2155,27 @@ ECR - Elastic Container Repository
     -  AmazonS3ReadOnlyAccess
     -  Role name: `MyCustomECSTaskRoleToReadS3`
    
-          
+#####  138. ECS Task Placement and Constraints
+
+1.  ECS Console
+    -  `cluster-demo`
+    -  Create new service: type EC2
+    -  Task definition: `httpd`
+    -  Service name: `demo-task-placement`
+    -  Number of tasks: 2
+    -  Task placements
+        -  Binpack: 
+            -  Strategy: binpack(MEMORY)
+        -  One task per Host:
+            -  Constraint: distinctInstance
+        -  AZ Balanced Spread:
+            -  Strategy: spread(attribute:ecs.availability-zone), spread(instanceId)
+        -  AZ Balanced BinPack:
+            -  Strategy: spread(attribute:ecs.availability-zone), binpack(MEMORY)
+        -  Custom:
+            -  choose strategies
+                -  binpack, spread, random
+            -  choose constraints
+                -  distinctInstance, memberOf
+               
            
