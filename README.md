@@ -2229,4 +2229,30 @@ ECR - Elastic Container Repository
 -  delete load balancer
 -  Target groups: 
     -  dummy-tg -> delete
-    -  all ecs target groups -> delete         
+    -  all ecs target groups -> delete
+
+####  Section 14: AWS Elastic Beanstalk
+
+#####  144. Beanstalk First Environment
+
+1.  Creating Application
+    -  Elastic Beanstalk console
+    -  Create application
+    -  Name: `my-first-webapp-beanstalk`
+    -  Platform: Node.js
+    -  Application code: Sample
+    -  Create application
+2.  Events (Left panel)    
+    -  S3 storage bucket for environment data
+    -  Security group
+    -  ~~Elastic IP (EIP)~~ 
+    -  EC2 instances: 1 created and running
+3.  Logs
+    -  100 lines
+4.  Health
+5.  Monitoring
+6.  Environments
+    -  only 1 created `MyFirstWebappBeanstalk-env`
+7.  Applications
+    -  only 1 `my-first-webapp-beanstalk`         
+           
