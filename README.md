@@ -2255,4 +2255,35 @@ ECR - Elastic Container Repository
     -  only 1 created `MyFirstWebappBeanstalk-env`
 7.  Applications
     -  only 1 `my-first-webapp-beanstalk`         
-           
+
+#####  145. Beanstalk Second Environment
+
+1.  Create a New Environment
+    -  Web server environment: `MyFirstWebappBeanstalk-prod`    
+    -  Domain: `myappinprodbyart`
+    -  Description: `My beanstalk application in prod`
+    -  Platform: same as for first environment
+    -  Sample application
+    -  Configure more options
+        -  Configuration presets: High availability
+        -  Capacity:
+            -  ASG min 1, max 4
+            -  Placement: all 3 AZs
+            -  Save
+        -  Load Balancer
+            -  If you choose type of load balancer later you can not change it
+        -  Database
+            -  If you configure RDS in Beanstalk and later delete your application then you will loose DB
+        -  Configuration presets: **High availability**
+        -  Create Environment
+2.  Testing
+    -  EC2 Console
+    -  Instances -> prod instance -> public DNS
+    -  ASG: 2 groups:
+        -  1 for dev (previous created): ~~1 max~~ (Stephane version) but for me 4 max???
+        -  2 for prod: 4 max, 1 min, 1 desired
+    -  Security groups
+        -  search for beanstalk
+        -  SG for LoadBalancer
+                
+                         
