@@ -2285,5 +2285,40 @@ ECR - Elastic Container Repository
     -  Security groups
         -  search for beanstalk
         -  SG for LoadBalancer
-                
+ 
+#####  147. Beanstalk Deployment Modes Hands On
+
+1.  Configure prod environment
+    -  Elastic Beanstalk
+    -  prod env
+    -  Configuration
+    -  Rolling updates and deployments -> Edit:
+        -  Deployment policy: Immutable
+        -  Apply
+2.  Google `beanstalk sample application zip`
+    -  [Tutorials and samples](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/tutorials.html)
+    -  nodejs.zip
+    -  download
+    -  modify `index.html` -> background color make blue
+    -  zip
+3.  Update application
+    -  Beanstalk console
+    -  `MyFirstWebappBeanstalk-prod`
+    -  Upload and deploy
+    -  choose file
+    -  Version label: `Blue version`
+    -  Deploy
+    -  View Events
+    -  Health:
+        -  one app is healthy
+        -  another one in progress
+    -  EC2 Console: ASG (temporary ASG) - immutable stack
+    -  Health: 2 instances healthy
+    -  open DNS -> blue app has been deployed
+4.  Swap environment (emulation blue-green deployment)
+    -  All Environments -> Choose one -> Actions
+    -  Swap environment URLs
+    -  View result (url to 2 environments)
+5.  Revert swap back
+    -  just swap one more time))           
                          
