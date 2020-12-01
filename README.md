@@ -2356,4 +2356,15 @@ ECR - Elastic Container Repository
     -  ZIP project
     -  Upload
     -  View -> Configuration -> Software -> Edit
-    -  Environment properties -> View DB_URL, DB_USER from `environment-variables.config` file            
+    -  Environment properties -> View DB_URL, DB_USER from `environment-variables.config` file
+
+#####  151. Beanstalk & CloudFormation
+
+1.  CloudFormation console
+    -  `awseb-e-qqeyynd66n-stack` - `AWS Elastic Beanstalk environment (Name: 'MyFirstWebappBeanstalk-prod' Id: 'e-qqeyynd66n')`
+    -  `awseb-e-ssf3uza9gq-stack` - `AWS Elastic Beanstalk environment (Name: 'MyFirstWebappBeanstalk-env' Id: 'e-ssf3...`
+    -  go to `awseb-e-qqeyynd66n-stack` - CloudFormation Stack
+        -  Resources -> all the resources that CloudFormation made for us
+        -  9 resources for `dev` (aka `env`)
+        -  16 resources for `prod`
+         
