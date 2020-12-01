@@ -2424,4 +2424,31 @@ ECR - Elastic Container Repository
         -  Builder
         -  JSON (a lot like `Dockerrun.aws.json`)
 4.  Terminate environment
+
+####  Section 15: AWS CICD: CodeCommit, CodePipeline, CodeBuild, CodeDeploy
+
+#####  160. CodeCommit Hands On Part I
+
+1.  Create repository
+    -  CodeCommit console
+    -  Create Repository: `my-node-js`
+    -  Create
+2.  Upload a file
+    -  upload `index.html` (same as in previous section)
+3.  Notifications
+    -  Settings -> Notifications
+    -  Create notification rule
+    -  Name: `DemoNotificationRule`
+    -  Events that trigger notifications: All
+    -  Create target: SNS topic -> `codecommit-lab`
+    -  Submit
+4.  Triggers
+    -  Settings -> Triggers
+    -  Create trigger: `DemoTrigger`
+    -  Events: `Push to existing branch`
+    -  Branch name: master
+    -  Choose the service to use: Amazon SNS
+        -  SNS topic: `codecommit-lab`
+    -  Create trigger    
         
+               
