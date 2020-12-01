@@ -2321,4 +2321,19 @@ ECR - Elastic Container Repository
     -  View result (url to 2 environments)
 5.  Revert swap back
     -  just swap one more time))           
-                         
+
+#####  148. Beanstalk CLI and Deployment Process
+
+#####  149. Beanstalk Lifecycle Policy Overview + Hands On
+
+1.  Elastic Beanstalk Console
+    -  `my-first-webapp-beanstalk` -> Application versions
+    -  Settings -> Application version lifecycle settings
+    -  Set the application versions limit by total count: 200
+    -  **OR**
+    -  Set the application versions limit by age: 180
+    -  Retention: retain or delete from S3
+    -  Save
+2.  S3 console
+    -  bucket `elasticbeanstalk-eu-north-1-392971033516`
+    -  we have `2020335TQA-nodejs-v2-blue.zip` - we uploaded it     
