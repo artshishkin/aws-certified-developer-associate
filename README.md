@@ -2404,4 +2404,24 @@ ECR - Elastic Container Repository
         4.  perform a CNAME swap (blue/green) or Route 53 update, confirm working
         5.  Terminate the old environment (RDS won’t be deleted)
         6.  Delete CloudFormation stack (in DELETE_FAILED state)        
-             
+
+#####  154. Beanstalk with Docker
+
+1.  Create new Environment with Docker
+    -  Name: `...-docker`
+    -  Multiple Docker
+    -  Sample Application
+    -  Create Environment
+2.  Download sample code to view
+    -  [Tutorials and samples](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/tutorials.html)
+    -  Multicontainer Docker – docker-multicontainer-v2.zip
+    -  Docker.aws.json looks very similar to ECS Task Definition
+3.  View
+    -  ECS Console -> created ECS Cluster `awseb-MyFirstWebappBeanstalk-docker-wvi5dhyinm`
+    -  Tasks -> 1 is running
+    -  ASG was created too
+    -  Task Definition
+        -  Builder
+        -  JSON (a lot like `Dockerrun.aws.json`)
+4.  Terminate environment
+        
