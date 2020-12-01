@@ -2336,4 +2336,24 @@ ECR - Elastic Container Repository
     -  Save
 2.  S3 console
     -  bucket `elasticbeanstalk-eu-north-1-392971033516`
-    -  we have `2020335TQA-nodejs-v2-blue.zip` - we uploaded it     
+    -  we have `2020335TQA-nodejs-v2-blue.zip` - we uploaded it
+
+#####  150. Beanstalk Extensions
+
+1.  Theory
+    -  A zip file containing our code must be deployed to Elastic Beanstalk
+    -  All the parameters set in the UI can be configured with code using files
+    -  Requirements:
+        -  in the .ebextensions/ directory in the root of source code
+        -  YAML / JSON format
+        -  .config extensions (example: logging.config)
+        -  Able to modify some default settings using: option_settings
+        -  Ability to add resources such as RDS, ElastiCache, DynamoDB, etc…
+    -  Resources managed by .ebextensions get deleted if the environment goes away
+2.  Hands on
+    -  place `environment-variables.config` into `.ebextensions` directory
+    -  set environment variables using `aws:elasticbeanstalk:application:environment`
+    -  ZIP project
+    -  Upload
+    -  View -> Configuration -> Software -> Edit
+    -  Environment properties -> View DB_URL, DB_USER from `environment-variables.config` file            
