@@ -2558,6 +2558,47 @@ ECR - Elastic Container Repository
 [Container] 2020/12/02 13:42:06 CODEBUILD_SRC_DIR=/codebuild/output/src761570967/src/git-codecommit.eu-north-1.amazonaws.com/v1/repos/my-node-js
 ```
 
+#####  166. CodeBuild Hands On Part 2
+
+1.  Create build specification
+    -  CodeCommit -> Add file -> Create file
+    -  Filename: `buildspec.yml`
+    -  insert content of `buildspec.yml`
+    -  Commit changes
+2.  Build project again
+    -  CodeBuild -> `MyBuildProject` -> Start build
+    -  Error -> wrong version
+    -  YAML_FILE_ERROR: invalid buildspec `version` specified: 0.4, see documentation 
+    -  changed version to 0.2
+    -  Status:  Succeeded
+3.  View result
+    -  Phase Details
+    -  Build Logs
+    -  View entire log -> CloudWatch
+4.  CodeBuild Pipeline integration
+    -  CodePipeline -> `MyFirstPipeline` -> Edit
+    -  Add stage `BuildAndTest`
+    -  Add action group
+        -  Action name: `TestForCongratulations`
+        -  Provider: CodeBuild
+        -  Input Artifacts: SourceArtifact
+        -  Project name: `MyBuildProject`
+        -  Output artifacts: `OutputOfTest`
+        -  Done -> Done
+    -  Save
+5.  Testing
+    -  modify `index.html`
+    -  change `Congratulations` to `Horrible`
+    -  commit
+    -  Build FAILED
+    -  `COMMAND_EXECUTION_ERROR: Error while executing command: grep -Fq "Congratulations" index.html. Reason: exit status 1`
+    -  change `Horrible` to `Congratulations CodeBuild`
+    -  Pipeline
+        -  `Status Succeeded`
+    
+       
+              
+    
                   
     
                             
