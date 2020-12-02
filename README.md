@@ -2516,6 +2516,48 @@ ECR - Elastic Container Repository
         -  Review -> `Changes look great` -> Approve
     -  Starting deploy to prod environment    
     
-    
+#####  165. CodeBuild Hands On Part I
+
+1.  Create Build Project
+    -  CodeBuild ->  Getting Started -> 
+    -  Create project: `MyBuildProject`
+    -  Description: `Testing for *Congratulations* in CodeCommit`
+    -  Source provider: CodeCommit
+    -  Repo:  `my-node-js`
+    -  Environment image: Managed
+    -  Operating system: Ubuntu
+    -  Runtime: Standard
+    -  Image: standard:4.0
+    -  New service role
+    -  Additional parameters
+        -  Timeout: 5 minutes
+    -  VPC: do not select any
+    -  Buildspec:
+        -  `buildspec.yml` -> may be configured to be in diffenent directory (not only root)
+    -  Artifacts
+        -  could store artifacts in S3
+        -  No Artifacts for now
+        -  Additional config
+            -  Encryption key
+            -  Cache
+    -  Logs:
+        -  CloudWatch: On
+        -  S3: Off
+    -  Create build project
+2.  Building
+    -  Start build
+    -  Fail:
+        -  Phase details
+        -  `DOWNLOAD_SOURCE | Failed  |  YAML_FILE_ERROR: YAML file does not exist`
+        -  No `buildspec.yml`  
+        -  Build logs
+```
+[Container] 2020/12/02 13:41:59 Waiting for agent ping
+[Container] 2020/12/02 13:42:01 Waiting for DOWNLOAD_SOURCE
+[Container] 2020/12/02 13:42:06 Phase is DOWNLOAD_SOURCE
+[Container] 2020/12/02 13:42:06 CODEBUILD_SRC_DIR=/codebuild/output/src761570967/src/git-codecommit.eu-north-1.amazonaws.com/v1/repos/my-node-js
+```
+
+                  
     
                             
