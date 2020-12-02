@@ -2474,4 +2474,48 @@ ECR - Elastic Container Repository
     -  `git commit -m "added missing file to repository"`
     -  `git push`
 7.  Verify files are push
-    -  CodeCommit -> Repo -> `my-node-js` -> Code              
+    -  CodeCommit -> Repo -> `my-node-js` -> Code
+    
+#####  163. CodePipeline Hands On
+
+1.  Creating CodePipeline
+    -  create pipeline: `MyFirstPipeline`
+    -  **New** service role
+    -  Other settings: Default
+    -  Next
+    -  Source provider:
+    -  CodeCommit: our repo
+    -  Change detection options: CloudWatch
+    -  Skip build stage
+    -  Deploy provider: Elastic Beanstalk
+        -  Environment name - our dev env
+    -  Create pipeline
+    -  Started Source -> then Deploy -> All OK
+2.  Testing 
+    -  CodeCommit -> modify `index.html` -> make background red
+    -  commit
+    -  view pipeline status
+    -  view environment url (EIP) -> it is RED -> OK
+    -  go to Beanstalk -> Application versions -> added 2 versions (1 from first commit, 2 - from second manual commit)
+3.  Extending pipeline
+    -  `MyFirstPipeline` -> Edit
+    -  After `Deploy` -> Add stage `DeployToProd`
+    -  Add action group
+        -  `ManualApproval`
+        -  Configure the approval request: leave all default
+    -  Add another Action group
+        -  `DeployToBeanstalk`
+        -  input artifacts: `SourceArtifact`
+    -  Can Add parallel actions
+    -  Done
+    -  Save
+4.  Testing
+    -  create new commit
+    -  from red to yellow
+    -  Manual approval
+        -  Review -> `Changes look great` -> Approve
+    -  Starting deploy to prod environment    
+    
+    
+    
+                            
