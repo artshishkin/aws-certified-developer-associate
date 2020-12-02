@@ -2450,5 +2450,28 @@ ECR - Elastic Container Repository
     -  Choose the service to use: Amazon SNS
         -  SNS topic: `codecommit-lab`
     -  Create trigger    
-        
-               
+
+#####  161. CodeCommit Hands On Part 2
+
+1.  Generate credentials
+    -  IAM -> Users -> art_admin -> Security credentials
+    -  SSH keys for AWS CodeCommit (do it by yourself)
+    -  HTTPS Git credentials for AWS CodeCommit (we will use this)
+        -  Generate credentials -> Download credentials       
+2.  Clone HTTPS
+    -  CodeCommit -> Repo ->  `my-node-js`
+    -  Clone HTTPS
+    -  `https://git-codecommit.eu-north-1.amazonaws.com/v1/repos/my-node-js`
+3.  Install git
+    -  `git --version` - make sure all ok
+4.  Cloning repo
+    -  `git clone https://git-codecommit.eu-north-1.amazonaws.com/v1/repos/my-node-js`
+    -  enter username and password
+5.  Copy files from nodejs folder (from previous section)
+6.  Git
+    -  `git status`
+    -  `git add .`
+    -  `git commit -m "added missing file to repository"`
+    -  `git push`
+7.  Verify files are push
+    -  CodeCommit -> Repo -> `my-node-js` -> Code              
