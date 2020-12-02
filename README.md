@@ -2596,9 +2596,28 @@ ECR - Elastic Container Repository
     -  Pipeline
         -  `Status Succeeded`
     
-       
-              
-    
+#####  167. CodeBuild in VPC
+
+1.  Theory
+    -  By default, your CodeBuild containers are launched outside your VPC
+        -  Therefore, by default it cannot access resources in a VPC
+    -  You can specify a VPC configuration:
+        -  VPC ID
+        -  Subnet IDs
+        -  Security Group IDs
+    -  Then your build can access resources in your VPC (RDS, ElastiCache, EC2, ALB..)
+    -  Use cases: integration tests, data query, internal load balancers       
+2.  Hands on
+    -  CodeBuild -> `MyBuildProject`
+    -  Edit -> Environment
+    -  Additional configuration
+        -  VPC: my vpc
+        -  Subnets: all 3
+        -  Security group
+        -  Shows message
+        -  `The VPC with ID vpc-d03187b9 might not have an internet connection because the provided subnet with ID subnet-ade616e0 is public. Provide a private subnet with the 0.0.0.0/0 destination for the target NAT gateway and try again.`              
+        -  It is fine. We do not want internet connectivity for this build
+    -  **Cancel** for now. We do not want VPC CodeBuild for now 
                   
     
                             
