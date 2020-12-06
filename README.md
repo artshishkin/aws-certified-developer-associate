@@ -2619,5 +2619,74 @@ ECR - Elastic Container Repository
         -  It is fine. We do not want internet connectivity for this build
     -  **Cancel** for now. We do not want VPC CodeBuild for now 
                   
-    
+#####  169. CodeDeploy Hands On
+
+1.  Create 2 needed roles
+    -  IAM console ->
+    -  Create role
+    -  CodeDeploy
+        -  Select your use case: `CodeDeploy`
+        -  Permissions
+        -  Look through policy `AWSCodeDeployRole`
+        -  Review:
+            -  Role name: `CodeDeployServiceRole`
+            -  Create role
+    -  EC2 (CodeDeployAgent will be running on EC2 and must pull source code from S3)
+        -  Filter policy: `S3`
+        -  Choose `AmazonS3ReadOnlyAccess`
+        -  Role Name: `EC2InstanceRoleForCodeDeploy`
+2.  Create CodeDeploy Application  
+    -  CodeDeploy management console
+    -  Applications -> Create application
+    -  App name: `MyDemoApplication`
+    -  Compute platform: `EC2`
+3.  Create EC2 Instance with `codedeploy-agent` to run an app on it
+    -  IAM role: `EC2InstanceRoleForCodeDeploy`
+    -  No User Data
+    -  Security Group: new
+        -  Inbound: port 80 from everywhere
+    -  Start it
+    -  ssh into EC2
+    -  install `codedeploy-agent`
+        -  use [commands.sh](https://github.com/artshishkin/aws-certified-developer-associate/blob/main/Section%2015%20-%20AWS%20CICD%20-%20CodeCommit%2C%20CodePipeline%2C%20CodeBuild%2C%20CodeDeploy/codedeploy/commands.sh)
+    -  **OR**
+    -  use same commands in User Data;)
+    -  **Create Tag** 
+        -  Environment: Dev (we may change key and value to everything we want)
+4.  Create deployment group
+    -  CodeDeploy console
+    -  Create deployment group
+        -  name: `DevelopmentInstances`
+        -  Service role: `CodeDeployServiceRole`
+        -  Deployment type: `In-place`
+        -  Env config: Amazon EC2 instances
+            -  Tag group 1: `Environment`:`Dev`
+        -  Deployment settings: All at once
+        -  Disable Load Balancer
+        -  Create deployment group   
+5.  Upload App into S3
+    -  create bucket `art-codedeploy-2020`
+    -  upload archive `SampleApp_Linux.zip`
+        -  view `appspec.yml`
+    -  copy S3 URI: `s3://art-codedeploy-2020/SampleApp_Linux.zip`
+6.  Create deployment
+    -  CodeDeploy -> Applications -> MyDemoApplication
+    -  Deployment group: `DevelopmentInstances`
+    -  Revision type: S3
+    -  Revision location:
+        -  S3 URI: `s3://art-codedeploy-2020/SampleApp_Linux.zip`
+    -  Create deployment
+7.  Testing  
+    -  View progress
+        -  Deployments lifecycle events: View events:
+            -  ApplicationStop
+            -  DownloadBundle
+            -  BeforeInstall
+            -  Install
+            -  AfterInstall
+            -  ApplicationStart
+            -  ValidateService    
+    -  Visit EC2 public IP -> OK    
+                          
+           
                             
