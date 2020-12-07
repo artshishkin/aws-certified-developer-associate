@@ -2687,6 +2687,32 @@ ECR - Elastic Container Repository
             -  ApplicationStart
             -  ValidateService    
     -  Visit EC2 public IP -> OK    
-                          
+
+#####  172. CodeStar - Hands On
+
+1.  CodeStar management console
+    -  create project
+    -  create service role
+    -  template:
+        -  Python on Elastic Beanstalk
+    -  Project name: `DemoCodestar`
+    -  repo: CodeCommit
+    -  Create project
+2.  Wait a bit
+3.  View result
+    -  CloudFormation
+        -  Resources
+    -  CodeStar -> Project resources
+        -  CodeCommit Repository
+        -  CodePipeline
+        -  CodeBuild
+        -  Develop with AWS Cloud9
+        -  Develop with other IDEs
+        -  External issue tracking - **Jira**
+        -  Team members
+        -  View application
+4.  Elastic Beanstalk
+5.  Delete project
+                             
            
                             
