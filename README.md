@@ -2714,5 +2714,12 @@ ECR - Elastic Container Repository
 4.  Elastic Beanstalk
 5.  Delete project
                              
-           
-                            
+#####  172. CodeStar - Java Hands On
+
+1.  Create Java Spring App           
+    -  Application type: Web service (Spring Boot application WAR)
+    -  **OR**
+    -  Application type: Web application (Spring application WAR)
+    -  AWS service: AWS Elastic Beanstalk
+2.  View simple source code      
+                          
