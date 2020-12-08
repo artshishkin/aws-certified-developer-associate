@@ -2721,5 +2721,12 @@ ECR - Elastic Container Repository
     -  **OR**
     -  Application type: Web application (Spring application WAR)
     -  AWS service: AWS Elastic Beanstalk
-2.  View simple source code      
+2.  View simple source code 
+3.  Modify project
+    -  `git clone ...`
+    -  Create project from existing source
+    -  refactor, modify
+    -  `git commit -m blabla`
+    -  `git push`
+4.  CodePipeline starts build and deploy         
                           
