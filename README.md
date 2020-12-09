@@ -2820,4 +2820,19 @@ LifecycleEvent - BeforeInstall
 Script - scripts/install_dependencies
 [stderr]/opt/codedeploy-agent/deployment-root/ab3ef8de-afd7-4acd-9be2-cd0c40d2187e/d-7L45WVF06/deployment-archive/scripts/install_dependencies: line 2: yum: command not found
 ```
-                                      
+
+##### CodeDeploy and Red Hat Enterprise Linux EC2
+
+[Install the CodeDeploy agent for Amazon Linux or RHEL](https://docs.aws.amazon.com/codedeploy/latest/userguide/codedeploy-agent-operations-install-linux.html)
+
+-  Creating RHEL EC2 instance for CodeDeploy
+    -  use [UserData](https://github.com/artshishkin/aws-certified-developer-associate/blob/main/Section%2015%20-%20AWS%20CICD/codedeploy_RHEL/UserData.sh)
+    -  IAM role:  `EC2IstanceRoleForCodeDeploy`
+    -  Auto-assign Public IP: Enable
+    -  Security group:  `EC2forCodeDeploy-sg` (created before)
+    -  Tags: 
+        -  Environment: `Dev`
+        -  Name: `CodeDeploy_RHEL_UserData`
+-  Redeploy application
+    -  CodeDeploy -> Deployments
+    -  last deployment -> Retry deployment -> **OK**        
