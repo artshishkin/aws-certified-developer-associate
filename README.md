@@ -2729,4 +2729,95 @@ ECR - Elastic Container Repository
     -  `git commit -m blabla`
     -  `git push`
 4.  CodePipeline starts build and deploy         
-                          
+
+#####  Trying on-premises instances with CodeDeploy (169)
+
+[Tutorial: Deploy an application to an on-premises instance with CodeDeploy (Windows Server, Ubuntu Server, or Red Hat Enterprise Linux)](https://docs.aws.amazon.com/codedeploy/latest/userguide/tutorials-on-premises-instance.html)
+
+-  Install Ubuntu Server 20.04LTS
+-  SSH into it
+-  [Install the CodeDeploy agent](https://docs.aws.amazon.com/codedeploy/latest/userguide/codedeploy-agent-operations-install.html)
+-  [Install the CodeDeploy agent for Ubuntu Server](https://docs.aws.amazon.com/codedeploy/latest/userguide/codedeploy-agent-operations-install-ubuntu.html)
+
+-  `sudo apt-get update`
+-  `sudo apt-get install ruby`
+-  `sudo apt-get install wget`
+-  `cd /home/art` - (was `cd /home/ubuntu` in tutorial) - must be username
+    -  `In the fifth command, /home/ubuntu represents the default user name for an Ubuntu Server instance. If your instance was created using a custom AMI, the AMI owner might have specified a different default user name.`
+-  `wget https://bucket-name.s3.region-identifier.amazonaws.com/latest/install`
+    -  for `bucket-name` and `region-identifier` use
+    -  [Resource kit bucket names by Region](https://docs.aws.amazon.com/codedeploy/latest/userguide/resource-kit.html#resource-kit-bucket-names)
+    -  `wget https://aws-codedeploy-eu-north-1.s3.eu-north-1.amazonaws.com/latest/install`
+    -  `chmod +x ./install`
+    -  `sudo ./install auto > /tmp/logfile`
+    -  `sudo service codedeploy-agent status`
+        -  must be `running`
+
+-  [Use the register command (IAM user ARN) to register an on-premises instance](https://docs.aws.amazon.com/codedeploy/latest/userguide/instances-on-premises-register-instance.html#instances-on-premises-register-instance-1-install-cli)
+
+Step 1: Install and configure the AWS CLI on the on-premises instance
+
+    a)  Install the AWS CLI on the on-premises instance. Follow the instructions in Getting set up with the AWS command line interface in the AWS Command Line Interface User Guide.
+        -  `aws --version`
+    b)  Configure the AWS CLI on the on-premises instance. Follow the instructions in Configuring the AWS command line interface in AWS Command Line Interface User Guide.
+
+-  create policy `CodeDeployAgentOnPremises`  
+-  create user with this policy
+    -  IAM console -> Users -> Add User
+    -  User name: `on_premises`
+    -  Access type: Programmatic access (only)
+    -  Set permissions: Attach existing policies directly -> `CodeDeployAgentOnPremises`
+    -  create user
+    -  Download CSV -> close
+    
+-  configure aws cli
+    -  `aws configure`
+    -  enter all required fields
+    -  config location: `ls ~/.aws`
+
+Step 2: Call the register command    
+    
+-  `aws deploy register --instance-name MyFirstOnPremisesInstance`
+-  **OR** with optional fields
+-  `aws deploy register --instance-name MyFirstOnPremisesInstance --iam-user-arn arn:aws:iam::392971033516:user/on_premises --tags Key=Name,Value=MyFirstInstance-OnPrem --region eu-north-1`
+-  the answer was
+    -  `Registering the on-premises instance... DONE
+        Adding tags to the on-premises instance... DONE
+        Copy the on-premises configuration file named codedeploy.onpremises.yml to the on-premises instance, and run the following command on the on-premises instance to install and configure the AWS CodeDeploy Agent:
+        aws deploy install --config-file codedeploy.onpremises.yml`
+-  To register tags later, call the [add-tags-to-on-premises-instances](https://docs.aws.amazon.com/cli/latest/reference/deploy/add-tags-to-on-premises-instances.html) command.
+-  **OR** through console
+-  CodeDeploy -> On-premises instances -> `MyFirstOnPremisesInstance` YUU-HUUU)
+-  Add Tag: Environment: DevOnPrem
+
+[Use the register-on-premises-instance command (IAM user ARN) to register an on-premises instance](https://docs.aws.amazon.com/codedeploy/latest/userguide/register-on-premises-instance-iam-user-arn.html)
+
+[Step 4: Add a configuration file to the on-premises instance](https://docs.aws.amazon.com/codedeploy/latest/userguide/register-on-premises-instance-iam-user-arn.html#register-on-premises-instance-iam-user-arn-4)
+
+-  Create a file named `codedeploy.onpremises.yml` in the following location on the on-premises instance: `/etc/codedeploy-agent/conf`
+```yaml
+---
+aws_access_key_id: secret-key-id
+aws_secret_access_key: secret-access-key
+iam_user_arn: iam-user-arn
+region: supported-region
+```
+
+-  Redeploy
+-  Got an error
+```
+Event details
+Error code
+ScriptFailed
+Script name
+scripts/install_dependencies
+Message
+Script at specified location: scripts/install_dependencies run as user root failed with exit code 127
+```
+
+```
+LifecycleEvent - BeforeInstall
+Script - scripts/install_dependencies
+[stderr]/opt/codedeploy-agent/deployment-root/ab3ef8de-afd7-4acd-9be2-cd0c40d2187e/d-7L45WVF06/deployment-archive/scripts/install_dependencies: line 2: yum: command not found
+```
+                                      
