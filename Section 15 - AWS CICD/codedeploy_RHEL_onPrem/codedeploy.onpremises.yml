@@ -1,0 +1,5 @@
+---
+aws_access_key_id: secret-key-id
+aws_secret_access_key: secret-access-key
+iam_user_arn: iam-user-arn
+region: supported-region
