@@ -2835,4 +2835,94 @@ Script - scripts/install_dependencies
         -  Name: `CodeDeploy_RHEL_UserData`
 -  Redeploy application
     -  CodeDeploy -> Deployments
-    -  last deployment -> Retry deployment -> **OK**        
+    -  last deployment -> Retry deployment -> **OK**
+    
+#####  CodeDeploy and Red Hat Enterprise Linux On-Premises
+
+1.  Install RHEL
+2.  Configure user to be in sudoers
+    -  [How to enable sudo on Red Hat Enterprise Linux](https://developers.redhat.com/blog/2018/08/15/how-to-enable-sudo-on-rhel/)
+    -  Become root by running: `su`
+    -  Run `usermod -aG wheel your_user_id`
+        -  `usermod -aG wheel art`
+    -  Log out and back in again
+        -  `exit` -> from `root`
+        -  `exit` -> from `art`
+        -  log in as `art`
+3.  Check required software
+    -  httpd: `which httpd` - present
+    -  aws cli: `which aws` - absent
+    -  wget:  `which wget` - present
+    -  ruby: absent
+4.  [Install AWS CLI version 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html)
+    -  `curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"`
+    -  `unzip awscliv2.zip`
+    -  `sudo ./aws/install`
+    -  `aws --version` - check everything is OK
+5.  Configure the AWS CLI on the on-premises instance
+    -  `aws configure`
+    -  enter all required fields from user `on_premises` (created early in section `Trying on-premises instances with CodeDeploy (169)`)
+    -  config location: `ls ~/.aws`
+6.  [Install the CodeDeploy agent for Amazon Linux or RHEL](https://docs.aws.amazon.com/codedeploy/latest/userguide/codedeploy-agent-operations-install-linux.html)
+    -  `sudo yum update`
+    -  `sudo yum install ruby`
+    -  `sudo yum install wget` (no need)
+    -  `wget https://aws-codedeploy-eu-west-3.s3.eu-west-3.amazonaws.com/latest/install`
+    -  `chmod +x ./install    #make it executable`
+    -  `sudo ./install auto   #install`
+    -  `sudo service codedeploy-agent status`
+        -  must be `running`
+7.  Create a file [codedeploy.onpremises.yml](https://github.com/artshishkin/aws-certified-developer-associate/blob/main/Section%2015%20-%20AWS%20CICD/codedeploy_RHEL_onPrem/codedeploy.onpremises.yml)
+8.  Deregister unused OnPremises instance
+    -  Step 9 will throw an error
+        -  `Registering the on-premises instance... ERROR`
+        -  `An error occurred (IamUserArnAlreadyRegisteredException) when calling the RegisterOnPremisesInstance operation: The on-premises instance could not be registered because the request included an IAM user ARN that has already been used to register an instance. Include either a different IAM user ARN or IAM session ARN in the request, and then try again.`
+        -  `Register the on-premises instance by following the instructions in "Configure Existing On-Premises Instances by Using AWS CodeDeploy" in the AWS CodeDeploy User Guide.`
+    -  We use the same user as previously with Ubuntu Server
+    -  So we must either create new user for our RHEL or deregister `MyFirstOnPremisesInstance`
+    -  `aws deploy deregister-on-premises-instance --instance-name MyFirstOnPremisesInstance`
+9.  Register OnPrem instance
+    -  `aws deploy register --instance-name RHEL_OnPremInstance`
+    -  **OR** with optional fields
+    -  `aws deploy register --instance-name RHEL_OnPremInstance --iam-user-arn arn:aws:iam::392971033516:user/on_premises --tags Key=Name,Value=MyRHELInstance-OnPrem Key=Environment,Value=DevOnPrem --region eu-north-1`
+    -  the answer was
+        -  `Registering the on-premises instance... DONE`
+        -  `Adding tags to the on-premises instance... DONE`
+        -  `Copy the on-premises configuration file named codedeploy.onpremises.yml to the on-premises instance, and run the following command on the on-premises instance to install and configure the AWS CodeDeploy Agent:`
+        -  `aws deploy install --config-file codedeploy.onpremises.yml`
+    -  To register tags later, call the [add-tags-to-on-premises-instances](https://docs.aws.amazon.com/cli/latest/reference/deploy/add-tags-to-on-premises-instances.html) command.
+    -  **OR** through console
+    -  CodeDeploy -> On-premises instances -> `RHEL_OnPremInstance`
+    -  Add Tag: `Environment`: `DevOnPrem`
+10.  Install configuration file from step 7
+    -  `aws deploy install --config-file codedeploy.onpremises.yml`
+        -  answer
+        -  `Only Ubuntu Server, Red Hat Enterprise Linux Server and Windows Server operating systems are supported.`
+        -  (does not work??? F__K - I have RHEL but **NOT SERVER** version?)
+    -  we can view it at location on the on-premises instance: `/etc/codedeploy-agent/conf`
+        -  `ls /etc/codedeploy-agent/conf` - **no** `codedeploy.onpremises.yml` there - WTF
+    -  then copy that config file to  `/etc/codedeploy-agent/conf`
+        -  `sudo cp codedeploy.onpremises.yml /etc/codedeploy-agent/conf`
+11.  Redeploy Application
+    -  CodeDeploy console -> Deployments -> last -> Retry deployment
+    -  **Success** for `RHEL_OnPremInstance`
+12.  Testing result
+    -  test through ssh:
+        -  `curl localhost` -> OK -> shows `index.html`
+    -  test in browser on RHEL
+        -  `localhost` -> OK -> shows `index.html`                 
+    -  test in browser from local network:
+        -  192.168.1.98 (my RHEL instance) -> Timeout
+        -  Reason - closed port 80 on RHEL
+13.  Open port 80 on RHEL for our app
+    -  [How to open http port 80 on Redhat 7 Linux using firewall-cmd](https://linuxconfig.org/how-to-open-http-port-80-on-redhat-7-linux-using-firewall-cmd)
+    -  `sudo firewall-cmd --zone=public --add-port=80/tcp --permanent`
+    -  `sudo firewall-cmd --reload`
+14.  Testing FINAL result
+    -  test in browser from local network:
+        -  192.168.1.98 (my RHEL instance) -> **OK**
+    
+   
+
+
+
