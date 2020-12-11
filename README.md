@@ -2952,5 +2952,32 @@ Script - scripts/install_dependencies
     -  CloudFormation -> Stacks -> `first-stack` -> Resources
     -  Template -> View in Designer   
 
+#####  185. CloudFormation Update and Delete Stack Hands On
+
+1.  View `1-ec2-with-sg-eip.yaml`
+2.  Update stack
+    -  CloudFormation ->
+    -  `first-stack` -> Update
+    -  Replace current template -> Upload a template file `1-ec2-with-sg-eip.yaml`
+    -  Next
+    -  Parameters:
+        -  SecurityGroupDescription:  enter `This is a cool security group`
+    -  Next
+    -  Change set preview
+        -  3 `Add`
+        -  ec2 -> `Modify`, Replacement: true
+    -  Update stack
+    -  UPDATE_IN_PROGRESS
+    -  CREATE_IN_PROGRESS (3 elements)
+    -  ...
+    -  UPDATE_COMPLETE_CLEANUP_IN_PROGRESS
+    -  DELETE_IN_PROGRESS
+    -  Created 2 security groups
+    -  Created EIP
+3.  Delete stack
+    -  choose stack -> delete
+    -  deletion made in right order    
+    
 
 
+ 
