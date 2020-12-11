@@ -2921,8 +2921,36 @@ Script - scripts/install_dependencies
 14.  Testing FINAL result
     -  test in browser from local network:
         -  192.168.1.98 (my RHEL instance) -> **OK**
-    
-   
+
+####  Section 16: AWS CloudFormation
+
+#####  183. CloudFormation Overview
+
+**Infrastructure as Code** 
+
+#####  184. CloudFormation Create Stack Hands On
+
+1.  CloudFormation management console
+    -  CloudFormation -> Stacks -> `awseb-e-r3gjhnb9pw-stack` (stack for dev environment)
+    -  Template -> JSON
+    -  View in Designer
+2.  CloudFormation -> Choose region `us-east-1`
+    -  Create stack
+    -  Prepare template: `Template is ready`
+    -  Specify template:  `Upload a template file`
+    -  Choose file: `0-just-ec2.yaml`        
+    -  Next
+    -  Name: `first-stack` -> Next
+    -  Create stack
+3.  View
+    -  `CREATE_IN_PROGRESS` -> Update -> `CREATE_COMPLETE`
+    -  EC2 is running `MyInstance`
+    -  Tags:
+        -  `aws:cloudformation:logical-id	MyInstance`
+        -  `aws:cloudformation:stack-name	first-stack`
+        -  `aws:cloudformation:stack-id	arn:aws:cloudformation:us-east-1:392971033516:stack/first-stack/c07df0c0-3bc4-11eb-a687-0ea3a6460f01`   
+    -  CloudFormation -> Stacks -> `first-stack` -> Resources
+    -  Template -> View in Designer   
 
 
 
