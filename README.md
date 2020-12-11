@@ -2978,6 +2978,110 @@ Script - scripts/install_dependencies
     -  choose stack -> delete
     -  deletion made in right order    
     
+#####  187. CloudFormation Resources
 
+[AWS resource and property types reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html)
 
- 
+-  AWS::EC2::Instance
+
+#####  188. CloudFormation Parameters
+
+Reference function:
+-  `Fn::Ref`
+-  `!Ref`
+
+Can be used to reference `Parameters` or `Resources`
+
+Pseudo Parameters:
+-  AWS::AccountId
+-  AWS::NotificationARNs
+-  AWS::Region
+-  etc
+
+#####  189. CloudFormation Mappings
+
+-  `Fn::FindInMap`
+-  `!FindInMap [ MapName, TopLevelKey, SecondLevelKey ]`
+
+#####  190. CloudFormation Outputs
+
+-  `Fn::ImportValue`
+
+#####  191. CloudFormation Conditions
+
+```yaml
+Conditions:
+  CreateProdResources:  !Equals [ !Ref EnvType, prod ]
+```
+
+-  Fn::Equals
+-  Fn::And
+-  Fn::If
+-  Fn::Not
+-  Fn::Or
+
+Example:
+
+```yaml
+Resources:
+  MountPoint:
+    Type:  "AWS::EC2::VolumeAttachment"
+    Condition:  CreateProdResources    
+```
+
+#####  192. CloudFormation Intrinsic Functions
+
+-  Ref
+-  Fn::GetAtt
+-  Fn::FindInMap
+-  Fn::ImportValue
+-  Fn::Join
+-  Fn::Sub
+-  Condition functions (Fn::If, Fn::Not, Fn::Equals etc)
+
+Examples
+
+-  "a:b:c" <- `!Join [ ":" , [ a, b, c ] ]`
+-  `!Sub` - substitution
+
+```yaml
+!Sub
+  - String
+  - { Var1Name: Var1Value, Var2Name: Var2Value }
+```
+
+#####  193. CloudFormation Rollbacks
+
+1.  Create stack from template `0-just-ec2.yaml`
+    -  name: `FailureDemo`
+2.  Wait while complete
+3.  Update with template `2-trigger-failure.yaml`
+    -  UPDATE_IN_PROGRESS
+    -  UPDATE_FAILED:
+        -  `The image id '[ami-00123456]' does not exist `
+    -  UPDATE_ROLLBACK_IN_PROGRESS
+    -  UPDATE_ROLLBACK_COMPLETE_CLEANUP_IN_PROGRESS
+    -  DELETE_IN_PROGRESS
+    -  DELETE_COMPLETE
+    -  UPDATE_ROLLBACK_COMPLETE
+4.  Creation failure stack with Rollback **enabled**
+    -  Create **new** stack from template `2-trigger-failure.yaml`
+    -  CREATE_IN_PROGRESS
+    -  CREATE_FAILED
+        -  `The image id '[ami-00123456]' does not exist (Service: AmazonEC2; Status Code: 400; Error Code: InvalidAMIID.`
+        -  ROLLBACK_COMPLETE
+5.  Creation failure stack with Rollback **disabled**
+    -  Create **new** stack from template `2-trigger-failure.yaml`
+    -  Stack creation options:
+        -  Rollback on failure: Disabled
+    -  CREATE_IN_PROGRESS
+    -  CREATE_FAILED
+    -  All created resources remain
+    -  For debug purposes
+6.  Clean up
+    -  delete all stacks
+
+#####  194. CloudFormation ChangeSets, Nested Stacks & StackSet    
+    
+        
+             
