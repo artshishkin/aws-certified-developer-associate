@@ -3097,4 +3097,32 @@ Examples
 2.  EC2 -> Autoscaling groups
     -  Monitoring
     -  Enable metric collection    
-             
+
+#####  198. AWS CloudWatch Alarms
+
+1.  CloudWatch Console
+    -  Alarms -> 2 alarms created by Elastic Beanstalk for ASG
+    -  if `NetworkOut > 6000000 for 1 datapoints within 5 minutes` then increase size of ASG
+    -  if `NetworkOut < 2000000 for 1 datapoints within 5 minutes` then decrease ASG size (reduce EC2)
+2.  ASG
+    -  Scaling policies
+        -  AWSEBAutoScalingScaleDownPolicy
+            -  when AWSEBCloudwatchAlarmLow
+        -  AWSEBAutoScalingScaleUpPolicy
+            -  when AWSEBCloudwatchAlarmHigh
+3.  Create Alarm
+    -  select metrics
+    -  NetworkOut for `docker-app` ec2
+    -  Greater then 10000 bytes
+    -  Period: 1 minute
+    -  Datapoints to alarm: 3 of 3 (3*1 minute = 3 minutes)
+    -  Notification
+        -  SNS
+        -  Email to me
+    -  Auto Scaling action
+        -  in alarm
+        -  EC2 Auto Scaling group -> Add 1 instance
+    -  Alarm name: `High network out for Beanstalk prod`
+4.  Visit `docker.shyshkin.net:8080` for 3 minutes to increase traffic
+    -  ASG will increase automatically
+    -  when stop visiting that URL ASG will decrease ASG size (remove 1 EC2)                              
