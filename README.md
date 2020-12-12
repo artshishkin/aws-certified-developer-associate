@@ -3083,5 +3083,18 @@ Examples
 
 #####  194. CloudFormation ChangeSets, Nested Stacks & StackSet    
     
-        
+####  Section 17: AWS Monitoring & Audit: CloudWatch, X-Ray and CloudTrail        
+
+#####  197. AWS CloudWatch Metrics
+
+1.  CloudWatch Console
+    -  Metrics ->
+    -  EC2 ->
+    -  Per-Instance Metrics -> my `dockerapp.shyshkin.net` (`i-044aea1876a062509`)
+    -  CPUUtilization -> (3H, 1w) -> (Line, Stacked Area, Number, Bar, Pie)
+    -  Actions -> Add to Dashboard -> create new dashboard -> `First-dashboard`
+    -  Save dashboard
+2.  EC2 -> Autoscaling groups
+    -  Monitoring
+    -  Enable metric collection    
              
