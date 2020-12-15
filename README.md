@@ -3236,4 +3236,37 @@ Fail to fetch the config!
 5.  Restart AWS CloudWatch Agent       
     -  `/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m onPremise -s -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json`
 
-                                     
+#####  201. CloudWatch Logs Metric Filters
+
+1.  Create Metric Filter
+    -  CloudWatch
+    -  Logs
+    -  choose one: `/aws/elasticbeanstalk/MyFirstWebappBeanstalk-env/var/log/nginx/access.log`
+    -  Create metric filter
+    -  Filter pattern: (can be very complex) - we use `curl`
+    -  Select log data to test: directly from ec2
+    -  Test pattern -> `Found 5 matches out of 26 event(s) in the sample log.`
+    -  Next
+    -  Filter name
+    -  Filter name: `LinuxFilter`
+    -  Metric namespace: `MetricFilter`
+    -  Metric Name: `MyDemoFilter`
+    -  Metric value: 1 (publish when filter switches)
+    -  Default value: 0
+    -  Next -> Create
+2.  Trigger Metric filter
+    -  Visit EC2 by using curl
+    -  `curl http://myfirstwebappbeanstalk-env.eba-u9yvmmuz.eu-north-1.elasticbeanstalk.com/`
+    -  It will trigger metrics filter    
+3.  Create alarm
+    -  Logs groups -> Metric filters
+    -  tick `LinuxFilter` ->
+    -  Create alarm
+    -  Static, Greater then 20
+    -  In alarm -> Select an existing SNS topic
+    -  Alarm name: `DemoMetricFilterAlarm`
+4.  Trigger alarm
+    -  curl over 20 times per 5 minutes
+    -  it will trigger alarm
+
+                                                   
