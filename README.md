@@ -3125,4 +3125,47 @@ Examples
     -  Alarm name: `High network out for Beanstalk prod`
 4.  Visit `docker.shyshkin.net:8080` for 3 minutes to increase traffic
     -  ASG will increase automatically
-    -  when stop visiting that URL ASG will decrease ASG size (remove 1 EC2)                              
+    -  when stop visiting that URL ASG will decrease ASG size (remove 1 EC2) 
+    
+#####  199. AWS CloudWatch Logs
+
+1.  CloudWatch console
+    -  Logs
+    -  Log Groups
+        -  `/aws/codebuild`
+        -  `/ecs`
+    -  Search All
+        -  `echo`
+        -  click link on `Log stream name` -> will go directly to log line
+    -  Log Groups
+        -  choose group -> Actions -> 
+            -  edit retention settings -> period to store data
+            -  [export data to S3](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/S3ExportTasksConsole.html)
+                -  Create S3 bucket `art-cloudwatch-logs-2020`
+                -  Create IAM User `CWLExportUser`
+                -  Set Permissions on an Amazon S3 Bucket
+                    -  use `CWLExportUser_Policy.json`                    
+                -  Login as `CWLExportUser`
+                    -  Export
+                    -  S3 bucket prefix - optional: `random-string` (when create)
+2.  Beanstalk log into CloudWatch Logs
+    -  Beanstalk -> Application
+    -  Environment: `...-env` (dev with single EC2)
+    -  Configuration -> Software
+    -  Instance log streaming to CloudWatch Logs -> Enable
+        -  Retention 7 days
+        -  Keep after termination
+        -  Apply
+3.  Beanstalk health monitoring logs         
+    -  Beanstalk -> Application
+    -  Environment: `...-env` (dev with single EC2)
+    -  Configuration -> Monitoring
+    -  Health event streaming to CloudWatch Logs -> Enable -> Apply
+4.  CloudWatch Logs
+    -  groups
+    -  created new 9 groups
+    
+                           
+             
+        
+                                     
