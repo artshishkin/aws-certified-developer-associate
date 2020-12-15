@@ -3165,6 +3165,35 @@ Examples
     -  groups
     -  created new 9 groups
     
+#####  200. CloudWatch Agent & CloudWatch Logs Agent
+
+1. Two agents:
+    -  CloudWatch Logs Agent
+    -  CloudWatch Unified Agent (newer one)
+2.  [Installing the CloudWatch Agent](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/install-CloudWatch-Agent-on-EC2-Instance.html)    
+    -  `sudo yum install amazon-cloudwatch-agent -y`
+    -  [Create IAM Roles to Use with the CloudWatch Agent on Amazon EC2 Instances](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/create-iam-roles-for-cloudwatch-agent.html#create-iam-roles-for-cloudwatch-agent-roles)    
+        -  `CloudWatchAgentServerRole` with AWS `CloudWatchAgentServerPolicy`
+    -  Assign IAM Role to the EC2 Instance
+    -  [Create the CloudWatch Agent Configuration File](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/create-cloudwatch-agent-configuration-file.html)
+        -  [with the Wizard](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/create-cloudwatch-agent-configuration-file-wizard.html)
+        -  `sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard`
+        -  answer all the questions
+    -  [Start the CloudWatch Agent Using the Command Line](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/install-CloudWatch-Agent-commandline-fleet.html)
+        -  modify `sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:configuration-file-path`  
+        -  **my impl**
+        -  `sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json`
+        -  got an error
+            -  `2020-12-15T13:46:57Z E! [telegraf] Error running agent: Error parsing /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.toml, open /usr/share/collectd/types.db: no such file or directory`
+        -  need to install `collectd`
+            -  `sudo amazon-linux-extras install collectd`
+        -  check cloudwatch-agent is running
+            -  `sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -m ec2 -a status`
+3.  Monitoring
+    -  CloudWatch
+    -  Metrics -> CWAgent                     
+    
+    
                            
              
         
