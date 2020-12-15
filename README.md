@@ -3193,8 +3193,47 @@ Examples
     -  CloudWatch
     -  Metrics -> CWAgent                     
     
-    
-                           
-             
+#####  CloudWatch Agent on OnPremise instance
+
+1.  Install Agent
+    -  [Installing and Running the CloudWatch Agent on Your Servers](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/install-CloudWatch-Agent-commandline-fleet.html)
+    -  `wget https://s3.amazonaws.com/amazoncloudwatch-agent/redhat/amd64/latest/amazon-cloudwatch-agent.rpm`   
+    -  `sudo rpm -U ./amazon-cloudwatch-agent.rpm`
+    -  (Installing on an On-Premises Server) Specify IAM Credentials and AWS Region
+        -  `sudo aws configure --profile AmazonCloudWatchAgent`
+        -  use the same parameters as for `on_premises`                       
+2.  Security config
+    -  add policy `CloudWatchAgentServerPolicy` to existing user `on_premises`
+3.  Config and start    
+    -  `sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard`
+    -  `sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m onPremise -s -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json`            
         
+```
+[art@MiWiFi-R4A-srv Downloads]$ sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m onPremise -s -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json
+/opt/aws/amazon-cloudwatch-agent/bin/config-downloader --output-dir /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.d --download-source file:/opt/aws/amazon-cloudwatch-agent/bin/config.json --mode onPrem --config /opt/aws/amazon-cloudwatch-agent/etc/common-config.toml --multi-config default
+Got Home directory: /root
+I! Set home dir Linux: /root
+I! SDKRegionWithCredsMap region:
+Unable to determine aws-region.
+Please make sure the credentials and region set correctly on your hosts.
+Refer to http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
+Fail to fetch the config!
+```
+
+-  `sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm`
+-  `sudo yum install collectd`
+
+######  Solution found
+
+1.  Login as root
+2.  Configure AWS CLI
+    -  `aws configure`
+    -  same for
+    -  `aws configure --profile AmazonCloudWatchAgent`
+3.  Log out, use another account (I have `art`)    
+4.  Configuration file
+    -  `sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard`    
+5.  Restart AWS CloudWatch Agent       
+    -  `/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m onPremise -s -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json`
+
                                      
