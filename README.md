@@ -3374,4 +3374,41 @@ Fail to fetch the config!
     -  Service: ...
 
 _Once you apply an X-Ray sampling rule this rule will be automatically applied to all XRay daemons_         
-                         
+
+#####  210. X-Ray with Beanstalk
+
+1.  Enable X-Ray for Beanstalk
+    -  Elastic Beanstalk
+    -  env Environment
+    -  Configuration
+    -  Software -> Edit -> 
+    -  AWS X-Ray -> Enabled
+    -  _We can enable X-Ray daemon by config file in **.ebextensions** folder_
+2.  Make sure EC2 has permissions
+    -  Health -> EC2 instance
+    -  EC2 console
+    -  instance of beanstalk environment
+    -  IAM role
+    -  Permissions: AWSElasticBeanstalkWebTier ->
+    -  Policy Summary
+    -  X-Ray
+        -  GetSamplingRules
+        -  GetSamplingStatisticSummaries
+        -  GetSamplingTargets
+        -  PutTelemetryRecords
+        -  PutTraceSegments        
+
+```json
+{
+    "Sid": "XRayAccess",
+    "Action": [
+        "xray:PutTraceSegments",
+        "xray:PutTelemetryRecords",
+        "xray:GetSamplingRules",
+        "xray:GetSamplingTargets",
+        "xray:GetSamplingStatisticSummaries"
+    ],
+    "Effect": "Allow",
+    "Resource": "*"
+}
+```                         
