@@ -3360,4 +3360,18 @@ Fail to fetch the config!
 8.  Clean Up
     -  `xray-sample` stack -> Delete                      
                     
+#####  208. X-Ray: Sampling Rules
+
+1.  View default Sampling Rule
+    -  XRay console
+    -  Sampling
+    -  View default
+2.  Create custom Sampling Rule
+    -  `DemoSamplingRule`
+    -  Priority: 5000
+    -  Reservoir size: 10
+    -  Fixed rate: 1 Percent
+    -  Service: ...
+
+_Once you apply an X-Ray sampling rule this rule will be automatically applied to all XRay daemons_         
                          
