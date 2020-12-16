@@ -3269,4 +3269,19 @@ Fail to fetch the config!
     -  curl over 20 times per 5 minutes
     -  it will trigger alarm
 
-                                                   
+#####  202. AWS CloudWatch Events
+
+1.  Create Event
+    -  CloudWatch console
+    -  Events
+    -  Create Rule
+        -  we can do scheduled event
+        -  _but_ we will use
+        -  Event Pattern
+            -  CodePipeline Execution State Change
+            -  Specific State -> Failed
+        -  Target
+            -  SNS topic
+        -  Configure Details
+            -  Name:  `CodePipelineFailures`
+        
