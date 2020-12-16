@@ -3411,4 +3411,13 @@ _Once you apply an X-Ray sampling rule this rule will be automatically applied t
     "Effect": "Allow",
     "Resource": "*"
 }
-```                         
+```
+
+#####  211. X-Ray & ECS
+
+#####  212. AWS CloudTrail
+
+-  CloudTrail console
+-  Search by Event Name: DeleteBucket
+  
+
