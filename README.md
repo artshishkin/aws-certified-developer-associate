@@ -3304,5 +3304,60 @@ Fail to fetch the config!
     -  Search -> `aws.codepipeline`
     -  `aws.codepipeline@CodePipelineActionExecutionStateChange`
     -  Download code binding
-        -  Java8+           
+        -  Java8+
+
+#####  206. X-Ray Hands On
+
+1.  XRay console
+    -  Switch to `us-east-1`
+    -  Select sample or your own application
+        -  Instrument your application -> Java -> Look through
+        -  Return back
+        -  Launch a sample application (Node.js)
+        -  [Sample application](https://github.com/aws-samples/eb-node-express-sample/tree/xray)
+2.  CloudFormation console
+    -  Next
+    -  Specify a VPC and subnet. Optionally, edit the Stack name. Choose Next.
+    -  Next
+    -  Confirm that IAM resources will be created, and then choose Create
+        -  tick `I acknowledge that AWS CloudFormation might create IAM resources.`
+    -  Create stack
+    -  View template
+    -  CREATE_IN_PROGRESS -> CREATE_COMPLETE
+    -  created 2 stacks
+3.  Starting Auto Signup
+    -  `xray-sample` stack -> Outputs
+    -  ElasticBeanstalkEnvironmentURL:	54.224.80.70
+    -  Auto signup fake mails: click `Start`
+    -  wait for ~30 signups
+4.  Back to X-Ray console
+    -  Done
+    -  Service map
+5.  View ERROR responses    
+    -  select ElasticBeanstalk 
+        -  tick Error -> `View traces`
+        -  `signup` - click on `http://54.224.80.70/signup`
+        -  click on one - id: `1-5fda1ae9-141d36a051076c50d9e0565e`
+        -  click on DynamoDB - view info and **Exceptions**    
+6.  View OK responses
+    -  tick OK -> `View traces`
+    -  call to DynamoDB took 29 ms
+    -  call to SNS took 31 ms                
+    -  another call
+    -  call to DynamoDB took 32 ms
+    -  call to SNS took 95 ms
+7.  Browser
+    -  http://54.224.80.70/
+    -  Ctrl+Shift+I ->  Network
+    -  Start button
+    -  jQuery call takes about 200ms
+    -  is this because of `us-east-1`?
+    -  in **eu-north-1** 
+        -  AVG response time ~66.4 ms
+        -  DynamoDB took 29.0 ms
+        -  SNS took 36 ms
+        -  browser shows ~120ms         
+8.  Clean Up
+    -  `xray-sample` stack -> Delete                      
+                    
                          
