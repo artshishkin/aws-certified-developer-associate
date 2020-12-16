@@ -3284,4 +3284,25 @@ Fail to fetch the config!
             -  SNS topic
         -  Configure Details
             -  Name:  `CodePipelineFailures`
-        
+
+#####  204. EventBridge Hands On
+
+1.  EventBridge console
+    -  Event buses
+    -  default
+2.  Create custom event bus
+    -  `custom-bus` -> create ->  delete
+3.  Partner event sources
+    -  Symantec
+    -  ... -> exit
+4.  default EventBridge
+    -  Rules -> same rules as in CloudWatch (EventBridge built on the same infrastructure)
+    -  Recreating one of rules:
+        -  `DemoCodePipeline`
+        -  same settings as for `CodePipelineFailures`
+5.  Schemas
+    -  Search -> `aws.codepipeline`
+    -  `aws.codepipeline@CodePipelineActionExecutionStateChange`
+    -  Download code binding
+        -  Java8+           
+                         
