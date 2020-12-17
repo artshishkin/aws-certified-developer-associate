@@ -3489,4 +3489,15 @@ _Once you apply an X-Ray sampling rule this rule will be automatically applied t
     -  start polling messages
     -  send message
     -  wait for 10 sec
-    -  should appear                                                 
+    -  should appear
+    
+#####  222. SQS - Certified Developer concepts
+
+1.  Long Polling
+    -  `DemoQueue`
+    -  Edit
+    -  Receive message wait time: 20sec
+2.  Testing
+    -  poll for messages
+    -  send message
+    -  it will immediately appear in consumer's window                                                         
