@@ -3421,3 +3421,31 @@ _Once you apply an X-Ray sampling rule this rule will be automatically applied t
 -  Search by Event Name: DeleteBucket
   
 
+####  Section 18: AWS Integration & Messaging: SQS, SNS & Kinesis
+
+#####  218. SQS - Standard Queue Hands On
+
+1.  Create queue
+    -  SQS console -> create queue
+    -  Standard
+    -  Name: `DemoQueue`
+    -  Access policy: Basic
+    -  Encryption:
+        -  Server-side encryption:  Enabled
+    -  Create queue
+2.  Working with queue messages
+    -  console
+    -  Send and Receive messages
+    -  `hello message`
+    -  Send
+    -  Got 1 message -> Poll for messages
+        -  Details
+        -  Body
+        -  Attributes
+    -  tick message -> Delete
+3.  Working with Queue
+    -  Purge - delete all the messages in the queue
+4.  Monitoring
+    -  Approximate Number Of Messages Visible
+    -  Approximate Age Of Oldest Message
+5.  Access policy                       
