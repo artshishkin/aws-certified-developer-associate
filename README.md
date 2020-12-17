@@ -3477,4 +3477,16 @@ _Once you apply an X-Ray sampling rule this rule will be automatically applied t
         -  start polling
     -  DemoQueue
         -  send message
-    -  after 4 messages this message will be sent to DLQ                                          
+    -  after 4 messages this message will be sent to DLQ
+    
+#####  221. SQS - Delay Queues
+
+1.  Create Delay Queue
+    -  create queue
+    -  `DelayQueue`
+    -  Delivery Delay: 10 sec
+2.  Testing
+    -  start polling messages
+    -  send message
+    -  wait for 10 sec
+    -  should appear                                                 
