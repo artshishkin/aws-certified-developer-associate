@@ -3448,4 +3448,16 @@ _Once you apply an X-Ray sampling rule this rule will be automatically applied t
 4.  Monitoring
     -  Approximate Number Of Messages Visible
     -  Approximate Age Of Oldest Message
-5.  Access policy                       
+5.  Access policy
+
+#####  219. SQS - Message Visibility Timeout
+
+1.  Open 2 pages in browser
+    -  in 1: 
+        -  send message
+        -  poll message
+    -  in 2:
+        -  message became invisible for **30** sec
+        -  wait for 30 sec
+        -  delete message
+2.  Modify Visibility Timeout to 1 minute                                 
