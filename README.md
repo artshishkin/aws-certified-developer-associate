@@ -3460,4 +3460,21 @@ _Once you apply an X-Ray sampling rule this rule will be automatically applied t
         -  message became invisible for **30** sec
         -  wait for 30 sec
         -  delete message
-2.  Modify Visibility Timeout to 1 minute                                 
+2.  Modify Visibility Timeout to 1 minute
+
+#####  220. SQS - Dead Letter Queues
+
+1.  Create Dead Letter Queue
+    -  create queue: `DemoQueueDLQ`
+    -  Message retention period: 14 days
+2.  Modify main queue
+    -  set Visibility Timeout to 5 sec (for tests)
+    -  DeadLetterQueue: Enabled
+    -  Maximum receives: 4
+3.  Testing
+    -  open 2 pages in browser
+    -  DLQ
+        -  start polling
+    -  DemoQueue
+        -  send message
+    -  after 4 messages this message will be sent to DLQ                                          
