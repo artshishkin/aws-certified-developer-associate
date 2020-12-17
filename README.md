@@ -3500,4 +3500,23 @@ _Once you apply an X-Ray sampling rule this rule will be automatically applied t
 2.  Testing
     -  poll for messages
     -  send message
-    -  it will immediately appear in consumer's window                                                         
+    -  it will immediately appear in consumer's window
+
+#####  223. SQS - FIFO Queues
+
+1.  Create FIFO Queue
+    -  create queue: **DemoQueue.fifo**
+    -  FIFO
+2.  Working with FIFO
+    -  send message 1
+        -  Message 1
+        -  Message group ID: demo
+        -  Message deduplication ID: 1                                                                 
+    -  send message 2
+        -  Message 2
+        -  Message group ID: demo
+        -  Message deduplication ID: 2
+    -  send message 3
+    -  send message 4
+3.  Poll messages    
+                                                                         
