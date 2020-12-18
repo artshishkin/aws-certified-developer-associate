@@ -3443,6 +3443,12 @@ docker run \
 docker run --attach STDOUT -v ~/.aws/:/root/.aws/:ro --net=host -e AWS_REGION=eu-west-3 --name xray-daemon -p 2000:2000/udp amazon/aws-xray-daemon -o
 ```
 
+On Windows Power Shell
+
+```shell script
+docker run --attach STDOUT -v C:\Users\Admin\.aws:/root/.aws/:ro -e AWS_REGION=eu-west-3 --name xray-daemon -p 2000:2000/udp xray-daemon -o
+```
+
 **OR** build docker image from Dockerfile
 
 [Running the X-Ray daemon in a Docker container](https://docs.aws.amazon.com/xray/latest/devguide/xray-daemon-local.html#xray-daemon-local-docker)
@@ -3458,4 +3464,17 @@ docker run \
       --name xray-daemon \
       -p 2000:2000/udp \
       xray-daemon -o
+```
+
+######  Configure SDK for XRay
+
+-  [Tracing incoming requests with the X-Ray SDK for Java](https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-java-filters.html)
+-  [AOP with Spring and the X-Ray SDK for Java](https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-java-aop-spring.html) for AWS XRay.
+
+```xml
+<dependency>
+	<groupId>com.amazonaws</groupId>
+	<artifactId>aws-xray-recorder-sdk-spring</artifactId>
+	<version>2.4.0</version>
+</dependency>
 ```

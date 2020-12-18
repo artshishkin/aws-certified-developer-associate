@@ -1,0 +1,7 @@
+debug: true
+spring.h2.console.enabled: true
+spring:
+  thymeleaf:
+    enabled: true
+  profiles:
+    include: devpostgres

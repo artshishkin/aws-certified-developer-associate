@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmed Per Million Table</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+
+
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+    <tr>
+        <th th:text="${data[0].date}">Date</th>
+        <th>Country</th>
+        <th>Population</th>
+        <th>Confirmed Cases</th>
+        <th>Confirmed Per Million</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr th:each="countryOneParameterData,iter:${data}">
+        <td th:text="${iter.index+1}">Place</td>
+        <td th:text="${countryOneParameterData.country}">Country</td>
+        <td th:text="${#numbers.formatDecimal(countryOneParameterData.population,1,'COMMA',0,'POINT')}">Population</td>
+        <td th:text="${countryOneParameterData.confirmed}">Confirmed cases</td>
+        <td th:text="${#numbers.formatDecimal(countryOneParameterData.confirmedPerMillion,1,2)}">Confirmed cases per Million of
+            population
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+</body>
+</html>
