@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Week Summary Table</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+
+
+
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+    <tr>
+        <th>Date</th>
+        <th th:each="summary:${data[0].dayOneParameterSummaryList}" th:text="${summary.date}"> Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--    <tr th:if="${books.empty}">-->
+    <!--        <td colspan="2"> No Books Available </td>-->
+    <!--    </tr>-->
+    <tr th:each="countryOneParameterData:${data}">
+        <td th:text="${countryOneParameterData.country}">Country</td>
+        <td th:each="summary:${countryOneParameterData.dayOneParameterSummaryList}" th:text="${summary.count}"> Count</td>
+    </tr>
+
+    </tbody>
+</table>
+</body>
+</html>

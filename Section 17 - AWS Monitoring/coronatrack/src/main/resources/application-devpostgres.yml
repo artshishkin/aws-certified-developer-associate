@@ -1,0 +1,5 @@
+spring.datasource:
+  url: "${DATABASE_URL:jdbc:postgresql://localhost:5432/coronatracker}"
+  username: "${SPRING_DATASOURCE_USERNAME:postgres}"
+  password: "${SPRING_DATASOURCE_PASSWORD:123}"
+  driver-class-name: org.postgresql.Driver
