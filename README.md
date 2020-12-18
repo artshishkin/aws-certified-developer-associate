@@ -3419,5 +3419,43 @@ _Once you apply an X-Ray sampling rule this rule will be automatically applied t
 
 -  CloudTrail console
 -  Search by Event Name: DeleteBucket
-  
 
+#####  X-Ray for Spring application
+
+######  Start XRay Daemon Docker container locally
+
+```shell script
+docker pull amazon/aws-xray-daemon
+```
+
+```shell script
+docker run \
+      --attach STDOUT \
+      -v ~/.aws/:/root/.aws/:ro \
+      --net=host \
+      -e AWS_REGION=eu-west-3 \
+      --name xray-daemon \
+      -p 2000:2000/udp \
+      amazon/aws-xray-daemon -o
+```
+  
+```shell script
+docker run --attach STDOUT -v ~/.aws/:/root/.aws/:ro --net=host -e AWS_REGION=eu-west-3 --name xray-daemon -p 2000:2000/udp amazon/aws-xray-daemon -o
+```
+
+**OR** build docker image from Dockerfile
+
+[Running the X-Ray daemon in a Docker container](https://docs.aws.amazon.com/xray/latest/devguide/xray-daemon-local.html#xray-daemon-local-docker)
+
+-  `docker build -t xray-daemon .`
+
+```shell script
+docker run \
+      --attach STDOUT \
+      -v ~/.aws/:/root/.aws/:ro \
+      --net=host \
+      -e AWS_REGION=eu-west-3 \
+      --name xray-daemon \
+      -p 2000:2000/udp \
+      xray-daemon -o
+```
