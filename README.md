@@ -3428,6 +3428,8 @@ _Once you apply an X-Ray sampling rule this rule will be automatically applied t
 docker pull amazon/aws-xray-daemon
 ```
 
+From example
+
 ```shell script
 docker run \
       --attach STDOUT \
@@ -3440,13 +3442,13 @@ docker run \
 ```
   
 ```shell script
-docker run --attach STDOUT -v ~/.aws/:/root/.aws/:ro --net=host -e AWS_REGION=eu-west-3 --name xray-daemon -p 2000:2000/udp amazon/aws-xray-daemon -o
+docker run --attach STDOUT -v ~/.aws/:/root/.aws/:ro --net=host -e AWS_REGION=eu-west-3 --name xray-daemon -p 2000:2000/udp -p 2000:2000/tcp amazon/aws-xray-daemon -o
 ```
 
 On Windows Power Shell
 
 ```shell script
-docker run --attach STDOUT -v C:\Users\Admin\.aws:/root/.aws/:ro -e AWS_REGION=eu-west-3 --name xray-daemon -p 2000:2000/udp xray-daemon -o
+docker run --attach STDOUT -v C:\Users\Admin\.aws:/root/.aws/:ro -e AWS_REGION=eu-west-3 --name xray-daemon -p 2000:2000/udp -p 2000:2000/tcp xray-daemon -o
 ```
 
 **OR** build docker image from Dockerfile
@@ -3478,3 +3480,32 @@ docker run \
 	<version>2.4.0</version>
 </dependency>
 ```
+
+#####  Install XRay daemon on EC2
+
+-  Install XRay daemon
+
+```shell script
+#!/bin/bash
+curl https://s3.us-east-2.amazonaws.com/aws-xray-assets.us-east-2/xray-daemon/aws-xray-daemon-3.x.rpm -o /home/ec2-user/xray.rpm
+yum install -y /home/ec2-user/xray.rpm
+
+```
+
+-  Security setting
+    -  EC2 must have IAM role with policy `AWSXRayDaemonWriteAccess`
+```json
+{
+    "Sid": "XRayAccess",
+    "Action": [
+        "xray:PutTraceSegments",
+        "xray:PutTelemetryRecords",
+        "xray:GetSamplingRules",
+        "xray:GetSamplingTargets",
+        "xray:GetSamplingStatisticSummaries"
+    ],
+    "Effect": "Allow",
+    "Resource": "*"
+}
+```
+-  I Added this policy to previously created IAM role `CloudWatchAgentServerRole`
