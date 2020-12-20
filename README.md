@@ -3519,4 +3519,34 @@ _Once you apply an X-Ray sampling rule this rule will be automatically applied t
     -  send message 3
     -  send message 4
 3.  Poll messages    
-                                                                         
+
+#####  224. SQS - FIFO Queues Advanced
+
+1.  Add deduplication
+    -  queue DemoQueue.fifo -> Edit
+    -  Content-based deduplication - Enable -> Save
+2.  Testing Deduplication ID
+    -  Save and receive messages
+    -  Send message
+        -  Message body: `message 1`
+        -  Message group ID: `demo`
+        -  Message deduplication ID - Optional <- because we are using content-based (sha256)
+    -  Send again MANY times but Available message remains 1
+    -  then new
+    -  `message 2`  -> many sends
+    -  available 2 messages
+    -  then
+    -  send `message 2` but set deduplication ID 123 -> many times
+    -  available 3 messages
+3.  Testing Message Group ID
+    -  Deduplication ID: empty
+    -  Message Group ID: `user1`
+        -  m11, m12, m13 
+    -  Message Group ID: `user2`
+        -  m21, m22, m23
+    -  Was sending: m11,m12,m21,m22,m23,m13
+    -  Received:    m11,m12,m13,  m21,m22,m23
+    -  Order in ONE group is Guaranted
+    -  Overall order is NOT Guaranted
+        
+                                                                                 
