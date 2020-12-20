@@ -157,7 +157,8 @@ public class CoronaDataCsvParserService {
                 longitude = Double.parseDouble(record.get("Long"));
                 lat = Double.parseDouble(record.get("Lat"));
             } catch (NumberFormatException e) {
-                log.debug("Coordinates error for record {}", record, e);
+//                log.debug("Coordinates error for record {}", record, e);
+                log.debug("Coordinates error for record {}", record);
             }
 
             Location location = Location.builder()
