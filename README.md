@@ -3492,6 +3492,9 @@ yum install -y /home/ec2-user/xray.rpm
 
 ```
 
+-  to xray start automatically 
+    -  `chkconfig xray on`
+
 -  Security setting
     -  EC2 must have IAM role with policy `AWSXRayDaemonWriteAccess`
 ```json
@@ -3509,3 +3512,17 @@ yum install -y /home/ec2-user/xray.rpm
 }
 ```
 -  I Added this policy to previously created IAM role `CloudWatchAgentServerRole`
+
+######  When I was debugging XRay on EC2 with my app running in docker I made some steps 
+
+-  [Running the X-Ray daemon on Linux](https://docs.aws.amazon.com/xray/latest/devguide/xray-daemon-local.html)
+-  You can run the daemon executable from the command line. Use the -o option to run in local mode, and -n to set the region.
+-  To run the daemon in the background, use &.
+-  `./xray -o -n eu-west-3 &`
+-  `sudo service xray status` - must be running (I had something broken)
+-  uninstall `sudo yum  remove xray`
+-  install ones again
+-  logs `cat /var/log/xray/xray.log` 
+-  on EC2 docker said 
+    -  `Could not resolve host: host.docker.internal`
+    -  when I tried to `curl host.docker.internal` - on Windows Docker works fine for me
