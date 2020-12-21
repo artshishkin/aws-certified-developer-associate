@@ -3569,5 +3569,13 @@ _Once you apply an X-Ray sampling rule this rule will be automatically applied t
     -  Subject: `Hello World Subject`
     -  Message: `Hello World from the console`         
     
+#####  227. SNS and SQS - Fan Out Pattern
+
+1.  Fan Out Pattern
+    -  SNS -> many SQS
+    -  **OR**
+    -  SNS.fifo -> many SQS.fifo
+2.  Application: S3 Events to Multiple Queues    
+
         
                                                                                  
