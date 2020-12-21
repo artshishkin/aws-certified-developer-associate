@@ -3548,5 +3548,26 @@ _Once you apply an X-Ray sampling rule this rule will be automatically applied t
     -  Received:    m11,m12,m13,  m21,m22,m23
     -  Order in ONE group is Guaranted
     -  Overall order is NOT Guaranted
+    
+#####  226. SNS Hands On
+
+1.  Create SNS topic
+    -  SNS management console
+    -  Create topic: `MyFirstTopic`
+    -  Standard
+    -  Create topic
+2.  Create subscription
+    -  Email
+    -  Go to [mailinator](https://www.mailinator.com/v3/#/#inboxpane) 
+    -  inbox `artshyshkin` -> email will be `artshyshkin@mailinator.com`
+    -  create subscription     
+    -  go to mailinator.com -> confirm subscription
+    -  SNS -> Subscriptions -> Status Confirmed
+3.  Publishing
+    -  Topics -> `MyFirstTopic`
+    -  Publish message
+    -  Subject: `Hello World Subject`
+    -  Message: `Hello World from the console`         
+    
         
                                                                                  
