@@ -3762,3 +3762,59 @@ yum install -y /home/ec2-user/xray.rpm
 -  **Clean Up**
     -  stream delete                                                                                 
 
+####  Section 19: AWS Serverless: Lambda
+
+##### 237. AWS Lambda - First Hands On
+
+1.  Lambda management console
+    -  [begin with samples](https://eu-north-1.console.aws.amazon.com/lambda/home?region=eu-north-1#/begin)
+    -  for Java, Node.js etc
+    -  Run
+    -  Next: Lambda responds to events -> play
+    -  Next: Scale seamlessly -> play
+2.  Create function
+    -  use a blueprint
+    -  type `hello` -> find example with Python -> Configure
+        -  Function name: `hello-world`
+        -  Execution role: `Create a new role with basic Lambda permissions`
+        -  Create
+3.  Test event
+    -  crete new
+    -  Template: `Hello World` (`hello-world`)           
+    -  Name: `SimpleEvent`
+    -  Create Event
+    -  Invoke
+        -  Output:
+        -  `Execution result: succeeded`
+        -  return `value1`
+        -  Log output
+            -  `START RequestId: 03955e12-cb6d-4464-a466-1b6148cd0ef8 Version: $LATEST
+                value1 = value1
+                value2 = value2
+                value3 = value3
+                END RequestId: 03955e12-cb6d-4464-a466-1b6148cd0ef8
+                REPORT RequestId: 03955e12-cb6d-4464-a466-1b6148cd0ef8	Duration: 1.55 ms	Billed Duration: 2 ms	Memory Size: 128 MB	Max Memory Used: 49 MB	Init Duration: 109.79 ms`
+            -   `Click here to view the CloudWatch log group.`
+4.  Lambda function code modification
+    -  comment out `return` statement
+    -  uncomment `raise Exception('Something went wrong')`
+    -  Save
+    -  Deploy
+    -  Test
+    -  `Execution result: failed`
+    -  `{
+          "errorMessage": "Something went wrong",
+          "errorType": "Exception",
+          "stackTrace": [
+            "  File \"/var/task/lambda_function.py\", line 12, in lambda_handler\n    raise Exception('Something went wrong')\n"
+          ]
+        }`            
+5.  Some thoughts
+    -  Our function is `lambda_function.py`
+    -  Handler is `lambda_function.lambda_handler`
+    -  our lambda function has Execution Role to log to CloudWatch Logs:
+        -  Configuration -> Permissions
+        -  Role name: `hello-world-role-lzl5fa1w`
+6.  Revert function
+    -  uncomment `return`
+    -  comment `exception`            
