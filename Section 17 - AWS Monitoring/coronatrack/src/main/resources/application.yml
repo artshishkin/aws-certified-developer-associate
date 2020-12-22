@@ -1,0 +1,37 @@
+spring.application.name: Coronavirus analysis
+debug: false
+
+spring.jpa.hibernate.ddl-auto: update
+
+# https://www.baeldung.com/hibernate-lazy-loading-workaround
+# https://vladmihalcea.com/the-hibernate-enable_lazy_load_no_trans-anti-pattern/
+spring.jpa.properties.hibernate.enable_lazy_load_no_trans: true
+
+logging.level:
+  org.hibernate.SQL: info
+  com.artarkatesoft: debug
+
+logging:
+  file:
+    name: "logs/corona.log"
+
+management:
+  endpoint.health.show-details: always
+  endpoints.web.exposure.include: "*"
+
+app:
+  coronavirus-data:
+    confirmed-url: "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
+    deaths-url: "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
+    recovered-url: "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv"
+    daily-report:
+      filename-pattern: "MM-dd-yyyy.csv"
+      url: "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/filename"
+
+  population.url: "http://api.worldbank.org/v2/en/indicator/SP.POP.TOTL?downloadformat=csv"
+  analysis.default-countries: "Italy,Spain,Germany,Poland,Romania,Slovakia,Hungary,Russia,Belarus,Moldova,Ukraine,US"
+
+
+
+
+#spring.profiles.active: dev

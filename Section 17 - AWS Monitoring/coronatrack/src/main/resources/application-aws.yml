@@ -1,0 +1,10 @@
+spring.h2.console.enabled: true
+spring:
+  thymeleaf:
+    enabled: true
+
+#debug: true
+logging:
+  level:
+    com.amazonaws: trace
+    com.amazonaws.xray.spring.aop.AbstractXRayInterceptor: debug

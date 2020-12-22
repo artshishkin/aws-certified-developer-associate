@@ -3419,8 +3419,114 @@ _Once you apply an X-Ray sampling rule this rule will be automatically applied t
 
 -  CloudTrail console
 -  Search by Event Name: DeleteBucket
-  
 
+#####  X-Ray for Spring application
+
+######  Start XRay Daemon Docker container locally
+
+```shell script
+docker pull amazon/aws-xray-daemon
+```
+
+From example
+
+```shell script
+docker run \
+      --attach STDOUT \
+      -v ~/.aws/:/root/.aws/:ro \
+      --net=host \
+      -e AWS_REGION=eu-west-3 \
+      --name xray-daemon \
+      -p 2000:2000/udp \
+      amazon/aws-xray-daemon -o
+```
+  
+```shell script
+docker run --attach STDOUT -v ~/.aws/:/root/.aws/:ro --net=host -e AWS_REGION=eu-west-3 --name xray-daemon -p 2000:2000/udp -p 2000:2000/tcp amazon/aws-xray-daemon -o
+```
+
+On Windows Power Shell
+
+```shell script
+docker run --attach STDOUT -v C:\Users\Admin\.aws:/root/.aws/:ro -e AWS_REGION=eu-west-3 --name xray-daemon -p 2000:2000/udp -p 2000:2000/tcp xray-daemon -o
+```
+
+**OR** build docker image from Dockerfile
+
+[Running the X-Ray daemon in a Docker container](https://docs.aws.amazon.com/xray/latest/devguide/xray-daemon-local.html#xray-daemon-local-docker)
+
+-  `docker build -t xray-daemon .`
+
+```shell script
+docker run \
+      --attach STDOUT \
+      -v ~/.aws/:/root/.aws/:ro \
+      --net=host \
+      -e AWS_REGION=eu-west-3 \
+      --name xray-daemon \
+      -p 2000:2000/udp \
+      xray-daemon -o
+```
+
+######  Configure SDK for XRay
+
+-  [Tracing incoming requests with the X-Ray SDK for Java](https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-java-filters.html)
+-  [AOP with Spring and the X-Ray SDK for Java](https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-java-aop-spring.html) for AWS XRay.
+
+```xml
+<dependency>
+	<groupId>com.amazonaws</groupId>
+	<artifactId>aws-xray-recorder-sdk-spring</artifactId>
+	<version>2.4.0</version>
+</dependency>
+```
+
+#####  Install XRay daemon on EC2
+
+-  Install XRay daemon
+
+```shell script
+#!/bin/bash
+curl https://s3.us-east-2.amazonaws.com/aws-xray-assets.us-east-2/xray-daemon/aws-xray-daemon-3.x.rpm -o /home/ec2-user/xray.rpm
+yum install -y /home/ec2-user/xray.rpm
+
+```
+
+-  to xray start automatically 
+    -  `chkconfig xray on`
+
+-  Security setting
+    -  EC2 must have IAM role with policy `AWSXRayDaemonWriteAccess`
+```json
+{
+    "Sid": "XRayAccess",
+    "Action": [
+        "xray:PutTraceSegments",
+        "xray:PutTelemetryRecords",
+        "xray:GetSamplingRules",
+        "xray:GetSamplingTargets",
+        "xray:GetSamplingStatisticSummaries"
+    ],
+    "Effect": "Allow",
+    "Resource": "*"
+}
+```
+-  I Added this policy to previously created IAM role `CloudWatchAgentServerRole`
+
+######  When I was debugging XRay on EC2 with my app running in docker I made some steps 
+
+-  [Running the X-Ray daemon on Linux](https://docs.aws.amazon.com/xray/latest/devguide/xray-daemon-local.html)
+-  You can run the daemon executable from the command line. Use the -o option to run in local mode, and -n to set the region.
+-  To run the daemon in the background, use &.
+-  `./xray -o -n eu-west-3 &`
+-  `sudo service xray status` - must be running (I had something broken)
+-  uninstall `sudo yum  remove xray`
+-  install ones again
+-  logs `cat /var/log/xray/xray.log` 
+-  on EC2 docker said 
+    -  `Could not resolve host: host.docker.internal`
+    -  when I tried to `curl host.docker.internal` - on Windows Docker works fine for me      
+      
 ####  Section 18: AWS Integration & Messaging: SQS, SNS & Kinesis
 
 #####  218. SQS - Standard Queue Hands On
@@ -3655,3 +3761,4 @@ _Once you apply an X-Ray sampling rule this rule will be automatically applied t
                                                                                  
 -  **Clean Up**
     -  stream delete                                                                                 
+

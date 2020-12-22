@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Day Summary Table</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<a href="/" class="btn">Main page</a>
+
+<h1 th:text="|All parameters table for ${data.country}|"></h1>
+<div class="container">
+    <!--    <form th:action="@{/table/v2/{period}}">-->
+    <span th:text="'Population is ' + ${#numbers.formatDecimal(data.population,1,'COMMA',0,'POINT')}"></span>
+    <form th:action="|/table/v2/${period}|">
+        <label for="country">Choose a country</label>
+        <select id="country" name="countryName" th:onchange="this.form.submit()">
+            <option th:each="country : ${countries}" th:value="${country}" th:text="${country}"
+                    th:selected="${country==data.country}"></option>
+        </select>
+        <input type="submit" value="Apply"/>
+    </form>
+</div>
+
+<!--    <table class="table table-bordered table-striped header-fixed">-->
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+    <tr>
+        <th th:text="${data.country}">Country</th>
+
+        <th>Confirmed (C)</th>
+        <th>&Delta;C</th>
+        <th>Recovered (R)</th>
+        <th>&Delta;R</th>
+        <th>R(%C)</th>
+        <th>Deaths(D)</th>
+        <th>&Delta;D</th>
+        <th>D(%C)</th>
+        <th>R:D (%)</th>
+        <th>Active (A) cases</th>
+        <th>(A)/Million</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--    <tr th:if="${books.empty}">-->
+    <!--        <td colspan="2"> No Books Available </td>-->
+    <!--    </tr>-->
+    <tr th:each="summary,iter:${data.periodSummaryList}">
+        <td th:text="${summary.date}">Date</td>
+        <td th:text="${summary.confirmedCount}">Confirmed cases</td>
+
+        <td th:text="${summary.confirmedDelta}">Delta C</td>
+<!--        <th:block th:with="previous=${iter.last?0:data.periodSummaryList[iter.index+1].confirmedCount}">-->
+<!--            <td th:text="${summary.confirmedCount - previous}">Delta C</td>-->
+<!--        </th:block>-->
+
+        <td th:text="${summary.recoveredCount}">Recovered cases</td>
+
+        <td th:text="${summary.recoveredDelta}">Delta R</td>
+<!--        <th:block th:with="previous=${iter.last?0:data.periodSummaryList[iter.index+1].recoveredCount}">-->
+<!--            <td th:text="${summary.recoveredCount - previous}">Delta R</td>-->
+<!--        </th:block>-->
+
+        <td th:text="${#numbers.formatDecimal((summary.confirmedCount==0?0.0:100.0*summary.recoveredCount/summary.confirmedCount),1,2)}">
+            Recovered(Percent of confirmed)
+        </td>
+
+        <td th:text="${summary.deathsCount}">Deaths</td>
+
+<!--        <td th:text="${iter.last?0:summary.deathsCount - data.periodSummaryList[iter.index+1].deathsCount}">Delta D</td>-->
+        <td th:text="${summary.deathsDelta}">Delta D</td>
+
+        <td th:text="${#numbers.formatDecimal((summary.confirmedCount==0?0.0:100.0*summary.deathsCount/summary.confirmedCount),1,2)}">
+            Deaths(% of confirmed)
+        </td>
+
+
+        <th:block
+                th:with="deathsPercent=${summary.deathsCount+summary.recoveredCount==0?'50':(100*summary.deathsCount/(summary.deathsCount+summary.recoveredCount))}">
+            <!--            <td th:text="${summary.deathsCount+summary.recoveredCount==0?'':#strings.concat((100 - deathsPercent),':',deathsPercent)}">-->
+            <td th:text="${summary.deathsCount+summary.recoveredCount==0 ? '' : ((100 - deathsPercent) + ':' + deathsPercent)}">
+                Recovered/Deaths(%)
+            </td>
+        </th:block>
+
+        <th:block th:with="active = ${(summary.confirmedCount - summary.recoveredCount - summary.deathsCount)}">
+            <td th:text="${active}">Active cases</td>
+            <td th:text="${(data.population==null || data.population==0)?'No population data':#numbers.formatDecimal((1000000.0*active/data.population),1,2)}">
+                A/1Mln
+            </td>
+        </th:block>
+
+
+    </tr>
+    </tbody>
+    <thead class="thead-dark">
+    <tr>
+        <th th:text="${data.country}">Country</th>
+        <th>Confirmed (C)</th>
+        <th>Recovered (R)</th>
+        <th>R(%C)</th>
+        <th>Deaths(D)</th>
+        <th>D(%C)</th>
+        <th>R:D (%)</th>
+        <th>Active (A) cases</th>
+        <th>(A)/Million</th>
+    </tr>
+    </thead>
+</table>
+
+</body>
+</html>
