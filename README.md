@@ -3525,4 +3525,240 @@ yum install -y /home/ec2-user/xray.rpm
 -  logs `cat /var/log/xray/xray.log` 
 -  on EC2 docker said 
     -  `Could not resolve host: host.docker.internal`
-    -  when I tried to `curl host.docker.internal` - on Windows Docker works fine for me
+    -  when I tried to `curl host.docker.internal` - on Windows Docker works fine for me      
+      
+####  Section 18: AWS Integration & Messaging: SQS, SNS & Kinesis
+
+#####  218. SQS - Standard Queue Hands On
+
+1.  Create queue
+    -  SQS console -> create queue
+    -  Standard
+    -  Name: `DemoQueue`
+    -  Access policy: Basic
+    -  Encryption:
+        -  Server-side encryption:  Enabled
+    -  Create queue
+2.  Working with queue messages
+    -  console
+    -  Send and Receive messages
+    -  `hello message`
+    -  Send
+    -  Got 1 message -> Poll for messages
+        -  Details
+        -  Body
+        -  Attributes
+    -  tick message -> Delete
+3.  Working with Queue
+    -  Purge - delete all the messages in the queue
+4.  Monitoring
+    -  Approximate Number Of Messages Visible
+    -  Approximate Age Of Oldest Message
+5.  Access policy
+
+#####  219. SQS - Message Visibility Timeout
+
+1.  Open 2 pages in browser
+    -  in 1: 
+        -  send message
+        -  poll message
+    -  in 2:
+        -  message became invisible for **30** sec
+        -  wait for 30 sec
+        -  delete message
+2.  Modify Visibility Timeout to 1 minute
+
+#####  220. SQS - Dead Letter Queues
+
+1.  Create Dead Letter Queue
+    -  create queue: `DemoQueueDLQ`
+    -  Message retention period: 14 days
+2.  Modify main queue
+    -  set Visibility Timeout to 5 sec (for tests)
+    -  DeadLetterQueue: Enabled
+    -  Maximum receives: 4
+3.  Testing
+    -  open 2 pages in browser
+    -  DLQ
+        -  start polling
+    -  DemoQueue
+        -  send message
+    -  after 4 messages this message will be sent to DLQ
+    
+#####  221. SQS - Delay Queues
+
+1.  Create Delay Queue
+    -  create queue
+    -  `DelayQueue`
+    -  Delivery Delay: 10 sec
+2.  Testing
+    -  start polling messages
+    -  send message
+    -  wait for 10 sec
+    -  should appear
+    
+#####  222. SQS - Certified Developer concepts
+
+1.  Long Polling
+    -  `DemoQueue`
+    -  Edit
+    -  Receive message wait time: 20sec
+2.  Testing
+    -  poll for messages
+    -  send message
+    -  it will immediately appear in consumer's window
+
+#####  223. SQS - FIFO Queues
+
+1.  Create FIFO Queue
+    -  create queue: **DemoQueue.fifo**
+    -  FIFO
+2.  Working with FIFO
+    -  send message 1
+        -  Message 1
+        -  Message group ID: demo
+        -  Message deduplication ID: 1                                                                 
+    -  send message 2
+        -  Message 2
+        -  Message group ID: demo
+        -  Message deduplication ID: 2
+    -  send message 3
+    -  send message 4
+3.  Poll messages    
+
+#####  224. SQS - FIFO Queues Advanced
+
+1.  Add deduplication
+    -  queue DemoQueue.fifo -> Edit
+    -  Content-based deduplication - Enable -> Save
+2.  Testing Deduplication ID
+    -  Save and receive messages
+    -  Send message
+        -  Message body: `message 1`
+        -  Message group ID: `demo`
+        -  Message deduplication ID - Optional <- because we are using content-based (sha256)
+    -  Send again MANY times but Available message remains 1
+    -  then new
+    -  `message 2`  -> many sends
+    -  available 2 messages
+    -  then
+    -  send `message 2` but set deduplication ID 123 -> many times
+    -  available 3 messages
+3.  Testing Message Group ID
+    -  Deduplication ID: empty
+    -  Message Group ID: `user1`
+        -  m11, m12, m13 
+    -  Message Group ID: `user2`
+        -  m21, m22, m23
+    -  Was sending: m11,m12,m21,m22,m23,m13
+    -  Received:    m11,m12,m13,  m21,m22,m23
+    -  Order in ONE group is Guaranted
+    -  Overall order is NOT Guaranted
+    
+#####  226. SNS Hands On
+
+1.  Create SNS topic
+    -  SNS management console
+    -  Create topic: `MyFirstTopic`
+    -  Standard
+    -  Create topic
+2.  Create subscription
+    -  Email
+    -  Go to [mailinator](https://www.mailinator.com/v3/#/#inboxpane) 
+    -  inbox `artshyshkin` -> email will be `artshyshkin@mailinator.com`
+    -  create subscription     
+    -  go to mailinator.com -> confirm subscription
+    -  SNS -> Subscriptions -> Status Confirmed
+3.  Publishing
+    -  Topics -> `MyFirstTopic`
+    -  Publish message
+    -  Subject: `Hello World Subject`
+    -  Message: `Hello World from the console`         
+    
+#####  227. SNS and SQS - Fan Out Pattern
+
+1.  Fan Out Pattern
+    -  SNS -> many SQS
+    -  **OR**
+    -  SNS.fifo -> many SQS.fifo
+2.  Application: S3 Events to Multiple Queues    
+
+#####  229. AWS Kinesis Hands On
+
+1.  Create Data Stream
+    -  Kinesis console
+    -  create data stream: `my-first-kinesis-stream`
+    -  Number of open shards: 1
+    -  Create
+2.  Edit Configuration
+    -  Enhanced (shard-level) metrics: Enable all (for study purpose)
+3.  Monitoring: nothing yet
+4.  AWS CLI
+    -  `aws kinesis help`
+    -  `aws kinesis list-stream help`   
+    -  `aws kinesis list-stream`
+    -  `aws kinesis describe-stream help`
+    -  `aws kinesis describe-stream --stream-name my-first-kinesis-stream`
+5.  Put Records    
+    -  `aws kinesis put-record help`
+    -  `aws kinesis put-record --stream-name my-first-kinesis-stream --data "some data" --partition-key user_123` (**error** for me)   
+    -  `aws kinesis put-record --cli-binary-format raw-in-base64-out --stream-name my-first-kinesis-stream --data "some data" --partition-key user_123`
+        -  answer:
+        -  `{
+               "ShardId": "shardId-000000000000",
+               "SequenceNumber": "49613841384246730583938226464908902055888307798918823938"
+           }`
+    -  `aws kinesis put-record --cli-binary-format raw-in-base64-out --stream-name my-first-kinesis-stream --data "user signup" --partition-key user_123`
+    -  `aws kinesis put-record --cli-binary-format raw-in-base64-out --stream-name my-first-kinesis-stream --data "user login" --partition-key user_123`
+    -  `aws kinesis put-record --cli-binary-format raw-in-base64-out --stream-name my-first-kinesis-stream --data "user visit home page" --partition-key user_123`
+        -  SequenceNumbers are different but begin of them is similar 
+6.  Get Records
+    -  `aws kinesis get-shard-iterator help`
+    -  `aws kinesis get-shard-iterator --stream-name my-first-kinesis-stream --shard-id shardId-000000000000 --shard-iterator-type TRIM_HORIZON`    
+        -  answer:
+        -  `{
+                "ShardIterator": "AAAAAAAAAAFU3cSh3W3fn+808baCUrsJpeL46evq+0p7f6FVxSmpftTlp8vLCg1br1K2KQ43r7iueabuTmFO1hFNgCoa5VlVFeHPuKn9lDDqeSu4cLFhnfh0W807sEzuob2Jqyk5MhgQZaA9CwFKE12wbFO8iofLlcwb0e+DCI63gOzRrYYstfW/d14RNj5QxFuEl2q+xSCzBxIWZGW9AcQu6mqAPoTlOIibfYxYQ5sKv1kBCHsgiw=="
+            }`      
+    -  `aws kinesis get-records help`
+    -  `aws kinesis get-records --shard-iterator AAAAAAAAAAFU3cSh3W3fn+808baCUrsJpeL46evq+0p7f6FVxSmpftTlp8vLCg1br1K2KQ43r7iueabuTmFO1hFNgCoa5VlVFeHPuKn9lDDqeSu4cLFhnfh0W807sEzuob2Jqyk5MhgQZaA9CwFKE12wbFO8iofLlcwb0e+DCI63gOzRrYYstfW/d14RNj5QxFuEl2q+xSCzBxIWZGW9AcQu6mqAPoTlOIibfYxYQ5sKv1kBCHsgiw==`
+        -  output:        
+
+```json
+{
+    "Records": [
+        {
+            "SequenceNumber": "49613841384246730583938226464908902055888307798918823938",
+            "ApproximateArrivalTimestamp": "2020-12-22T16:39:31.486000+02:00",
+            "Data": "bXkgZmlyc3Qga2luZXNpcyBtZXNzYWdl",
+            "PartitionKey": "user_123"
+        },
+        {
+            "SequenceNumber": "49613841384246730583938226464910110981707948129177829378",
+            "ApproximateArrivalTimestamp": "2020-12-22T16:45:44.726000+02:00",
+            "Data": "dXNlciBzaWdudXA=",
+            "PartitionKey": "user_123"
+        },
+        {
+            "SequenceNumber": "49613841384246730583938226464911319907527563445547302914",
+            "ApproximateArrivalTimestamp": "2020-12-22T16:45:55.494000+02:00",
+            "Data": "dXNlciBsb2dpbg==",
+            "PartitionKey": "user_123"
+        },
+        {
+            "SequenceNumber": "49613841384246730583938226464912528833347178761916776450",
+            "ApproximateArrivalTimestamp": "2020-12-22T16:46:05.354000+02:00",
+            "Data": "dXNlciB2aXNpdCBob21lIHBhZ2U=",
+            "PartitionKey": "user_123"
+        }
+    ],
+    "NextShardIterator": "AAAAAAAAAAGU+ksRdChCYHWSVSrr+Kyt3nnmz4Ai92UAp5ZUSvp6GfGkFAfAuba4qbSFwj6K/NJ+IHMtHlloyqgw/gzvri28UeAanjT1Tye3NetLpBa/QQuFZ/dPKk+k2HAaU8fkYEr58KLxcYlajsoHi+nmSCncabPXCNqrPgX526toB1bPoyncjp24z8rjxjafnP1Tajv/sQGxXHbqkmbNmR6oHH0r1m4PuTww9kfDAqn2YQNbMQ==",
+    "MillisBehindLatest": 0
+}
+```
+-  Data is Encoded Base64
+-  go to [decode64](https://www.base64decode.org/)
+-  insert `dXNlciB2aXNpdCBob21lIHBhZ2U=` -> decode -> `user visit home page` - OK    
+                                                                                 
+-  **Clean Up**
+    -  stream delete                                                                                 
+
