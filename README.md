@@ -3577,5 +3577,81 @@ _Once you apply an X-Ray sampling rule this rule will be automatically applied t
     -  SNS.fifo -> many SQS.fifo
 2.  Application: S3 Events to Multiple Queues    
 
-        
+#####  229. AWS Kinesis Hands On
+
+1.  Create Data Stream
+    -  Kinesis console
+    -  create data stream: `my-first-kinesis-stream`
+    -  Number of open shards: 1
+    -  Create
+2.  Edit Configuration
+    -  Enhanced (shard-level) metrics: Enable all (for study purpose)
+3.  Monitoring: nothing yet
+4.  AWS CLI
+    -  `aws kinesis help`
+    -  `aws kinesis list-stream help`   
+    -  `aws kinesis list-stream`
+    -  `aws kinesis describe-stream help`
+    -  `aws kinesis describe-stream --stream-name my-first-kinesis-stream`
+5.  Put Records    
+    -  `aws kinesis put-record help`
+    -  `aws kinesis put-record --stream-name my-first-kinesis-stream --data "some data" --partition-key user_123` (**error** for me)   
+    -  `aws kinesis put-record --cli-binary-format raw-in-base64-out --stream-name my-first-kinesis-stream --data "some data" --partition-key user_123`
+        -  answer:
+        -  `{
+               "ShardId": "shardId-000000000000",
+               "SequenceNumber": "49613841384246730583938226464908902055888307798918823938"
+           }`
+    -  `aws kinesis put-record --cli-binary-format raw-in-base64-out --stream-name my-first-kinesis-stream --data "user signup" --partition-key user_123`
+    -  `aws kinesis put-record --cli-binary-format raw-in-base64-out --stream-name my-first-kinesis-stream --data "user login" --partition-key user_123`
+    -  `aws kinesis put-record --cli-binary-format raw-in-base64-out --stream-name my-first-kinesis-stream --data "user visit home page" --partition-key user_123`
+        -  SequenceNumbers are different but begin of them is similar 
+6.  Get Records
+    -  `aws kinesis get-shard-iterator help`
+    -  `aws kinesis get-shard-iterator --stream-name my-first-kinesis-stream --shard-id shardId-000000000000 --shard-iterator-type TRIM_HORIZON`    
+        -  answer:
+        -  `{
+                "ShardIterator": "AAAAAAAAAAFU3cSh3W3fn+808baCUrsJpeL46evq+0p7f6FVxSmpftTlp8vLCg1br1K2KQ43r7iueabuTmFO1hFNgCoa5VlVFeHPuKn9lDDqeSu4cLFhnfh0W807sEzuob2Jqyk5MhgQZaA9CwFKE12wbFO8iofLlcwb0e+DCI63gOzRrYYstfW/d14RNj5QxFuEl2q+xSCzBxIWZGW9AcQu6mqAPoTlOIibfYxYQ5sKv1kBCHsgiw=="
+            }`      
+    -  `aws kinesis get-records help`
+    -  `aws kinesis get-records --shard-iterator AAAAAAAAAAFU3cSh3W3fn+808baCUrsJpeL46evq+0p7f6FVxSmpftTlp8vLCg1br1K2KQ43r7iueabuTmFO1hFNgCoa5VlVFeHPuKn9lDDqeSu4cLFhnfh0W807sEzuob2Jqyk5MhgQZaA9CwFKE12wbFO8iofLlcwb0e+DCI63gOzRrYYstfW/d14RNj5QxFuEl2q+xSCzBxIWZGW9AcQu6mqAPoTlOIibfYxYQ5sKv1kBCHsgiw==`
+        -  output:        
+
+```json
+{
+    "Records": [
+        {
+            "SequenceNumber": "49613841384246730583938226464908902055888307798918823938",
+            "ApproximateArrivalTimestamp": "2020-12-22T16:39:31.486000+02:00",
+            "Data": "bXkgZmlyc3Qga2luZXNpcyBtZXNzYWdl",
+            "PartitionKey": "user_123"
+        },
+        {
+            "SequenceNumber": "49613841384246730583938226464910110981707948129177829378",
+            "ApproximateArrivalTimestamp": "2020-12-22T16:45:44.726000+02:00",
+            "Data": "dXNlciBzaWdudXA=",
+            "PartitionKey": "user_123"
+        },
+        {
+            "SequenceNumber": "49613841384246730583938226464911319907527563445547302914",
+            "ApproximateArrivalTimestamp": "2020-12-22T16:45:55.494000+02:00",
+            "Data": "dXNlciBsb2dpbg==",
+            "PartitionKey": "user_123"
+        },
+        {
+            "SequenceNumber": "49613841384246730583938226464912528833347178761916776450",
+            "ApproximateArrivalTimestamp": "2020-12-22T16:46:05.354000+02:00",
+            "Data": "dXNlciB2aXNpdCBob21lIHBhZ2U=",
+            "PartitionKey": "user_123"
+        }
+    ],
+    "NextShardIterator": "AAAAAAAAAAGU+ksRdChCYHWSVSrr+Kyt3nnmz4Ai92UAp5ZUSvp6GfGkFAfAuba4qbSFwj6K/NJ+IHMtHlloyqgw/gzvri28UeAanjT1Tye3NetLpBa/QQuFZ/dPKk+k2HAaU8fkYEr58KLxcYlajsoHi+nmSCncabPXCNqrPgX526toB1bPoyncjp24z8rjxjafnP1Tajv/sQGxXHbqkmbNmR6oHH0r1m4PuTww9kfDAqn2YQNbMQ==",
+    "MillisBehindLatest": 0
+}
+```
+-  Data is Encoded Base64
+-  go to [decode64](https://www.base64decode.org/)
+-  insert `dXNlciB2aXNpdCBob21lIHBhZ2U=` -> decode -> `user visit home page` - OK    
                                                                                  
+-  **Clean Up**
+    -  stream delete                                                                                 
