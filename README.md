@@ -3817,4 +3817,18 @@ yum install -y /home/ec2-user/xray.rpm
         -  Role name: `hello-world-role-lzl5fa1w`
 6.  Revert function
     -  uncomment `return`
-    -  comment `exception`            
+    -  comment `exception`
+    
+#####  239. Lambda Synchronous Invocations Hands On
+
+1.  CLI
+    -  `aws lambda list-functions --region eu-north-1`
+    -  response -> my `hello-world` info in JSON
+    -  ~~aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-out --payload "'{"key1":"value1","key2":"value2","key3":"value3"}'" --region eu-north-1 response.json~~
+    -  `aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-out --payload '{\"key1\":\"value1\",\"key2\":\"value2\",\"key3\":\"value3\"}' --region eu-north-1 response.json`
+    -  response
+    -  `{
+            "StatusCode": 200,
+            "ExecutedVersion": "$LATEST"
+        }`
+                   
