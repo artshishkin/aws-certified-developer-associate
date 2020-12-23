@@ -3903,4 +3903,53 @@ yum install -y /home/ec2-user/xray.rpm
     -  Permissions
     -  **Resource-based policy**
 10.  CleanUp
-    -  delete ALB                
+    -  delete ALB
+
+#####  244. Lambda Asynchronous Invocations Hands On
+
+1.  Invoking Lambda asynchronously
+    -  `hello-world`
+    -  need to add `--invocation-type Event`
+    -  `aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-out --payload '{\"key1\":\"value1\",\"key2\":\"value2\",\"key3\":\"value3\"}' --invocation-type Event --region eu-north-1 response.json`
+    -  response
+        -  `{
+                "StatusCode": 202
+            }`
+        -  202 Accepted
+2.  View logs
+    -  CloudWatch
+    -  CloudWatch Logs
+    -  Log groups
+    -  `/aws/lambda/hello-world`
+3.  Make Lambda function fail
+    -  modify code for lambda to throw an exception
+4.  Invoke lambda one more
+    -  `aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-out --payload '{\"key1\":\"value1\",\"key2\":\"value2\",\"key3\":\"value3\"}' --invocation-type Event --region eu-north-1 response.json`
+    -  got response
+    -  `{
+            "StatusCode": 202
+        }`
+    -  CloudWatch Logs: was 3 attempts
+        -  one initial attempt with Error
+        -  after 1 minute
+        -  after 2 minutes (3min from original attempt)
+5.  Enabling Dead-Letter Queue
+    -  `hello-world`
+    -  Configuration
+    -  Asynchronous invocation
+        -  Retry attempts: 2 (default, can be 0, 1, 2)
+        -  Dead-letter queue service: SQS
+            -  Queue: create new (`LambdaHelloWorldDLQ`) or use existing 
+            -  got an error
+            -  `The provided execution role does not have permissions to call SendMessage on SQS`
+    -  Modify execution role
+        -  Configuration -> Permission -> Execution Role -> hello-world-role-lzl5fa1w -> link to IAM console
+        -  Attach policy: `AmazonSQSFullAccess`
+    -  Retry attaching to Lambda Function dead-letter queue
+6.  Invoke Lambda with Exception once again
+    -  `aws lambda invoke --function-name hello-world --cli-binary-format raw-in-base64-out --payload '{\"key1\":\"value1\",\"key2\":\"value2\",\"key3\":\"value3\"}' --invocation-type Event --region eu-north-1 response.json`                             
+    -  after 3 min view DLQ
+        -  1 message available
+        -  view Error message
+    -  view CloudWatch Logs
+        -  same RequestId 3 times (3 tries)                          
