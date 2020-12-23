@@ -3974,4 +3974,34 @@ yum install -y /home/ec2-user/xray.rpm
     -  Rules: `InvokeLambdaEveryMinute`    
     -  **Disable**
     
-                                           
+#####  246. Lambda & S3 Event Notifications
+
+1.  Create Lambda function
+    -  `lambda-s3`
+    -  Python 3.8
+2.  Create s3 bucket
+    -  `art-s3-events-demo`
+    -  block all public access (default)
+    -  create
+3.  Create Event notifications for S3
+    -  s3 ->  `art-s3-events-demo` -> Properties -> 
+    -  Create Event notification
+        -  Name: `InvokeLambdaOnNewObjects`
+        -  Events: `All object create event`
+        -  SendTo: Lambda Function `lambda-s3`
+        -  Save
+4.  Lambda Console
+    -  Function Visualization
+5.  Modify Lambda Function
+    -  `print(event)`
+6.  View Resource-based policy
+7.  Upload file to S3 bucket
+8.  View CloudWatch Logs
+             
+                  
+    
+    
+    
+    
+    
+    
