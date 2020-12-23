@@ -3831,4 +3831,76 @@ yum install -y /home/ec2-user/xray.rpm
             "StatusCode": 200,
             "ExecutedVersion": "$LATEST"
         }`
-                   
+
+#####  241. Lambda & Application Load Balancer Hands On
+
+1.  Create Lambda:
+    -  Lamdba management console
+    -  create new function
+    -  Author from scratch
+    -  Name: `lambda-alb`
+    -  Runtime: Python 3.8
+    -  Create a new role with basic lambda permissions (the best practice is to use separate IAM role for every lambda)
+    -  Create
+2.  Create load balancer
+    -  EC2 console
+    -  Name: `lambda-demo-alb`
+    -  Internate facing
+    -  in 3 EZs
+    -  Create new Security group: port 80 from anywhere
+    -  New Target group: `tg-lambda`
+    -  Target type: **lambda**
+    -  Health checks: Disable
+    -  Register targets: `lambda-alb`
+    -  Create
+3.  Testing Lambda function
+    -  Lambda console
+    -  modify source code
+        -  add `print(event)`
+        -  Save 
+        -  Test on new TestEvent
+            -  response: `{
+                            "statusCode": 200,
+                            "body": "\"Hello from Lambda!\""
+                          }`
+            -  print into console `{'key1': 'value1', 'key2': 'value2', 'key3': 'value3'}`   
+4.  Testing ALB
+    -  copy DNS name -> 
+    -  url to it
+    -  response has been downloaded
+        -  `"Hello from Lambda!"`
+    -  not optimal
+5.  Modifying code
+    -  [Using AWS Lambda with an Application Load Balancer](https://docs.aws.amazon.com/lambda/latest/dg/services-alb.html)
+    -  replace output with
+        -  `{
+                "statusCode": 200,
+                "statusDescription": "200 OK",
+                "isBase64Encoded": False,
+                "headers": {
+                    "Content-Type": "text/html"
+                },
+                "body": "<h1>Hello from Lambda!</h1>"
+            }`
+    -  Now we have correct response from ALB url
+6.  View CloudWatch logs
+    -  `lambda-alb` -> Monitoring
+    -  View logs in CloudWatch
+        -  view latest with `{'requestContext': {'elb': {'targ...`        
+7.  Enabling multi-value headers
+    -  ALB ->
+    -  TargetGroup -> `tg-lambda`
+    -  Attributes ->
+    -  Multi value headers: `Enable`
+    -  Save
+8.  Testing multi-value headers
+    -  go to ALB `url/?name=foo&name=bar`
+    -  go to CLoudWatch Logs
+        -  view `'multiValueQueryStringParameters': {'name': ['foo', 'bar']},`
+9.  Why ALB may Invoke Lambda
+    -  Lambda console
+    -  `lambda-alb`
+    -  Permissions
+    -  **Resource-based policy**
+10.  CleanUp
+    -  delete ALB                
