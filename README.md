@@ -3952,4 +3952,26 @@ yum install -y /home/ec2-user/xray.rpm
         -  1 message available
         -  view Error message
     -  view CloudWatch Logs
-        -  same RequestId 3 times (3 tries)                          
+        -  same RequestId 3 times (3 tries)
+        
+#####  245. Lambda & CloudWatch Events / EventBridge
+
+1.  Create Lambda Function
+    -  `lambda-eventbridge`
+    -  Python 3.8
+2.  EventBridge
+    -  create rule `InvokeLambdaEveryMinute`
+    -  target: Lambda Function
+    -  `lambda-eventbridge`
+3.  Modify lambda
+    -  print(event)
+4.  Function Visualization
+    -  Lambda -> Functions -> `lambda-eventbridge` -> 
+    -  Overview -> Function Visualization
+5.  View Resource-based policy
+6.  View CloudWatch Logs
+7.  Clean Up
+    -  Rules: `InvokeLambdaEveryMinute`    
+    -  **Disable**
+    
+                                           
