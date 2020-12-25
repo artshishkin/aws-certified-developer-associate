@@ -4104,4 +4104,19 @@ yum install -y /home/ec2-user/xray.rpm
     -  Output: "dev"
     -  modify Env var: `prod`
     -  test        
-            
+
+#####  253. Lambda Monitoring & X-Ray Tracing
+
+1.  Lambda console
+    -  `hello-world` 
+    -  `lambda-s3`
+    -  Duration, Error count and success rate, Invocations
+2.  XRay
+    -  `lambda-config-demo`
+    -  Configuration
+    -  Monitoring tools -> Edit
+    -  AWS X-Ray
+        -  Active tracing
+        -  `The required permissions were not found. The Lambda console will attempt to add them to the execution role.`
+    -  View attached policy to existing role
+        -  `AWSLambdaTracerAccessExecutionRole-406cdac0-f86d-4bd5-9e1c-5d19716127a9`              
