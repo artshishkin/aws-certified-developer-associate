@@ -4073,4 +4073,16 @@ yum install -y /home/ec2-user/xray.rpm
 }
 ```                             
     
-    
+#####  251. Lambda Permissions - IAM Roles & Resource Policies
+
+1.  Execution roles
+    -  IAM
+    -  Roles
+    -  search `lambda`
+        -  these are roles attached to lambdas (execution roles)
+2.  Resource-based policies
+    -  every lambda
+    -  Configuration
+    -  Permissions
+    -  Resource-based policy
+    -  Another resources Invoking Lambda Function        
