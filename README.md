@@ -4085,4 +4085,23 @@ yum install -y /home/ec2-user/xray.rpm
     -  Configuration
     -  Permissions
     -  Resource-based policy
-    -  Another resources Invoking Lambda Function        
+    -  Another resources Invoking Lambda Function
+
+#####  252. Lambda Environment Variables & Hands On
+
+1.  Create Lambda function
+    -  `lambda-config-demo`
+2.  Add Environment variables
+    -  Manage Environment variables
+    -  Add
+        -  `ENVIRONMENT_NAME`: `dev`
+3.  Modify code
+    -  `import os` - import system package to access to Env variables
+    -  `return os.getenv("ENVIRONMENT_NAME")`    
+4.  Test
+    -  SampleTest
+    -  Invoke
+    -  Output: "dev"
+    -  modify Env var: `prod`
+    -  test        
+            
