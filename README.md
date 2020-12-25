@@ -3998,9 +3998,43 @@ yum install -y /home/ec2-user/xray.rpm
 7.  Upload file to S3 bucket
 8.  View CloudWatch Logs
              
-                  
-    
-    
+#####  248. Lambda Event Source Mapping Hands On (SQS)
+
+1.  Create Lambda function
+    -  from scratch
+    -  Name: `lambda-sqs`
+    -  Python 3.8
+2.  Create Queue
+    -  SQS
+    -  `demo-lambda-queue`
+    -  Standard
+3.  Lambda console
+    -  add trigger: SQS ->  `demo-lambda-queue`
+    -  batch size: 1 - 10
+    -  Add -> got an Error: no permissions
+        -  `The provided execution role does not have permissions to call ReceiveMessage on SQS`
+4.  Security settings
+    -  IAM -> Roles ->  `lambda-sqs-role-tyubyo92`
+    -  Attach policy: `AWSLambdaSQSQueueExecutionRole`
+    -  Finish step 3
+5.  Modify Lambda function
+    -  `print(event)`
+    -  `return 'success'`                                     
+6.  Sending message
+    -  SQS -> Send
+    -  Message: `Hello from SQS to Lambda`
+    -  Add attribute: `foo`:`bar`
+    -  Lambda -> Monitoring -> CloudWatch Logs
+7.  Cleanup
+    -  Lambda -> Configuration -> triggers -> `lambda-sqs` -> Disable        
+8.  View Kinesis trigger possibility
+    -  Lambda -> Add trigger
+    -  Kinesis
+        -  Kinesis stream
+        -  Consumer
+        -  Batch size, Batch window
+        -  On-failure destination
+9.  Same for DynamoDB            
     
     
     
