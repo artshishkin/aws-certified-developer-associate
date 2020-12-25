@@ -4036,6 +4036,41 @@ yum install -y /home/ec2-user/xray.rpm
         -  On-failure destination
 9.  Same for DynamoDB            
     
-    
+#####  250. Lambda Destinations Hands On
+
+1.  Create Queues for destination
+    -  `s3-failure`
+    -  `s3-success`
+2.  Add **failure** destination to `lambda-s3`
+    -  Async invocation
+    -  On failure
+    -  SQS queue: `s3-failure`
+        -  `Your function's execution role doesn't have permission to send result to the destination. By clicking save we'll attempt to add permission to the role for you.`
+    -  Save
+    -  IAM Roles: `lambda-s3-role-7n0zk4dn` was created
+3.  Add **success** destination to `lambda-s3`
+4.  Testing SUCCESS scenario
+    -  Upload a file into s3 `art-s3-events-demo`
+    -  SQS -> `s3-success` has 1 message
+5.  Testing FAILURE scenario
+    -  Modify lambda code
+    -  `raise Exception("WTF Got an Error")`
+    -  Upload one more file
+    -  CloudWatch Logs shows
+        -  error
+        -  retry in 1 min
+        -  another retry in 2 min
+    -  SQS -> `s3-failure` has 1 message
+        -  `"condition": "RetriesExhausted",`
+        -  to see what triggers failure view        
+**"object":**          
+```json
+{
+    "key": "template.yml",
+    "size": 4230,
+    "eTag": "f7a65b0951f7f86a3a921995b4a03bb4",
+    "sequencer": "005FE6008C519637CC"
+}
+```                             
     
     
