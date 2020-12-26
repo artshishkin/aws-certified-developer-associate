@@ -4119,4 +4119,32 @@ yum install -y /home/ec2-user/xray.rpm
         -  Active tracing
         -  `The required permissions were not found. The Lambda console will attempt to add them to the execution role.`
     -  View attached policy to existing role
-        -  `AWSLambdaTracerAccessExecutionRole-406cdac0-f86d-4bd5-9e1c-5d19716127a9`              
+        -  `AWSLambdaTracerAccessExecutionRole-406cdac0-f86d-4bd5-9e1c-5d19716127a9`
+
+#####  254. Lambda in VPC
+
+1.  Create Lambda
+    -  `lambda-vpc`
+2.  Edit VPC configuration
+    -  Configuration -> VPC -> Edit
+    -  Custom VPC: Warning message:
+        -  `When you connect a function to a VPC in your account, it does not have access to the internet unless your VPC provides access. To give your function access to the internet, route outbound traffic to a NAT gateway in a public subnet. `
+    -  Security group (peek one just for tests)
+    -  Save
+        -  got an error
+        -  `The provided execution role does not have permissions to call CreateNetworkInterface on EC2`
+        -  Lambda to provide in VPC must have permission to create Elastic Network Interface (ENI)
+        -  IAM -> role for our Lambda -> Attach policy -> search ENI -> `AWSLambdaENIManagementAccess` (has `ec2:CreateNetworkInterface`)
+    -  Save once again
+3.  Test
+    -  Invoke
+    -  Got result
+
+```json
+{
+  "statusCode": 200,
+  "body": "\"Hello from Lambda!\""
+}
+```  
+4.  View Elastic Network Interface
+    -  created 3 ENIs for 3 AZs (we choosed 3)                                
