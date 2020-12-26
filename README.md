@@ -4147,4 +4147,24 @@ yum install -y /home/ec2-user/xray.rpm
 }
 ```  
 4.  View Elastic Network Interface
-    -  created 3 ENIs for 3 AZs (we choosed 3)                                
+    -  created 3 ENIs for 3 AZs (we choosed 3)
+
+#####  255. Lambda Function Performance
+
+1.  Configure `lambda-config-demo`
+    -  Configuration -> General -> Basic Settings -> Edit
+    -  Description
+    -  Memory: 128 MB - 10240 MB
+        -  **More Memory you have more vCPU power you get**
+    -  Timeout (min 1sec, max 15min, default 3sec)
+2.  Modify Code
+    -  `import time`
+    -  `time.sleep(2)` - sleep for 2 sec
+    -  Test: Invoke
+        -  Billed duration: 2006 ms -> OK
+    -  `time.sleep(5)` - hard work simulation
+    -  Invoke
+    -  Got an error
+        -  `"errorMessage": "2020-12-26T13:57:06.025Z 7734f0ee-7049-443b-bed1-62f0a6dd478d Task timed out after 3.00 seconds"`
+3.  Cleanup
+    -  remove `time.sleep(...)`                                                 
