@@ -4167,4 +4167,33 @@ yum install -y /home/ec2-user/xray.rpm
     -  Got an error
         -  `"errorMessage": "2020-12-26T13:57:06.025Z 7734f0ee-7049-443b-bed1-62f0a6dd478d Task timed out after 3.00 seconds"`
 3.  Cleanup
-    -  remove `time.sleep(...)`                                                 
+    -  remove `time.sleep(...)`
+
+#####  257. Lambda Concurrency Hands On
+
+1.  Configure Reserved Concurrency
+    -  Use `lambda-config-demo`
+    -  Configuration -> Concurrency
+    -  `Unreserved account concurrency 1000` - default
+        -  Edit
+        -  Reserve concurrency: 20 (then unreserved became 980)
+        -  Reserve concurrency: 0 (`Your function is always throttled.`)
+        -  Save
+    -  Test -> Invoke
+        -  **Error**
+        -  `Calling the invoke API action failed with this message: Rate Exceeded.`
+    -  Test with 2 functions
+        -  set reserved capacity to 1
+        -  modify function
+            -  set timeout to 6sec
+            -  modify code -> add pause `time.sleep(5)`
+        -  open 2 test pages
+        -  invoke both tests -> 
+            -  first test - OK
+            -  second - `Calling the invoke API action failed with this message: Rate Exceeded.`
+        -  That is **throttle** in action
+    -  Increase reserved concurrency to 20
+2.  Provisioned concurrency
+    -  Alias or Version
+    -  Will take additional pricing
+    -  Disable for now                                                 
