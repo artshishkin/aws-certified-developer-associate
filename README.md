@@ -4196,4 +4196,35 @@ yum install -y /home/ec2-user/xray.rpm
 2.  Provisioned concurrency
     -  Alias or Version
     -  Will take additional pricing
-    -  Disable for now                                                 
+    -  Disable for now
+
+#####  258. Lambda External Dependencies
+
+1.  Install Node.js (npm)
+2.  Copy `step.sh` and `index.js` into working dir
+3.  Install xray-sdk
+    -  `npm install aws-xray-sdk`
+    -  will appear directory `node_modules` and file `package-lock.json`
+4.  Compress zip
+    -  `Compress-Archive . function.zip` (in Windows PowerShell)
+5.  Create new Lambda function
+    -  `lambda-xray-with-deps-demo`
+    -  Runtime Node.js
+6.  Upload a file
+7.  Enable XRay for Lambda
+    -  Monitoring tools -> Edit
+    -  AWS XRay Active tracing: Enable -> Save
+8.  Modify execution role
+    -  add ability to list buckets
+    -  IAM -> attach policy `AmazonS3ReadOnlyAccess`
+9.  Test
+    -  Invoke -> OK
+    -  Result: list of all the buckets in account
+    -  Init duration: 425.86 ms XRAY TraceId
+    -  Billed duration: 1024 ms
+    -  Max memory used: 93 MB
+10.  View XRay
+    -  in XRay console
+    -  directly in Lambda Monitor -> traces
+    -  CloudWatch ServiceLens                          
+                                                         
