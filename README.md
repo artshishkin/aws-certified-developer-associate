@@ -4226,5 +4226,28 @@ yum install -y /home/ec2-user/xray.rpm
 10.  View XRay
     -  in XRay console
     -  directly in Lambda Monitor -> traces
-    -  CloudWatch ServiceLens                          
+    -  CloudWatch ServiceLens
+
+#####  259. Lambda and CloudFormation
+
+1.  View `lambda-xray.yaml`
+2.  Create S3 bucket `art-cloudformation-lambda-demo`
+    -  Versioning: enable
+3.  Upload code `function.zip`
+4.  CloudFormation
+    -  create stack
+    -  template is ready
+    -  upload template `lambda-xray.yaml`
+    -  Stack name: `LambdaDemo`
+    -  S3BucketParam: `art-cloudformation-lambda-demo`
+    -  S3KeyParam: `function.zip`
+    -  S3ObjectVersionParam: `xv74yQv7wWxQHTukN3Oq7Qk97XJz7HZK`(version ID)
+    -  Next -> Next ->
+    -  `I acknowledge that AWS CloudFormation might create IAM resources.` -> tick it
+    -  Create
+5.  Test it
+    -  Lambda console -> lambda was created `LambdaDemo-LambdaWithXRay-14CLJ3IS9PSZ0`
+    -  test it
+    -  view logs
+    -  view XRay                                      
                                                          
