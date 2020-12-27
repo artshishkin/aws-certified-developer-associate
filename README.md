@@ -4270,4 +4270,33 @@ yum install -y /home/ec2-user/xray.rpm
     -  copy code from AWS Tutorial
     -  paste it
 5.  Test it
-    -  Invoke                                                                              
+    -  Invoke
+
+#####  Create Python Lambda Layer Manually
+    
+[Getting started with AWS Lambda Layers for Python](https://adhorn.medium.com/getting-started-with-aws-lambda-layers-for-python-6e10b1f9a5d#:~:text=To%20do%20that%2C%20get%20into,the%20runtime%20for%20your%20layer.)                                                                                  
+[Including library dependencies in a layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html#configuration-layers-path)
+
+1.  Create a file called `custom_func.py`
+2.  Zip with `python` folder
+    -  `...\python> Compress-Archive . python_libs.zip`
+3.  Layers -> create Layer
+    -  Name: `CustomFunctionLayer`
+    -  Description: `This is custom function demo layer`
+    -  Upload zip file: `python_libs.zip`
+    -  Compatible runtimes - optional: Python3.8
+    -  Create   
+4.  Create lambda
+    -  `lambda-manual-layer`
+    -  Python 3.8
+5.  Replace the generic function code with code from `lambda_function.py`
+6.  Add layer to lambda function
+    -  `lambda-manual-layer`
+    -  Layers -> add a layer
+    -  Custom layer ->  `CustomFunctionLayer`
+    -  Version: 1
+7.  Deploy
+8.  Test it
+    -  Invoke
+    -  In logs you will see
+        -  `Hello from the deep layers!!`       
