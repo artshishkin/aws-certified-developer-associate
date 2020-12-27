@@ -4250,4 +4250,24 @@ yum install -y /home/ec2-user/xray.rpm
     -  test it
     -  view logs
     -  view XRay                                      
-                                                         
+
+#####  260. Lambda Layers
+
+1.  Create function
+    -  `lambda-layer-demo`
+    -  Python 3.8
+2.  Use AWS tutorial
+    -  google `aws blog python scipy layer`
+    -  [New for AWS Lambda – Use Any Programming Language and Share Common Components](https://aws.amazon.com/blogs/aws/new-for-aws-lambda-use-any-programming-language-and-share-common-components/)
+3.  Create layer
+    -  `lambda-layer-demo` -> Code
+    -  Layers -> Add a layer
+    -  AWS Layer
+        -  AWSLambda-Python38-SciPy1x
+        -  Version: 28
+        -  Add
+4.  Modify Lambda function
+    -  copy code from AWS Tutorial
+    -  paste it
+5.  Test it
+    -  Invoke                                                                              
