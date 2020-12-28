@@ -10,7 +10,8 @@
     -  see `LambdaRequestStreamHandler` class
 
 Build deployment file:
--  `mvn clean package shade:shade`            
+-  ~~mvn clean package shade:shade~~            
+-  `mvn clean package`            
 
 ###  Here are the steps required to create our lambda:
 
