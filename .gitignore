@@ -142,3 +142,5 @@ Desktop.ini
 /.idea/
 
 /Section 15 - AWS CICD/CodeStar/spring-web-service_v0/target/
+/java-lambda-layers/java-lambda-layer/target/
+/java-lambda-layers/java-lambda-func/target/

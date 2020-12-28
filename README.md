@@ -4350,4 +4350,42 @@ yum install -y /home/ec2-user/xray.rpm
         -  1/5 times Version 2 will be invoked
     -  If Everything is OK then for Alias PROD test Version 2                    
                               
-               
+#####  [AWS Lambda layer in Java](https://medium.com/analytics-vidhya/aws-lambda-layer-in-java-ad67ce5d94b4#:~:text=AWS%20introduced%20Lambda%20Layers%20back,dependencies%20between%20multiple%20lambda%20functions.)
+
+1.  Create lambda
+    -  `java-layers`
+    -  Java11
+2.  Create Layer
+    -  `java-wrapper-layer`
+    -  zip `java/lib/java-lambda-layer-1.0.jar`
+3.  Add layer to lambda function
+4.  Modify Handler 
+    -  Runtime settings
+    -  Handler: `net.shyshkin.study.lambdafunction.ArtLambdaFunction::handleRequest`
+5.  Test function
+    -  input data (test event)
+
+```json
+{
+  "key1": "value1",
+  "key2": "value2",
+  "Records": 
+    [
+        {"body":"rec_val1","rec2":"rec_val1"},
+        {"body":"rec_val3","rec4":"rec_val4"}
+    
+    ]
+}
+```
+Response   
+```json
+[
+  "REC_VAL1_OK",
+  "REC_VAL3_OK"
+]
+```
+
+
+
+
+    
