@@ -40,3 +40,5 @@ Once the AWS lambda function is created, we'll test it by passing in some data:
 On the screen, you can see the Execution result section with successfully returned output as:
 
 "Hello World - Art"
+
+##### [Creating Java Lambda](https://github.com/artshishkin/aws-certified-developer-associate/blob/main/java-lambda-hello-world/README.md)

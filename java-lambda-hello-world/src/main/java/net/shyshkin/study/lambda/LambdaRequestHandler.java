@@ -23,12 +23,15 @@ public class LambdaRequestHandler implements RequestHandler<String, String> {
         LambdaLogger logger = context.getLogger();
         logger.log("Input: " + input);
         List<Bucket> buckets = s3Client.listBuckets();
+        String parallelism = System.getenv("PARALLELISM");
+//        System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism","10");
+        System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", parallelism);
 
         buckets.parallelStream()
                 .peek(bucket -> logger.log("bucket location: " + s3Client.getBucketLocation(bucket.getName())))
                 .filter(bucket -> s3Client.getBucketLocation(bucket.getName()).equalsIgnoreCase("eu-north-1"))
                 .map(bucket -> String.format("[bucket: %s] objects count %d", bucket.getName(), s3Client.listObjectsV2(bucket.getName()).getKeyCount()))
                 .forEach(logger::log);
-        return "Hello World - " + input;
+        return "Hello World - " + input + " parallelism " + parallelism;
     }
 }
