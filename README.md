@@ -4299,4 +4299,55 @@ yum install -y /home/ec2-user/xray.rpm
 8.  Test it
     -  Invoke
     -  In logs you will see
-        -  `Hello from the deep layers!!`       
+        -  `Hello from the deep layers!!`
+        
+#####  261. Lambda Versions and Aliases
+
+1.  Create lambda
+    -  `lambda-version-demo`
+    -  Python 3.8
+2.  Modify lambda
+    -  `return "This is lambda version 1"`
+    -  Deploy -> Test -> Invoke
+3.  View Aliases and Versions
+    -  Aliases: No Aliases
+    -  Versions: only $LATEST
+4.  Publish new version
+    -  Versions -> Publish...
+5.  Test it
+    -  Versions: 1
+    -  Test: Invoke -> Says: Version 1
+    -  Code: we can not modify it
+        -  `Code and handler editing is only available on the unqualified function.`
+6.  Modify to version 2
+    -  Lambda -> Functions -> `lambda-version-demo`
+    -  `import os`
+    -  `return "This is Lambda version 2 with Env FOO : " + os.getenv("FOO")`
+    -  add Env. variable
+        -  FOO: BAR
+    -  Deploy
+    -  Test it
+        -  Output:
+        -  `"This is Lambda version 2 with Env FOO : BAR"`
+7.  Create DEV Alias
+    -  `lambda-version-demo`
+    -  Name: `DEV`
+    -  Description: `Development lambda`
+    -  Version:  `$LATEST`        
+8.  Create another Aliases
+    -  `TEST` - Version 2
+    -  `PROD` - Version 1
+9.  Blue-Green deployment
+    -  80% - Version 1
+    -  20% - Version 2
+    -  Alias PROD:
+        -  Edit Alias
+        -  Weighted Alias
+        -  Additional version 2
+        -  Weight 20
+        -  Save
+    -  Test it
+        -  1/5 times Version 2 will be invoked
+    -  If Everything is OK then for Alias PROD test Version 2                    
+                              
+               
