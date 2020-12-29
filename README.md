@@ -4437,5 +4437,42 @@ REPORT RequestId: 522e2181-18c3-54e9-8ae8-79e430a941d4	Duration: 755.36 ms	Bille
 XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sampled: true
 ```
 
+####  Section 20: AWS Serverless: DynamoDB
+
+#####  267. DynamoDB Basics Hands On
+
+1.  Create table `Users`
+    -  DynamoDB management console
+    -  North Virginia
+    -  Create Table
+        -  Name: `Users`
+        -  Primary key: Partition key: `user_id` (String)
+    -  Table settings
+        -  Untick `Use default settings`    
+    -  Autoscaling
+        -  Untick `Read capacity` and `Write capacity`
+    -  Provisioned capacity
+        -  Read capacity units 2 
+        -  Write capacity units 2
+    -  Create
+2.  Fill Table
+    -  Items -> Create
+    -  `user_id` : `qwerty123` (something random)
+    -  `first_name`
+    -  `last_name`
+    -  Save
+    -  Add second User with
+        -  `user_id`, `first_name`, `age` (Number)                     
+3.  Create table `UserPost`
+    -  Partition Key: `user_id`
+    -  Sort key: `post_ts` (post timestamp)
+    -  Add Item
+        -  `user_id`: random `usus123`
+        -  `post_ts`: '2020-12-27T22:08:12Z'
+        -  `content`: Hello world! First post
+    -  Add Item
+        -  `user_id`: random `usus123`
+        -  `post_ts`: '2020-12-28T13:18:32Z'
+        -  `content`: Second post of the same user
 
     
