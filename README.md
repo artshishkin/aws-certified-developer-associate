@@ -4395,10 +4395,47 @@ Response
 4.  Test
     -  SQS: Send and receive messages
     -  send message: `This message is from SQS`
-    -  in CloudWatch Logs we see this message  
-        
+    -  in CloudWatch Logs we see this message
+    
+#####  Add ability to List Objects from S3 Bucket  
 
-
+1.  Modify lambda function handler: 
+    -  `net.shyshkin.study.lambdafunction.DisplayS3BucketContent::handleRequest`    
+2.  Attach policy to Read from S3
+3.  Enable XRay
+    -  Monitoring tools -> Edit -> Enable Active tracing
+4.  Send SQS message
+    -  Bucket JSON message
+```json5
+{
+  'name': 'art-java-lambda-code'
+}
+```        
+In CloudWatch Logs we can see result
+```json
+{
+    "objectSummaries": [
+        {
+            "bucketName": "art-java-lambda-code",
+            "key": "java-lambda-hello-world-1.0-SNAPSHOT.jar",
+            "eTag": "953fa22e35da27d0c55ce8f14d10da11-6",
+            "size": 102113151,
+            "lastModified": "Dec 28, 2020, 9:06:39 AM",
+            "storageClass": "STANDARD"
+        }
+    ],
+    "commonPrefixes": [],
+    "isTruncated": false,
+    "bucketName": "art-java-lambda-code",
+    "keyCount": 1,
+    "maxKeys": 1000
+}
+```
+Time to access to S3 is about 800 ms
+```
+REPORT RequestId: 522e2181-18c3-54e9-8ae8-79e430a941d4	Duration: 755.36 ms	Billed Duration: 756 ms	Memory Size: 512 MB	Max Memory Used: 168 MB	
+XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sampled: true
+```
 
 
     
