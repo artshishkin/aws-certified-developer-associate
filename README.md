@@ -4475,4 +4475,19 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
         -  `post_ts`: '2020-12-28T13:18:32Z'
         -  `content`: Second post of the same user
 
+#####  269. DynamoDB WCU & RCU Hands On
+
+1.  Provisioned capacity
+    -  DynamoDB console
+    -  Capacity units
+        -  RCU: 2
+        -  WCU: 2
+    -  Capacity calculator:
+        -  RCU:
+            -  eventually consistent: `readPerSec/2*ceil(size/4kB)`
+            -  strongly consistent: `readPerSec*ceil(size/4kB)`
+        -  WCU: `writePerSec*ceil(size/1kB)`
+2.  Auto Scaling
+    -  after enabling you can not provision anymore        
+            
     
