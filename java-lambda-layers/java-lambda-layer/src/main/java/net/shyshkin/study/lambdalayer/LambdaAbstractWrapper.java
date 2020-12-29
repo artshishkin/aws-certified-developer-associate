@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class LambdaAbstractWrapper<O> implements RequestHandler<Map<String,Object>, List<O>> {
+public abstract class LambdaAbstractWrapper<O> implements RequestHandler<Map<String, Object>, List<O>> {
 
     public List<O> handleRequest(Map<String, Object> input, Context context) {
         @SuppressWarnings("unchecked")
@@ -16,6 +16,8 @@ public abstract class LambdaAbstractWrapper<O> implements RequestHandler<Map<Str
 
         for (Map<String, Object> message : messages) {
             String messageBody = (String) message.get("body");
+
+            context.getLogger().log(messageBody);
 
             try {
                 O response = processMessage(messageBody);

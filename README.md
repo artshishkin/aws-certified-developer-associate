@@ -4385,6 +4385,19 @@ Response
 ]
 ```
 
+#####  Adding SQS queue trigger to AWS Lambda layer in Java
+
+1.  Create `LambdaLayerQueue`
+2.  Modify lambda execution role
+    -  attach policy `AWSLambdaSQSQueueExecutionRole`
+3.  Add trigger to Lambda
+    -  SQS `LambdaLayerQueue`
+4.  Test
+    -  SQS: Send and receive messages
+    -  send message: `This message is from SQS`
+    -  in CloudWatch Logs we see this message  
+        
+
 
 
 
