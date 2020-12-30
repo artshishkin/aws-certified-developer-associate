@@ -4490,4 +4490,19 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
 2.  Auto Scaling
     -  after enabling you can not provision anymore        
             
+#####  271. DynamoDB Basic APIs Hands On
+
+1.  Scan
+    -  `Scan: [Table] UserPost: user_id, post_ts`
+    -  returns all
+2.  Query
+    -  `Scan: [Table] UserPost: user_id, post_ts`
+        -  user_id: `usus12`
+        -  post_id `>=` `2020-12-28`
+        -  Sort: Accending
+        -  Attributes: All (or `content` for Example)
+        -  Start search
+3.  Ability to delete
+    -  Delete row by row
+    -  Delete entire table        
     
