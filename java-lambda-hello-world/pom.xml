@@ -37,6 +37,13 @@
             <version>5.7.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>uk.org.webcompere</groupId>
+            <artifactId>system-stubs-jupiter</artifactId>
+            <version>1.1.0</version>
+            <scope>test</scope>
+        </dependency>
+
         <!--        <dependency>-->
 <!--            <groupId>com.amazonaws</groupId>-->
 <!--            <artifactId>aws-xray-recorder-sdk-aws-sdk</artifactId>-->

@@ -24,7 +24,7 @@ public class LambdaRequestHandler implements RequestHandler<String, String> {
     public String handleRequest(String input, Context context) {
 
         String parallelism = System.getenv("PARALLELISM");
-        if (StringUtils.isEmpty(parallelism)) parallelism = "10";
+        if (StringUtils.isEmpty(parallelism)) parallelism = "1";
 //        System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism","10");
         System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", parallelism);
 
