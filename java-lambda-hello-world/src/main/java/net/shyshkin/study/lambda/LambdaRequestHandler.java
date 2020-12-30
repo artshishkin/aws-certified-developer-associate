@@ -8,6 +8,7 @@ import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.model.Bucket;
 import software.amazon.awssdk.services.s3.model.ListBucketsResponse;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
+import software.amazon.awssdk.utils.StringUtils;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -23,6 +24,7 @@ public class LambdaRequestHandler implements RequestHandler<String, String> {
     public String handleRequest(String input, Context context) {
 
         String parallelism = System.getenv("PARALLELISM");
+        if (StringUtils.isEmpty(parallelism)) parallelism = "10";
 //        System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism","10");
         System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", parallelism);
 
@@ -35,13 +37,25 @@ public class LambdaRequestHandler implements RequestHandler<String, String> {
 
                     List<CompletableFuture<String>> bucketSizes = buckets
                             .stream()
-                            .filter(bucket -> bucket.name().contains("art-kate"))
+//                            .filter(bucket -> bucket.name().contains("art-kate"))
                             .map(
                                     bucket -> s3Client
-                                            .listObjectsV2(builder -> builder.bucket(bucket.name()))
-                                            .thenApply(ListObjectsV2Response::keyCount)
-                                            .thenApply(keyCount -> String.format("[Bucket `%s` has %d keys]", bucket.name(), keyCount))
-                                            .whenCompleteAsync((message, ex) -> logger.log(message))
+                                            .getBucketLocation(builder -> builder.bucket(bucket.name()))
+                                            .thenApply(response -> {
+                                                        String regionName = response.locationConstraint().name();
+                                                        logger.log("Region Name: `" + regionName + "`");
+                                                        return regionName;
+                                                    }
+                                            )
+                                            .thenCompose(regionName -> {
+                                                if ("eu_north_1".equalsIgnoreCase(regionName)) {
+                                                    return s3Client.listObjectsV2(builder -> builder.bucket(bucket.name()))
+                                                            .thenApply(ListObjectsV2Response::keyCount)
+                                                            .thenApply(keyCount -> String.format("[Bucket `%s` has %d keys]", bucket.name(), keyCount))
+                                                            .whenCompleteAsync((message, ex) -> logger.log(message));
+                                                }
+                                                return CompletableFuture.supplyAsync(() -> bucket.name() + " is in another region " + regionName);
+                                            })
                             )
                             .collect(Collectors.toList());
 
