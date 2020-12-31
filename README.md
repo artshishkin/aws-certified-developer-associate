@@ -4546,4 +4546,52 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
     -  Cluster name: `mycache`
     -  Node type: `dax.r4.large`
     -  It is not on a free tier    
-                                   
+
+#####  275. DynamoDB Streams
+
+1.  Enable stream
+    -  DynamoDB management console
+    -  Tables: UserGames
+    -  Overview -> Manage DynamoDB Stream
+    -  Old and New Image
+    -  Enable
+2.  Create Lambda function
+    -  DynamoDB console
+    -  UserGames
+    -  Triggers
+    -  Create trigger -> New function ->
+    -  Will redirect to Lambda console
+        -  Lambda > Functions > Create function > Configure blueprint dynamodb-process-stream
+    -  Name: `lambda-dynamodb-demo`
+    -  Create new role with basic lambda permissions (just for tests)
+    -  DynamoDB Table: UserGames
+    -  Starting position:  Trim horizon (from beginning)
+    -  Enable trigger: tick
+    -  Create function
+3.  Fixing error
+    -  after creation got an error
+        -  `Your Lambda function "lambda-dynamodb-demo" was successfully created, `
+        -  `but an error occurred when creating the trigger: `
+        -  `Cannot access stream arn:aws:dynamodb:us-east-1:392971033516:table/UserGames/stream/2020-12-31T17:04:12.870. `
+        -  `Please ensure the role can perform the GetRecords, GetShardIterator, DescribeStream, ListShards,` 
+        -  `and ListStreams Actions on your stream in IAM. (Service: AWSLambda; Status Code: 400; `
+        -  `Error Code: InvalidParameterValueException; Request ID: 67add21d-7468-4242-89f9-6e92c3ef1fee; Proxy: null)`
+    -  attach policy to lambda IAM Role `AWSLambdaDynamoDBExecutionRole`
+4.  Add a trigger for Lambda
+    -  Lambda console
+    -  Configuration -> Triggers -> Add trigger
+    -  DynamoDB (all parameters like in Step 2)
+    -  Now it is added because we have right IAM permissions
+5.  DynamoDB console
+    -  Triggers -> refresh page (should see lambda)
+    -  Last result: No records processed
+6.  Testing streams
+    -  Choose a record -> Duplicate
+    -  Then modify
+    -  view CloudWatch Logs
+7.  Cleanup
+    -  Lambda console
+    -  Configuration -> triggers
+    -  DynamoDB -> Disable    
+                    
+                                              
