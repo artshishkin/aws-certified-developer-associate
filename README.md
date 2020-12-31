@@ -4536,4 +4536,14 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
     -  Partition key: `game_ts`
     -  Add sort key: `game_id`
 6.  Search through GSI
-    -  Items -> Query                               
+    -  Items -> Query
+    
+#####  274. DynamoDB DAX
+
+1.  DynamoDB management console
+    -  Left pane: DAX
+    -  Dashboard -> Create Cluster
+    -  Cluster name: `mycache`
+    -  Node type: `dax.r4.large`
+    -  It is not on a free tier    
+                                   
