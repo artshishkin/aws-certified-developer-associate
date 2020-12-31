@@ -4499,10 +4499,41 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
     -  `Scan: [Table] UserPost: user_id, post_ts`
         -  user_id: `usus12`
         -  post_id `>=` `2020-12-28`
-        -  Sort: Accending
+        -  Sort: Ascending
         -  Attributes: All (or `content` for Example)
         -  Start search
 3.  Ability to delete
     -  Delete row by row
     -  Delete entire table        
-    
+
+#####  272. DynamoDB Indexes (GSI + LSI)
+
+1.  Create new Table with **Local** Secondary Index (LSI)
+    -  DynamoDB console
+    -  new Table: `UserGames`
+    -  `user_id`: String
+    -  `game_id`: Number
+    -  Use default settings: untick
+    -  Secondary Indexes
+    -  Partition Key: `user_id`
+    -  Add sort key: `game_ts`
+    -  Create as Local Secondary Index
+    -  Remove Read and Write capacity
+    -  RCU and WCU: 1 and 1
+    -  Create
+    -  **LSI creates ONLY at creation time**
+2.  Populate data to Table
+3.  View Indexes
+4.  Query through Index
+    -  Items -> Query
+        -  Query: `[Table] UserGames: user_id, game_id`
+        -  **or**
+        -  Query: `[Index] user_id-game_ts-index: user_id, game_ts`
+            -  user_id: someVal
+            -  game_ts >= `2020-12-30`
+5.  Create **Global** Secondary Index (GSI)
+    -  Indexes -> Create Index (allowed only Global)
+    -  Partition key: `game_ts`
+    -  Add sort key: `game_id`
+6.  Search through GSI
+    -  Items -> Query                               
