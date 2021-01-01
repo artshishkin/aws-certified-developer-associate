@@ -4620,4 +4620,19 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
 1.  Run CLI commands
     -  use file `cli-examples.sh`
 
-                                                                         
+#####  278. DynamoDB Transactions
+
+#####  279. DynamoDB Session State
+
+#####  280. DynamoDB Partitioning Strategies
+
+-  DynamoDB Write Sharding
+    -  add suffix
+
+#####  281. DynamoDB Conditional Writes, Concurrent Writes & Atomic Writes
+
+#####  282. DynamoDB Patterns with S3
+
+#####  283. DynamoDB Operations
+
+#####  284. DynamoDB Security & Other                                                                             
