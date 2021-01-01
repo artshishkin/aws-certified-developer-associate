@@ -4594,4 +4594,25 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
     -  Configuration -> triggers
     -  DynamoDB -> Disable    
                     
-                                              
+#####  276. DynamoDB TTL
+
+1.  Create new table
+    -  Name: `DemoTTL`
+    -  Partition key: `user_id`
+    -  RCU and WCU: 1 and 1
+2.  Create Items
+    -  user_id
+    -  name
+    -  expire_on (name may be another)
+        -  Type: Number
+        -  Value:  google time to epoch [Epoch & Unix Timestamp Conversion Tools](https://www.epochconverter.com/)
+            -  copy epoch timestamp 1609438507 (in 5 min)
+    -  another item
+        -  expire_on: in 1 hour
+3.  Enable TTL
+    -  Overview -> Table details ->
+    -  Time to live attributes -> Manage TTL
+    -  TTL attribute: `expire_on` (column that we choose)
+    -  Run preview
+
+                                                                         
