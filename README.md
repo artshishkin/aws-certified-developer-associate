@@ -4615,4 +4615,9 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
     -  TTL attribute: `expire_on` (column that we choose)
     -  Run preview
 
+#####  277. DynamoDB CLI
+
+1.  Run CLI commands
+    -  use file `cli-examples.sh`
+
                                                                          
