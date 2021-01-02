@@ -91,3 +91,33 @@ Scan written values
 aws dynamodb scan --table-name Music  --endpoint-url http://localhost:8000
 ```
 
+####  [Read Data from a Table](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/getting-started-step-3.html)
+
+```shell script
+aws dynamodb get-item --consistent-read `
+    --table-name Music `
+    --key '{ \"Artist\": {\"S\": \"Acme Band\"}, \"SongTitle\": {\"S\": \"Happy Day\"}}' `
+    --endpoint-url http://localhost:8000
+```
+The result is
+```json
+{
+    "Item": {
+        "Artist": {
+            "S": "Acme Band"
+        },
+        "AlbumTitle": {
+            "S": "Songs About Life"
+        },
+        "Awards": {
+            "N": "10"
+        },
+        "SongTitle": {
+            "S": "Happy Day"
+        }
+    }
+}
+```
+
+
+
