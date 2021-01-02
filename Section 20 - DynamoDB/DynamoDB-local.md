@@ -160,3 +160,79 @@ aws dynamodb query `
     --endpoint-url http://localhost:8000 
 ```
 
+####  [Create a Global Secondary Index](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/getting-started-step-6.html)
+
+```shell script
+aws dynamodb update-table `
+    --table-name Music `
+    --attribute-definitions AttributeName=AlbumTitle,AttributeType=S `
+    --global-secondary-index-updates `
+    '[{ \"Create\":{\"IndexName\": \"AlbumTitle-index\",\"KeySchema\":[{\"AttributeName\":\"AlbumTitle\",\"KeyType\":\"HASH\"}],\"ProvisionedThroughput\": {\"ReadCapacityUnits\": 10, \"WriteCapacityUnits\": 5      },\"Projection\":{\"ProjectionType\":\"ALL\"}}}]' `
+    --endpoint-url http://localhost:8000
+```
+Result is
+```json
+{
+    "TableDescription": {
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "Artist",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "SongTitle",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "AlbumTitle",
+                "AttributeType": "S"
+            }
+        ],
+        "TableName": "Music",
+        "KeySchema": [
+            {
+                "AttributeName": "Artist",
+                "KeyType": "HASH"
+            },
+            {
+                "AttributeName": "SongTitle",
+                "KeyType": "RANGE"
+            }
+        ],
+        "TableStatus": "ACTIVE",
+        "CreationDateTime": "2021-01-02T14:51:05.988000+02:00",
+        "ProvisionedThroughput": {
+            "LastIncreaseDateTime": "1970-01-01T02:00:00+02:00",
+            "LastDecreaseDateTime": "1970-01-01T02:00:00+02:00",
+            "NumberOfDecreasesToday": 0,
+            "ReadCapacityUnits": 10,
+            "WriteCapacityUnits": 5
+        },
+        "TableSizeBytes": 146,
+        "ItemCount": 2,
+        "TableArn": "arn:aws:dynamodb:ddblocal:000000000000:table/Music",
+        "GlobalSecondaryIndexes": [
+            {
+                "IndexName": "AlbumTitle-index",
+                "KeySchema": [
+                    {
+                        "AttributeName": "AlbumTitle",
+                        "KeyType": "HASH"
+                    }
+                ],
+                "Projection": {
+                    "ProjectionType": "ALL"
+                },
+                "IndexStatus": "CREATING",
+                "Backfilling": false,
+                "ProvisionedThroughput": {
+                    "ReadCapacityUnits": 10,
+                    "WriteCapacityUnits": 5
+                },
+                "IndexArn": "arn:aws:dynamodb:ddblocal:000000000000:table/Music/index/AlbumTitle-index"
+            }
+        ]
+    }
+}
+```
+
