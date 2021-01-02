@@ -119,5 +119,33 @@ The result is
 }
 ```
 
+####  [Update Data in a Table](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/getting-started-step-4.html)
 
-
+```shell script
+aws dynamodb update-item `
+    --table-name Music `
+    --key '{ \"Artist\": {\"S\": \"Acme Band\"}, \"SongTitle\": {\"S\": \"Happy Day\"}}' `
+    --update-expression "SET AlbumTitle = :newval" `
+    --expression-attribute-values '{ \":newval\":{ \"S\": \"Updated Album Title\"}}' `
+    --return-values ALL_NEW `
+    --endpoint-url http://localhost:8000
+```
+Return value is 
+```json
+{
+    "Attributes": {
+        "Artist": {
+            "S": "Acme Band"
+        },
+        "Awards": {
+            "N": "10"
+        },
+        "AlbumTitle": {
+            "S": "Updated Album Title"
+        },
+        "SongTitle": {
+            "S": "Happy Day"
+        }
+    }
+}
+```
