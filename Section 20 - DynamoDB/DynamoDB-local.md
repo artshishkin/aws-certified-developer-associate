@@ -70,5 +70,24 @@ The same result we can display by typing
 -  filtering rows with `TableStatus` in PowerShell (analog grep in Unix)
 -  `aws dynamodb describe-table --table-name Music --endpoint-url http://localhost:8000 | findstr TableStatus`
 
+####  [Write Data to a Table Using the AWS CLI](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/getting-started-step-2.html)
 
+Put new items
+```shell script
+aws dynamodb put-item `
+  --table-name Music  `
+  --item `
+    '{\"Artist\": {\"S\": \"No One You Know\"}, \"SongTitle\": {\"S\": \"Call Me Today\"}, \"AlbumTitle\": {\"S\": \"Somewhat Famous\"}, \"Awards\": {\"N\": \"1\"}}' `
+  --endpoint-url http://localhost:8000
+
+aws dynamodb put-item `
+    --table-name Music `
+    --item `
+    '{\"Artist\": {\"S\": \"Acme Band\"}, \"SongTitle\": {\"S\": \"Happy Day\"}, \"AlbumTitle\": {\"S\": \"Songs About Life\"}, \"Awards\": {\"N\": \"10\"} }' `
+  --endpoint-url http://localhost:8000
+```
+Scan written values
+```shell script
+aws dynamodb scan --table-name Music  --endpoint-url http://localhost:8000
+```
 
