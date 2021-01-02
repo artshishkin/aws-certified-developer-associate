@@ -4635,4 +4635,47 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
 
 #####  283. DynamoDB Operations
 
-#####  284. DynamoDB Security & Other                                                                             
+#####  284. DynamoDB Security & Other
+
+####  Section 21: AWS Serverless: API Gateway
+
+#####  287. API Gateway Basics Hands On
+
+1.  API Gateway console
+    -  REST API -> Build
+    -  REST
+    -  Create New API: New 
+    -  API Name: MyFirstAPI
+    -  Endpoint Type: Regional
+    -  Create
+2.  Create GET Endpoint
+    -  `MyFirstAPI`
+    -  Resources
+    -  Action -> Create Method -> GET -> tick
+    -  Integration type: Lambda Function
+    -  Use Lambda proxy integration: yes
+    -  Lambda function: `lambda-api-gateway-proxy-root-get` (need to create)
+3.  Create Lambda
+    -  `lambda-api-gateway-proxy-root-get`
+    -  Python 3.8
+    -  code from `lambda-code.py`
+4.  View lambda function resource-based policy
+    -  that's why API Gateway can invoke lambda function
+5.  Testing
+    -  API Gateway console
+    -  Method Execution
+    -  Test
+6.  Add print(event) to lambda_handler
+    -  Test Method Execution again
+    -  Lambda -> CloudWatch Logs
+7.  Create Endpoint `/houses`
+    -  Actions -> Create Resource: `houses`
+    -  Actions -> Create Method
+    -  Lambda function `lambda-api-gateway-proxy-houses-get` (create new -> modify `Hello from my pretty houses!`)        
+8.  Deploy API
+    -  Action -> Deploy API
+    -  Deployment stage: New Stage
+    -  Stage name: dev
+    -  Deploy
+    -  visit url -> ok
+    -  visit wrong url -> json with error message                                                                                                  
