@@ -149,3 +149,14 @@ Return value is
     }
 }
 ```
+
+####  [Query Data in a Table](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/getting-started-step-5.html)
+
+```shell script
+aws dynamodb query `
+    --table-name Music `
+    --key-condition-expression "Artist = :name" `
+    --expression-attribute-values  '{\":name\":{\"S\": \"Acme Band\"}}' `
+    --endpoint-url http://localhost:8000 
+```
+
