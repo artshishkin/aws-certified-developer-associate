@@ -236,3 +236,37 @@ Result is
 }
 ```
 
+####  [Query the Global Secondary Index](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/getting-started-step-7.html)
+
+```shell script
+aws dynamodb query `
+    --table-name Music `
+    --index-name AlbumTitle-index `
+    --key-condition-expression "AlbumTitle = :name" `
+    --expression-attribute-values  '{\":name\":{\"S\": \"Somewhat Famous\"}}' `
+    --endpoint-url http://localhost:8000
+```
+Response is
+```json
+{
+    "Items": [
+        {
+            "Artist": {
+                "S": "No One You Know"
+            },
+            "AlbumTitle": {
+                "S": "Somewhat Famous"
+            },
+            "Awards": {
+                "N": "1"
+            },
+            "SongTitle": {
+                "S": "Call Me Today"
+            }
+        }
+    ],
+    "Count": 1,
+    "ScannedCount": 1,
+    "ConsumedCapacity": null
+}
+```
