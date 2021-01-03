@@ -1,10 +1,13 @@
 package net.shyshkin.study.webfluxdynamodb.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.shyshkin.study.webfluxdynamodb.domain.Address;
 import net.shyshkin.study.webfluxdynamodb.domain.Customer;
 import net.shyshkin.study.webfluxdynamodb.domain.Result;
 import net.shyshkin.study.webfluxdynamodb.repository.CustomerRepository;
+import net.shyshkin.study.webfluxdynamodb.utils.Helper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -17,6 +20,7 @@ import static java.time.Instant.now;
 import static net.shyshkin.study.webfluxdynamodb.domain.Result.FAIL;
 import static net.shyshkin.study.webfluxdynamodb.domain.Result.SUCCESS;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
@@ -52,7 +56,7 @@ public class CustomerService {
                 .onErrorReturn(new Address());
     }
 
-    public Mono<Result> updateExistingCustomer(Customer customer) {
+    public Mono<Result> updateCustomer(Customer customer) {
         customer.setCreatedTimeStamp(valueOf(now().getEpochSecond()));
         Result updateStatus = customerRepository.getCustomerByID(customer.getCustomerID())
                 .thenApply(retrievedCustomer -> {
@@ -68,9 +72,25 @@ public class CustomerService {
     }
 
     public Mono<Result> updateCustomerFields(Customer customer) {
-        throw new RuntimeException("NOT Implemented yet");
+        CompletableFuture<Result> resultCF = customerRepository.getCustomerByID(customer.getCustomerID())
+                .thenApply(retrievedCustomer -> {
+                    if (null == retrievedCustomer) {
+                        throw new IllegalArgumentException("Invalid CustomerID");
+                    }
+                    Address addressToUpdate = customer.getAddress();
+                    Address retrievedAddress = retrievedCustomer.getAddress();
+                    BeanUtils.copyProperties(retrievedAddress, addressToUpdate, Helper.getNonNullPropertyNames(addressToUpdate));
+
+                    BeanUtils.copyProperties(customer, retrievedCustomer, Helper.getNullPropertyNames(customer));
+
+                    return retrievedCustomer;
+                })
+                .thenCompose(customerRepository::updateCustomer)
+                .handle((__, ex) -> ex == null ? SUCCESS : FAIL);
+        return Mono.fromFuture(resultCF);
     }
 
+    @Deprecated
     public Mono<Result> updateExistingOrCreateCustomer(Customer customer) {
         customer.setCreatedTimeStamp(valueOf(now().getEpochSecond()));
         Result updateStatus = customerRepository.updateCustomer(customer)

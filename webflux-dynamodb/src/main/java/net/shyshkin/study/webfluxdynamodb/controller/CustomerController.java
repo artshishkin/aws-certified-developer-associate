@@ -34,7 +34,7 @@ public class CustomerController {
     @PutMapping("{customerId}")//U
     public Mono<Result> updateCustomer(@PathVariable("customerId") String customerId, @RequestBody Customer customer) {
         customer.setCustomerID(customerId);
-        return customerService.updateExistingCustomer(customer);
+        return customerService.updateCustomer(customer);
     }
 
     @PatchMapping("{customerId}")
