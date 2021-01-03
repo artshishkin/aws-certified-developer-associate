@@ -29,11 +29,9 @@ public class CustomerService {
 
     public Mono<Result> createNewCustomer(Customer customer) {
         customer.setCreatedTimeStamp(valueOf(now().getEpochSecond()));
-        Result createStatus = customerRepository.save(customer)
-                .handle((__, ex) -> ex == null ? SUCCESS : FAIL)
-                .join(); //blocked until data is retrieved
-        // TODO: 03.01.2021 Exclude join
-        return Mono.just(createStatus);
+        CompletableFuture<Result> createStatusCF = customerRepository.save(customer)
+                .handle((__, ex) -> ex == null ? SUCCESS : FAIL);
+        return Mono.fromFuture(createStatusCF);
 
     }
 
@@ -58,17 +56,15 @@ public class CustomerService {
 
     public Mono<Result> updateCustomer(Customer customer) {
         customer.setCreatedTimeStamp(valueOf(now().getEpochSecond()));
-        Result updateStatus = customerRepository.getCustomerByID(customer.getCustomerID())
+        CompletableFuture<Result> updateStatusCF = customerRepository.getCustomerByID(customer.getCustomerID())
                 .thenApply(retrievedCustomer -> {
                     if (null == retrievedCustomer) {
                         throw new IllegalArgumentException("Invalid CustomerID");
                     }
                     return retrievedCustomer;
                 }).thenCompose(__ -> customerRepository.updateCustomer(customer))
-                .handle((__, ex) -> ex == null ? SUCCESS : FAIL)
-                .join();//blocked until data is retrieved
-        // TODO: 03.01.2021 Exclude join
-        return Mono.just(updateStatus);
+                .handle((__, ex) -> ex == null ? SUCCESS : FAIL);
+        return Mono.fromFuture(updateStatusCF);
     }
 
     public Mono<Result> updateCustomerFields(Customer customer) {
@@ -93,19 +89,15 @@ public class CustomerService {
     @Deprecated
     public Mono<Result> updateExistingOrCreateCustomer(Customer customer) {
         customer.setCreatedTimeStamp(valueOf(now().getEpochSecond()));
-        Result updateStatus = customerRepository.updateCustomer(customer)
-                .handle((__, ex) -> ex == null ? SUCCESS : FAIL)
-                .join();//blocked until data is retrieved
-        // TODO: 03.01.2021 Exclude join
-        return Mono.just(updateStatus);
+        CompletableFuture<Result> updateStatusCF = customerRepository.updateCustomer(customer)
+                .handle((__, ex) -> ex == null ? SUCCESS : FAIL);
+        return Mono.fromFuture(updateStatusCF);
     }
 
     public Mono<Result> deleteCustomerByCustomerId(String customerId) {
-        Result deleteStatus = customerRepository.deleteCustomerById(customerId)
-                .handle((__, ex) -> ex == null ? SUCCESS : FAIL)
-                .join();//blocked until data is retrieved
-        // TODO: 03.01.2021 Exclude join
-        return Mono.just(deleteStatus);
+        CompletableFuture<Result> deleteStatusCF = customerRepository.deleteCustomerById(customerId)
+                .handle((__, ex) -> ex == null ? SUCCESS : FAIL);
+        return Mono.fromFuture(deleteStatusCF);
     }
 
     public Flux<Customer> getCustomerList() {
