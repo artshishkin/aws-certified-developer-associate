@@ -1,19 +1,22 @@
 package net.shyshkin.study.webfluxdynamodb.repository;
 
+import lombok.extern.slf4j.Slf4j;
 import net.shyshkin.study.webfluxdynamodb.domain.Address;
 import net.shyshkin.study.webfluxdynamodb.domain.Customer;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import software.amazon.awssdk.enhanced.dynamodb.model.PagePublisher;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@Slf4j
 @SpringBootTest
 @TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)
 class CustomerRepositoryTest {
@@ -94,31 +97,48 @@ class CustomerRepositoryTest {
     @Test
     @Order(30)
     void deleteCustomerById() {
-        //given
-
         //when
+        CompletableFuture<Customer> deleteCF = customerRepository.deleteCustomerById(customerID);
 
         //then
-
+        deleteCF
+                .thenAccept(deletedCustomer -> assertThat(deletedCustomer.getCustomerID()).isEqualTo(customerID))
+                .thenCompose((fin) -> customerRepository.getCustomerByID(customerID))
+                .thenAccept(notExistingCustomer -> assertThat(notExistingCustomer).isNull())
+                .join();
     }
 
     @Test
+    @Order(23)
     void getCustomerAddress() {
-        //given
-
         //when
+        PagePublisher<Customer> customerPagePublisher = customerRepository.getCustomerAddress(customerID);
 
         //then
-
+        customerPagePublisher
+                .items()
+                .subscribe(
+                        customer -> assertAll(
+                                () -> log.info("Customer is `{}`", customer),
+                                () -> assertThat(customer.getAddress()).hasNoNullFieldsOrProperties(),
+                                () -> assertThat(customer).hasAllNullFieldsOrPropertiesExcept("address")
+                        ))
+                .join();
     }
 
     @Test
-    void getAllCustomer() {
-        //given
-
+    @Order(26)
+    void getAllCustomers() {
         //when
+        PagePublisher<Customer> customerPagePublisher = customerRepository.getAllCustomers();
 
         //then
-
+        customerPagePublisher
+                .subscribe(
+                        page -> assertThat(page.items())
+                                .hasSizeGreaterThanOrEqualTo(1)
+                                .allSatisfy(customer -> log.info("{}", customer))
+                                .allSatisfy(customer -> assertThat(customer).hasNoNullFieldsOrProperties()))
+                .join();
     }
 }
