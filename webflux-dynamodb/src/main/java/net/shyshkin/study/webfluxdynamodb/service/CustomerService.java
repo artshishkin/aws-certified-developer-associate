@@ -67,6 +67,10 @@ public class CustomerService {
         return Mono.just(updateStatus);
     }
 
+    public Mono<Result> updateCustomerFields(Customer customer) {
+        throw new RuntimeException("NOT Implemented yet");
+    }
+
     public Mono<Result> updateExistingOrCreateCustomer(Customer customer) {
         customer.setCreatedTimeStamp(valueOf(now().getEpochSecond()));
         Result updateStatus = customerRepository.updateCustomer(customer)
