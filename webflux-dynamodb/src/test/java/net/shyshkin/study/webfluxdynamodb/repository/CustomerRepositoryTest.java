@@ -66,6 +66,17 @@ class CustomerRepositoryTest {
     }
 
     @Test
+    void getCustomerById_whenAbsent() {
+        //when
+        CompletableFuture<Customer> someFakeCustomerCF = customerRepository.getCustomerByID("someFakeId");
+
+        //then
+        someFakeCustomerCF
+                .thenAccept(customer -> assertThat(customer).isNull())
+                .join();
+    }
+
+    @Test
     @Order(20)
     void updateCustomer() {
         //given
@@ -109,6 +120,18 @@ class CustomerRepositoryTest {
     }
 
     @Test
+    @Order(31)
+    void deleteCustomerById_whenAbsent() {
+        //when
+        CompletableFuture<Customer> deleteCF = customerRepository.deleteCustomerById("someFakeId");
+
+        //then
+        deleteCF
+                .thenAccept(deletedCustomer -> assertThat(deletedCustomer).isNull())
+                .join();
+    }
+
+    @Test
     @Order(23)
     void getCustomerAddress() {
         //when
@@ -123,6 +146,19 @@ class CustomerRepositoryTest {
                                 () -> assertThat(customer.getAddress()).hasNoNullFieldsOrProperties(),
                                 () -> assertThat(customer).hasAllNullFieldsOrPropertiesExcept("address")
                         ))
+                .join();
+    }
+
+    @Test
+    @Order(24)
+    void getCustomerAddress_whenAbsent() {
+        //when
+        PagePublisher<Customer> customerPagePublisher = customerRepository.getCustomerAddress("non existing customer");
+
+        //then
+        customerPagePublisher
+                .items()
+                .subscribe(customer -> assertThat(customer).isNull())
                 .join();
     }
 
