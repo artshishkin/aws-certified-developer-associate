@@ -3,6 +3,7 @@ package net.shyshkin.study.webfluxdynamodb.bootstrap;
 import lombok.RequiredArgsConstructor;
 import net.shyshkin.study.webfluxdynamodb.domain.Customer;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbAsyncTable;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedAsyncClient;
@@ -10,11 +11,9 @@ import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
 import software.amazon.awssdk.services.dynamodb.model.ListTablesResponse;
 
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-
 @Component
 @RequiredArgsConstructor
+@Profile("!test")
 public class DynamoDBDataInitializer implements CommandLineRunner {
 
     private final DynamoDbAsyncClient asyncClient;

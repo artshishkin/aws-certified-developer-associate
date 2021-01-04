@@ -1,28 +1,35 @@
 package net.shyshkin.study.webfluxdynamodb.repository;
 
 import lombok.extern.slf4j.Slf4j;
+import net.shyshkin.study.webfluxdynamodb.bootstrap.DynamoDBTestDataInitializer;
 import net.shyshkin.study.webfluxdynamodb.domain.Address;
 import net.shyshkin.study.webfluxdynamodb.domain.Customer;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import software.amazon.awssdk.enhanced.dynamodb.model.PagePublisher;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
 @TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)
+@ActiveProfiles("test")
 class CustomerRepositoryTest {
 
     @Autowired
     CustomerRepository customerRepository;
+
+    @Autowired
+    DynamoDBTestDataInitializer dynamoDBTestDataInitializer;
+    static boolean initFinished;
 
     private static String customerID;
 
@@ -30,6 +37,14 @@ class CustomerRepositoryTest {
     static void beforeAll() {
 //        customerID = UUID.randomUUID().toString();
         customerID = "c6bd4b74-245f-4b48-a08c-3ea83f60a43d";
+    }
+
+    @BeforeEach
+    void setUp() {
+        if (!initFinished) {
+            dynamoDBTestDataInitializer.getInitFinished().join();
+            initFinished = true;
+        }
     }
 
     @Test
@@ -169,12 +184,14 @@ class CustomerRepositoryTest {
         PagePublisher<Customer> customerPagePublisher = customerRepository.getAllCustomers();
 
         //then
-        customerPagePublisher
-                .subscribe(
-                        page -> assertThat(page.items())
-                                .hasSizeGreaterThanOrEqualTo(1)
-                                .allSatisfy(customer -> log.info("{}", customer))
-                                .allSatisfy(customer -> assertThat(customer).hasNoNullFieldsOrProperties()))
-                .join();
+        assertTimeoutPreemptively(
+                Duration.ofSeconds(1),
+                () -> customerPagePublisher
+                        .subscribe(
+                                page -> assertThat(page.items())
+                                        .hasSizeGreaterThanOrEqualTo(1)
+                                        .allSatisfy(customer -> log.info("{}", customer))
+                                        .allSatisfy(customer -> assertThat(customer).hasNoNullFieldsOrProperties()))
+                        .join());
     }
 }

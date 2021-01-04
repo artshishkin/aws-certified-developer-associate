@@ -284,4 +284,24 @@ class CustomerServiceIT {
         log.info("Total count: {}", totalCount);
         assertThat(totalCount).hasValueGreaterThan(1);
     }
+
+    @Test
+    @Order(5)
+    void getCustomerList_afterInit() {
+        //when
+        Flux<Customer> customerFlux = customerService.getCustomerList();
+
+        //then
+        AtomicInteger totalCount = new AtomicInteger();
+        StepVerifier
+                .create(customerFlux)
+                .thenConsumeWhile((__) -> true, (customer) -> {
+                    totalCount.getAndIncrement();
+                    log.info("{}", customer);
+                    assertThat(customer).hasNoNullFieldsOrProperties();
+                })
+                .verifyComplete();
+        log.info("Total count: {}", totalCount);
+        assertThat(totalCount).hasValue(5);
+    }
 }
