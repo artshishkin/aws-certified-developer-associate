@@ -2,13 +2,12 @@ package net.shyshkin.study.dynamodbspringdata.repository;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
-import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import net.shyshkin.study.dynamodbspringdata.model.ProductInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
@@ -20,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         "amazon.dynamodb.endpoint=http://localhost:8000/",
         "amazon.aws.accesskey=test1",
         "amazon.aws.secretkey=test231"})
+@ActiveProfiles("test")
 class ProductInfoRepositoryIT {
 
     private DynamoDBMapper dynamoDBMapper;
@@ -37,14 +37,14 @@ class ProductInfoRepositoryIT {
     @BeforeEach
     void setUp() {
         dynamoDBMapper = new DynamoDBMapper(amazonDynamoDB);
-
-        CreateTableRequest tableRequest = dynamoDBMapper
-                .generateCreateTableRequest(ProductInfo.class);
-        tableRequest.setProvisionedThroughput(
-                new ProvisionedThroughput(1L, 1L));
-        amazonDynamoDB.createTable(tableRequest);
-
-        //...
+//
+//        CreateTableRequest tableRequest = dynamoDBMapper
+//                .generateCreateTableRequest(ProductInfo.class);
+//        tableRequest.setProvisionedThroughput(
+//                new ProvisionedThroughput(1L, 1L));
+//        amazonDynamoDB.createTable(tableRequest);
+//
+//        //...
 
         dynamoDBMapper.batchDelete(
                 (List<ProductInfo>) repository.findAll());
