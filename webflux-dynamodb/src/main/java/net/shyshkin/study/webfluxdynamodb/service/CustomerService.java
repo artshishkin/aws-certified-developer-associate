@@ -32,17 +32,17 @@ public class CustomerService {
         CompletableFuture<Result> createStatusCF = customerRepository.save(customer)
                 .handle((__, ex) -> ex == null ? SUCCESS : FAIL);
         return Mono.fromFuture(createStatusCF);
+    }
 
+    private void throwExceptionIfNull(Customer customer) {
+        if (customer == null)
+            throw new IllegalArgumentException("Invalid customerId");
     }
 
     public Mono<Customer> getCustomerByCustomerId(String customerId) {
-        CompletableFuture<Customer> customer = customerRepository.getCustomerByID(customerId)
-                .whenComplete((cus, ex) -> {
-                    if (null == cus) {
-                        throw new IllegalArgumentException("Invalid customerId");
-                    }
-                })
-                .exceptionally(ex -> new Customer());
+        CompletableFuture<Customer> customer = customerRepository
+                .getCustomerByID(customerId)
+                .whenComplete((cus, ex) -> throwExceptionIfNull(cus));
         return Mono.fromFuture(customer);
     }
 
@@ -50,19 +50,15 @@ public class CustomerService {
         SdkPublisher<Address> customerAddress = customerRepository.getCustomerAddress(customerId)
                 .items()
                 .map(Customer::getAddress);
-        return Mono.from(customerAddress)
-                .onErrorReturn(new Address());
+        return Mono.from(customerAddress);
+//                .onErrorReturn(new Address());
     }
 
     public Mono<Result> updateCustomer(Customer customer) {
         customer.setCreatedTimeStamp(valueOf(now().getEpochSecond()));
         CompletableFuture<Result> updateStatusCF = customerRepository.getCustomerByID(customer.getCustomerID())
-                .thenApply(retrievedCustomer -> {
-                    if (null == retrievedCustomer) {
-                        throw new IllegalArgumentException("Invalid CustomerID");
-                    }
-                    return retrievedCustomer;
-                }).thenCompose(__ -> customerRepository.updateCustomer(customer))
+                .thenAccept(this::throwExceptionIfNull)
+                .thenCompose(__ -> customerRepository.updateCustomer(customer))
                 .handle((__, ex) -> ex == null ? SUCCESS : FAIL);
         return Mono.fromFuture(updateStatusCF);
     }
@@ -70,9 +66,7 @@ public class CustomerService {
     public Mono<Result> updateCustomerFields(Customer customer) {
         CompletableFuture<Result> resultCF = customerRepository.getCustomerByID(customer.getCustomerID())
                 .thenApply(retrievedCustomer -> {
-                    if (null == retrievedCustomer) {
-                        throw new IllegalArgumentException("Invalid CustomerID");
-                    }
+                    throwExceptionIfNull(retrievedCustomer);
                     Address addressToUpdate = customer.getAddress();
                     Address retrievedAddress = retrievedCustomer.getAddress();
                     BeanUtils.copyProperties(retrievedAddress, addressToUpdate, Helper.getNonNullPropertyNames(addressToUpdate));
@@ -96,12 +90,12 @@ public class CustomerService {
 
     public Mono<Result> deleteCustomerByCustomerId(String customerId) {
         CompletableFuture<Result> deleteStatusCF = customerRepository.deleteCustomerById(customerId)
+                .thenAccept(this::throwExceptionIfNull)
                 .handle((__, ex) -> ex == null ? SUCCESS : FAIL);
         return Mono.fromFuture(deleteStatusCF);
     }
 
     public Flux<Customer> getCustomerList() {
-        return Flux.from(customerRepository.getAllCustomers().items())
-                .onErrorReturn(new Customer());
+        return Flux.from(customerRepository.getAllCustomers().items());
     }
 }

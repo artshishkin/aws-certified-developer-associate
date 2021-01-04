@@ -1,6 +1,5 @@
 package net.shyshkin.study.webfluxdynamodb.repository;
 
-import lombok.RequiredArgsConstructor;
 import net.shyshkin.study.webfluxdynamodb.domain.Customer;
 import org.springframework.stereotype.Repository;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbAsyncTable;

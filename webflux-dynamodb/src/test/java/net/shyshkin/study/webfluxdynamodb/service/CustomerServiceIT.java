@@ -94,6 +94,19 @@ class CustomerServiceIT {
     }
 
     @Test
+    @Order(21)
+    void getCustomerByCustomerId_whenAbsent() {
+        //when
+        Mono<Customer> customerMono = customerService.getCustomerByCustomerId("some Absent ID");
+
+        //then
+        StepVerifier.create(customerMono)
+                .verifyErrorSatisfies(ex -> assertThat(ex)
+                        .isInstanceOf(IllegalArgumentException.class)
+                        .hasMessage("Invalid customerId"));
+    }
+
+    @Test
     @Order(30)
     void queryAddressByCustomerId() {
         //when
@@ -103,6 +116,18 @@ class CustomerServiceIT {
         StepVerifier
                 .create(addressMono)
                 .assertNext(address -> assertThat(address).isEqualTo(defaultAddress))
+                .verifyComplete();
+    }
+
+    @Test
+    @Order(30)
+    void queryAddressByCustomerId_whenAbsent() {
+        //when
+        Mono<Address> addressMono = customerService.queryAddressByCustomerId("absent ID");
+
+        //then
+        StepVerifier
+                .create(addressMono)
                 .verifyComplete();
     }
 
@@ -146,6 +171,26 @@ class CustomerServiceIT {
     }
 
     @Test
+    @Order(40)
+    void updateCustomerFields_whenAbsent() {
+        //given
+        Customer customerToUpdate = Customer.builder()
+                .address(Address.builder().city("Mariupol").build())
+                .customerID("absent ID")
+                .firstName("Tanya")
+                .build();
+
+        //when
+        Mono<Result> resultMono = customerService.updateCustomerFields(customerToUpdate);
+
+        //then
+        StepVerifier
+                .create(resultMono)
+                .expectNext(Result.FAIL)
+                .verifyComplete();
+    }
+
+    @Test
     @Order(50)
     void updateCustomer() {
         //given
@@ -176,6 +221,27 @@ class CustomerServiceIT {
     }
 
     @Test
+    @Order(51)
+    void updateCustomer_whenAbsent() {
+        //given
+        Customer customerToUpdate = Customer.builder()
+                .customerID("some absent ID")
+                .firstName("Arina")
+                .lastName("Shyshkina")
+                .contactNo("arina@example.com")
+                .build();
+
+        //when
+        Mono<Result> resultMono = customerService.updateCustomer(customerToUpdate);
+
+        //then
+        StepVerifier
+                .create(resultMono)
+                .expectNext(Result.FAIL)
+                .verifyComplete();
+    }
+
+    @Test
     @Order(60)
     void deleteCustomerByCustomerId() {
         //when
@@ -184,6 +250,18 @@ class CustomerServiceIT {
         //then
         StepVerifier.create(resultMono)
                 .expectNext(Result.SUCCESS)
+                .verifyComplete();
+    }
+
+    @Test
+    @Order(61)
+    void deleteCustomerByCustomerId_whenAbsent() {
+        //when
+        Mono<Result> resultMono = customerService.deleteCustomerByCustomerId("absent ID");
+
+        //then
+        StepVerifier.create(resultMono)
+                .expectNext(Result.FAIL)
                 .verifyComplete();
     }
 

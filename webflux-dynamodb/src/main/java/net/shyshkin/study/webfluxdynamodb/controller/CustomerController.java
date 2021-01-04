@@ -5,6 +5,7 @@ import net.shyshkin.study.webfluxdynamodb.domain.Address;
 import net.shyshkin.study.webfluxdynamodb.domain.Customer;
 import net.shyshkin.study.webfluxdynamodb.domain.Result;
 import net.shyshkin.study.webfluxdynamodb.service.CustomerService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -51,5 +52,11 @@ public class CustomerController {
     @GetMapping
     public Flux<Customer> getAllCustomer() {
         return customerService.getCustomerList();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    String handleExceptions(Exception ex) {
+        return ex.getMessage();
     }
 }
