@@ -11,10 +11,10 @@ import org.springframework.test.context.ActiveProfiles;
 import software.amazon.awssdk.enhanced.dynamodb.model.PagePublisher;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.concurrent.CompletableFuture;
 
+import static java.lang.String.valueOf;
+import static java.time.Instant.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -62,7 +62,8 @@ class CustomerRepositoryTest {
                 .firstName("Artem")
                 .lastName("Shyshkin")
                 .contactNo("d.art.shishkin@gmail.com")
-                .createdTimeStamp(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME))
+//                .createdTimeStamp(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME))
+                .createdTimeStamp(valueOf(now().getEpochSecond()))
                 .build();
 
         //when
@@ -107,7 +108,8 @@ class CustomerRepositoryTest {
                 .firstName("Artem")
                 .lastName("Shyshkin")
                 .contactNo("d.art.shishkin@gmail.com")
-                .createdTimeStamp(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME))
+//                .createdTimeStamp(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME))
+                .createdTimeStamp(valueOf(now().getEpochSecond()))
                 .build();
 
         //when

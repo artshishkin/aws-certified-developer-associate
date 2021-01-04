@@ -13,13 +13,14 @@ import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
 import software.amazon.awssdk.services.dynamodb.model.ListTablesResponse;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import static java.lang.String.valueOf;
+import static java.time.Instant.now;
 
 @Component
 @RequiredArgsConstructor
@@ -65,7 +66,8 @@ public class DynamoDBTestDataInitializer implements CommandLineRunner {
                 .firstName("Artem" + index)
                 .lastName("Last Name " + index)
                 .contactNo("Contact No " + index)
-                .createdTimeStamp(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME))
+//                .createdTimeStamp(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME))
+                .createdTimeStamp(valueOf(now().getEpochSecond()))
                 .build();
     }
 }
