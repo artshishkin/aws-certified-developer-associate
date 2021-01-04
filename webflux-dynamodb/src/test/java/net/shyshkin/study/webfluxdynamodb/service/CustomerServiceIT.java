@@ -1,15 +1,19 @@
 package net.shyshkin.study.webfluxdynamodb.service;
 
 import lombok.extern.slf4j.Slf4j;
+import net.shyshkin.study.webfluxdynamodb.bootstrap.DynamoDBTestDataInitializer;
 import net.shyshkin.study.webfluxdynamodb.domain.Address;
 import net.shyshkin.study.webfluxdynamodb.domain.Customer;
 import net.shyshkin.study.webfluxdynamodb.domain.Result;
+import net.shyshkin.study.webfluxdynamodb.extensions.DynamoDBLocalServerExtension;
 import net.shyshkin.study.webfluxdynamodb.repository.CustomerRepository;
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -22,7 +26,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 @Slf4j
 @SpringBootTest
+@ExtendWith(DynamoDBLocalServerExtension.class)
 @TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)
+@ActiveProfiles("test")
 class CustomerServiceIT {
 
     @Autowired
@@ -30,6 +36,10 @@ class CustomerServiceIT {
 
     @Autowired
     CustomerRepository customerRepository;
+
+    @Autowired
+    DynamoDBTestDataInitializer dynamoDBTestDataInitializer;
+    static boolean initFinished;
 
     private static String customerID;
     private Customer defaultCustomer;
@@ -55,6 +65,13 @@ class CustomerServiceIT {
                 .lastName("Shyshkina")
                 .contactNo("kate@example.com")
                 .build();
+
+        if (!initFinished) {
+            dynamoDBTestDataInitializer
+                    .getInitFinished()
+                    .join();
+            initFinished = true;
+        }
     }
 
     @Test

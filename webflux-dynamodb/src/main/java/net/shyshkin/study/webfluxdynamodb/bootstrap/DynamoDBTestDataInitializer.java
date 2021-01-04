@@ -35,9 +35,7 @@ public class DynamoDBTestDataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        initFinished = asyncClient
-                .deleteTable(builder -> builder.tableName(Customer.class.getSimpleName()))
-                .thenCompose((__) -> asyncClient.listTables())
+        initFinished = asyncClient.listTables()
                 .thenApply(ListTablesResponse::tableNames)
                 .thenAccept(tables -> {
                     if (null != tables && !tables.contains(Customer.class.getSimpleName())) {

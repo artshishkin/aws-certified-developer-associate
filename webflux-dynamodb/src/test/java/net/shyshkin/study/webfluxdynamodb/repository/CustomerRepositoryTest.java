@@ -4,7 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.shyshkin.study.webfluxdynamodb.bootstrap.DynamoDBTestDataInitializer;
 import net.shyshkin.study.webfluxdynamodb.domain.Address;
 import net.shyshkin.study.webfluxdynamodb.domain.Customer;
+import net.shyshkin.study.webfluxdynamodb.extensions.DynamoDBLocalServerExtension;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -20,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
+@ExtendWith(DynamoDBLocalServerExtension.class)
 @TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)
 @ActiveProfiles("test")
 class CustomerRepositoryTest {
