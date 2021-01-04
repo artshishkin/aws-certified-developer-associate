@@ -1,11 +1,12 @@
 package net.shyshkin.study.dynamodbspringdata;
 
-import org.junit.jupiter.api.Disabled;
+import net.shyshkin.study.dynamodbspringdata.extensions.DynamoDBServer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-@Disabled
+@ExtendWith(DynamoDBServer.class)
 class DynamodbSpringDataApplicationTests {
 
     @Test
