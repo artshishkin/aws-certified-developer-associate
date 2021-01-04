@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.shyshkin.study.dynamodbspringdata.model.ProductInfo;
 import net.shyshkin.study.dynamodbspringdata.repository.ProductInfoRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.stream.IntStream;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-//@Profile("!test")
+@Profile("!test")
 public class InitData implements CommandLineRunner {
 
     private final ProductInfoRepository productInfoRepository;
