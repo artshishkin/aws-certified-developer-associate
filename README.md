@@ -4753,4 +4753,18 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
     -  `https://qozxt2izp7.execute-api.eu-north-1.amazonaws.com/test/stagevariables`                         
     -  `https://qozxt2izp7.execute-api.eu-north-1.amazonaws.com/prod/stagevariables`                         
 
+#####  290. API Gateway Stages Configurations Hands On
 
+1.  Stages -> dev
+2.  SDK Generation
+    -  Platform: Java SDK
+    -  ServiceName: `MyFirstSdkGeneration`
+    -  Java Package Name: `net.shyshkin.study.gateway`
+    -  Java Build System: `maven`
+    -  Java Artifact Id: `my-first-sdk-generation`
+    -  Generate SDK
+3.  Export Swagger
+    -  YAML
+    -  `https://editor.swagger.io/`
+    -  insert yaml
+    -  test it        
