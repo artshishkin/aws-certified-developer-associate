@@ -4678,4 +4678,79 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
     -  Stage name: dev
     -  Deploy
     -  visit url -> ok
-    -  visit wrong url -> json with error message                                                                                                  
+    -  visit wrong url -> json with error message
+    
+#####  289. API Gateway Stages and Deployment Hands On    
+
+1.  Create Lambda versions and aliases
+    -  Lambda console
+    -  `lambda-api-gateway-proxy-root-get`
+    -  `Hello from Lambda v1!` -> Deploy
+    -  Actions -> Publish new version (1)
+    -  $LATEST -> `Hello from Lambda v2!`
+    -  Publish new Version (2)
+    -  Aliases -> Create Alias
+    -  DEV -> $LATEST
+    -  TEST -> v2
+    -  PROD -> v1
+2.  Create API Endpoint
+    -  API Gateway Console
+    -  Resources -> Action ->
+    -  Create Resource
+    -  Name: `stagevariables` -> Create
+    -  Create method: GET
+    -  Use Lambda Proxy Integration: true
+    -  `lambda-api-gateway-proxy-root-get:${stageVariables.lambdaAlias}` -> Save
+    -  Got a message:
+        -  `You defined your Lambda function as a stage variable. Please ensure that you have the appropriate Function Policy on all functions you will use. You can do this by running the below AWS CLI command for each function, replacing the stage variable in the function-name parameter with the necessary function name.`
+        -  `aws lambda add-permission   --function-name "arn:aws:lambda:eu-north-1:392971033516:function:lambda-api-gateway-proxy-root-get:${stageVariables.lambdaAlias}"   --source-arn "arn:aws:execute-api:eu-north-1:392971033516:qozxt2izp7/*/GET/stagevariables"   --principal apigateway.amazonaws.com   --statement-id f1c4ff9f-fa9d-441a-94c6-f729977880f6   --action lambda:InvokeFunction`
+3.  Add permissions
+    -  AWS CLI
+    -  `aws lambda add-permission   --function-name "arn:aws:lambda:eu-north-1:392971033516:function:lambda-api-gateway-proxy-root-get:DEV"   --source-arn "arn:aws:execute-api:eu-north-1:392971033516:qozxt2izp7/*/GET/stagevariables"   --principal apigateway.amazonaws.com   --statement-id f1c4ff9f-fa9d-441a-94c6-f729977880f6   --action lambda:InvokeFunction`
+    -  **OR** in certain region    
+    -  `aws lambda add-permission   --function-name "arn:aws:lambda:eu-north-1:392971033516:function:lambda-api-gateway-proxy-root-get:DEV"   --source-arn "arn:aws:execute-api:eu-north-1:392971033516:qozxt2izp7/*/GET/stagevariables"   --principal apigateway.amazonaws.com   --statement-id f1c4ff9f-fa9d-441a-94c6-f729977880f6   --action lambda:InvokeFunction --region eu-west-2`    
+    -  response was `{
+                         "Statement": "{\"Sid\":\"f1c4ff9f-fa9d-441a-94c6-f729977880f6\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"apigateway.amazonaws.com\"},\"Action\":\"lambda:InvokeFunction\",\"Resource\":\"arn:aws:lambda:eu-north-1:392971033516:function:lambda-api-gateway-proxy-root-get:DEV\",\"Condition\":{\"ArnLike\":{\"AWS:SourceArn\":\"arn:aws:execute-api:eu-north-1:392971033516:qozxt2izp7/*/GET/stagevariables\"}}}"
+                     }`
+    -  same for TEST and PROD
+    -  `aws lambda add-permission   --function-name "arn:aws:lambda:eu-north-1:392971033516:function:lambda-api-gateway-proxy-root-get:TEST"   --source-arn "arn:aws:execute-api:eu-north-1:392971033516:qozxt2izp7/*/GET/stagevariables"   --principal apigateway.amazonaws.com   --statement-id f1c4ff9f-fa9d-441a-94c6-f729977880f6   --action lambda:InvokeFunction`                           
+    -  `aws lambda add-permission   --function-name "arn:aws:lambda:eu-north-1:392971033516:function:lambda-api-gateway-proxy-root-get:PROD"   --source-arn "arn:aws:execute-api:eu-north-1:392971033516:qozxt2izp7/*/GET/stagevariables"   --principal apigateway.amazonaws.com   --statement-id f1c4ff9f-fa9d-441a-94c6-f729977880f6   --action lambda:InvokeFunction`                           
+4.  View Lambda resource-based policy
+    -  Lambda console
+    -  `lambda-api-gateway-proxy-root-get` -> Alias:PROD
+    -  Configuration -> Resource-based policy
+    -  `"Resource": "arn:aws:lambda:eu-north-1:392971033516:function:lambda-api-gateway-proxy-root-get:PROD"`
+    -  `"AWS:SourceArn": "arn:aws:execute-api:eu-north-1:392971033516:qozxt2izp7/*/GET/stagevariables"`
+5.  Test Stage Variables
+    -  Gateway console
+    -  `/stagevariables` -> GET
+    -  Test -> Stage Variables
+    -  lambdaAlias: `DEV`
+    -  Test ->
+    -  Result:
+        -  `"body": "\"Hello from Lambda v2!\""`
+    -  lambdaAlias: `TEST` -> result the same
+    -  lambdaAlias: `PROD`
+    -  Test -> `"body": "\"Hello from Lambda v1!\"",`    
+6.  Deploy API to DEV Stage
+    -  `/stagevariables` -> Actions -> Deploy API -> to `dev`
+    -  Stage Variables
+    -  Add Stage Variable
+        - lambdaAlias: DEV
+7.  Deploy API to TEST Stage
+    -  Resources ->
+    -  Actions -> Deploy API
+    -  Deployment stage -> Create new: `test`
+    -  Stage Variables -> Add Stage Variable
+        -  lambdaAlias: TEST
+8.  Deploy to PROD Stage
+    -  Stages -> Create
+        -  Stage name: `prod`
+        -  Deployment: (choose the same - last deployment)
+    -  Stage Variables -> lambdaAlias: PROD
+9.  Test it
+    -  `https://qozxt2izp7.execute-api.eu-north-1.amazonaws.com/dev/stagevariables`                         
+    -  `https://qozxt2izp7.execute-api.eu-north-1.amazonaws.com/test/stagevariables`                         
+    -  `https://qozxt2izp7.execute-api.eu-north-1.amazonaws.com/prod/stagevariables`                         
+
+
