@@ -4768,3 +4768,37 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
     -  `https://editor.swagger.io/`
     -  insert yaml
     -  test it        
+
+#####  292. API Gateway Canary Deployments Hands On
+
+1.  Config Lambda
+    -  PROD stage points to v1 of Lambda
+2.  Modify Gateway
+    -  Resources -> GET
+    -  Integration Request -> add `:1` to invoke version 1
+        -  `lambda-api-gateway-proxy-root-get:1`
+        -  Will be message
+        -  `You are about to give API Gateway permission to invoke your Lambda function:`
+    -  Deploy into `prod` Stage
+3.  Create a Canary
+    -  Stages -> prod -> Canary -> Create Canary
+    -  Percentage of requests directed to Canary: 40 (for testing, in real world about 5%)
+4.  Deploy to Canary
+    -  Resources -> GET -> Integration Request
+    -  Lambda function: `lambda-api-gateway-proxy-root-get:2`
+    -  Deploy API -> prod (Canary Enabled)
+    -  will be message
+        -  `*You are deploying this API only to the Canary. To deploy to the entire stage, please use 'Promote' in the stage's Canary settings page.`
+5.  Test it
+    -  go to `https://qozxt2izp7.execute-api.eu-north-1.amazonaws.com/prod`
+    -  wait for some time for changes to happen
+    -  refresh couple of time
+    -  v1 -> v2 -> v2 -> v1 -> v1 and so on
+6.  Promote Canary
+    -  Canary -> Promote
+    -  `You are about to do the following:`    
+        -  `Update stage with Canary’s deployment`
+        -  `Update stage with Canary’s stage variables`
+        -  `Set Canary percentage to 0.0%`                        
+    -  Wait some time
+    -  refresh -> only v2
