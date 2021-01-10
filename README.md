@@ -4875,4 +4875,53 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
 6.  Clean Up
     -  disable caching:
     -  Stages -> prod -> Enable API Cache -> disable             
-                                    
+
+#####  297. API Gateway Usage Plans & API Keys
+
+1.  Create `/apikey` Resource
+2.  Create GET Method
+    -  MOCK
+    -  Save
+    -  Add Mapping Template
+        -  Integration Response
+        -  expand existing (200 OK)
+        -  Mapping Template -> `application/json`
+        -  Template: Empty -> `{"Foo":"Bar"}`
+        -  Save
+    -  Test -> OK `{"Foo":"Bar"}`
+3.  Create demo Usage Plan
+    -  API Gateway Console -> Usage Plans -> Create
+    -  `DemoPlan`
+    -  Throttling
+        -  Rate: 10 requests per second
+        -  Burst: 5 requests
+    -  Quota:
+        -  10000 requests per Month (Week, Day)
+    -  Next
+    -  `MyFirstAPI` -> `prod`
+    -  Next
+    -  Create API Key and Add to Usage Plan
+        -  Name: `Kate Customer`
+        -  Auto Generate
+        -  Save
+    -  Done
+4.  View
+    -  DemoPlan -> ApiKeys -> Kate Customer -> Usage -> `0 requests made between Jan 1, 2021 and Jan 10, 2021 (UTC)`
+    -  Kate Customer (API Key PAne) -> API key -> **Show** -> `fDXdOn...dNoqq8`
+5.  Secure endpoint
+    -  Resources -> apikey -> GET -> API Key Required -> true                                                  
+6.  Deploy API
+    -  Resources -> Actions -> Deploy API -> `prod`
+7.  Visit url
+    -  `https://qozxt2izp7.execute-api.eu-north-1.amazonaws.com/prod/apikey`
+    -  Response
+    -  `{"message":"Forbidden"}`
+8.  Testing with Insomnia or Postman
+    -  Insomnia
+    -  Create Request `API Gateway Usage Plan Test`
+    -  `https://qozxt2izp7.execute-api.eu-north-1.amazonaws.com/prod/apikey`
+    -  got the same error
+    -  add header
+        -  `X-API-Key`: `fDXdOnR...qq8`
+    -  Send
+    -  `{"Foo": "Bar"}` -> OK         
