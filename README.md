@@ -4824,4 +4824,22 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
     -  Save
     -  Test it
     
-                  
+#####  295. API Gateway Swagger & Open API 3.0
+
+1.  API Gateway console
+    -  Create API    
+    -  REST API -> Import
+    -  we can `Import from Swagger or Open API 3`
+    -  **OR**
+    -  `Example API` -> Import
+    -  It Mocks backend
+    -  Test it
+2.  Export Swagger/OpenAPI
+    -  Export -> as Swagger
+    -  view [PetStore-v1-swagger.yaml](https://github.com/artshishkin/aws-certified-developer-associate/blob/main/Section%2021%20-%20API%20Gateway/PetStore-v1-swagger.yaml)
+    -  YML -> copy
+    -  `https://editor.swagger.io/` -> paste -> test
+3.  Generate Java SDK for sample API
+    -  SDK Generation
+    -  Java SDK
+    -  see generated `sample-pets-service` client for Sample API                         
