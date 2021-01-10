@@ -4802,3 +4802,26 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
         -  `Set Canary percentage to 0.0%`                        
     -  Wait some time
     -  refresh -> only v2
+    
+#####  294. API Gateway Mapping Templates Hands On
+
+1.  Create Lambda function
+    -  `lambda-api-gateway-mapping-get`
+    -  return json `{"example":"test"}`
+    -  test it
+2.  Create `/mapping` endpoint
+    -  create resource
+    -  create method GET
+    -  lambda function `lambda-api-gateway-mapping-get`
+    -  test it
+3.  Modify Integration Response
+    -  Integration Response
+    -  expand row with Method Response Status 200
+    -  Mapping Templates
+    -  `application/json`
+    -  Generate template: Empty
+    -  `{"renamed_example":$inputRoot.example, "another_key":"another_value"}`
+    -  Save
+    -  Test it
+    
+                  
