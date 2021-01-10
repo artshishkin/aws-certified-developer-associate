@@ -4842,4 +4842,37 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
 3.  Generate Java SDK for sample API
     -  SDK Generation
     -  Java SDK
-    -  see generated `sample-pets-service` client for Sample API                         
+    -  see generated `sample-pets-service` client for Sample API
+    
+#####  296. API Gateway Caching
+
+1.  Theory
+    -  Caching reduces the number of calls made to the backend
+    -  Default TTL (time to live) is 300 seconds (min: 0s, max: 3600s)
+    -  Caches are defined per stage
+    -  Possible to override cache settings per method
+    -  Cache encryption option
+    -  Cache capacity between 0.5GB to 237GB
+    -  Cache is expensive, makes sense in production, may not make sense in dev / test
+2.  API Gateway Cache Invalidation        
+    -  Able to flush the entire cache (invalidate it) immediately
+    -  Clients can invalidate the cache with header: Cache- Control: max-age=0 (with proper IAM authorization)
+    -  If you don't impose an InvalidateCache policy (or choose the Require authorization check box in the console), any client can invalidate the API cache
+3.  Hands on
+    -  `MyFirstAPI` -> Stages -> prod
+    -  Enable API cache
+    -  Cache capacity: 0.5GB
+    -  Cache time-to-live (TTL): 60
+    -  Save Changes
+4.  Disabling caching for method
+    -  Stages -> prod -> Expand ->
+    -  `/houses` -> GET -> Settings -> Override for this method
+    -  Cache Settings: Enable Method Cache: **false**
+    -  Save changes
+5.  Invalidate cache
+    -  Stages: prod -> Settings
+    -  Cache status: AVAILABLE -> Flush Entire cache
+6.  Clean Up
+    -  disable caching:
+    -  Stages -> prod -> Enable API Cache -> disable             
+                                    
