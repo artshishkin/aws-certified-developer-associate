@@ -4962,7 +4962,23 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
 7.  Test final result
     -  `http://art-demo-cors-apigateway.s3-website.eu-north-1.amazonaws.com/`
     -  OK all 2 CORS endpoints
-    
+
+#####  300. API Gateway Authentication and Authorization
+
+1.  IAM
+    -  Resources -> any Resource -> GET
+    -  Method Request -> Authorization
+    -  AWS_IAM with using SigV4 (disable for now)
+2.  Resource Policy
+    -  AWS Account Allowlist (Cross-Account Resource Policy)
+    -  IP Range Denylist
+    -  Source VPC Allowlist
+3.  Authorizers
+    -  Create new Authorizer
+    -  Lambda Authorizer
+    -  **or**
+    -  Cognito      
+        
                 
     
     
