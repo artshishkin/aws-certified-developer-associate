@@ -4925,3 +4925,44 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
         -  `X-API-Key`: `fDXdOnR...qq8`
     -  Send
     -  `{"Foo": "Bar"}` -> OK         
+
+#####  299. API Gateway CORS & Hands On
+
+1.  Create Static site in S3
+    -  `art-demo-cors-apigateway`
+    -  `eu-north-1`
+    -  enable public access
+    -  Create
+    -  Properties -> Static Website hosting -> Enable
+        -  index.html, error.html
+    -  if now go to `http://art-demo-cors-apigateway.s3-website.eu-north-1.amazonaws.com/` got an error
+        -  Code: AccessDenied -> [Setting permissions for website access](https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteAccessPermissionsReqd.html)
+    -  Permissions -> Bucket Policy -> Edit
+    -  `"Resource": ["arn:aws:s3:::art-demo-cors-apigateway/*"]`
+    -  visit `http://art-demo-cors-apigateway.s3-website.eu-north-1.amazonaws.com/`
+        -  got 404 -> fine
+    -  upload `index.html` into Bucket
+2.  Test it
+    -  visit url -> 200 OK
+    -  **but**
+    -  Ctrl+Shift+I -> Console -> Error
+        -  `Access to fetch at 'https://qozxt2izp7.execute-api.eu-north-1.amazonaws.com/prod/houses' from origin 'http://art-demo-cors-apigateway.s3-website.eu-north-1.amazonaws.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.`            
+3.  Enable CORS for **NON PROXY** (non LAMBDA_PROXY type of Request Integration)
+    -  Resources -> `/mapping` -> Enable CORS
+    -  Access-Control-Allow-Origin -> `'http://art-demo-cors-apigateway.s3-website.eu-north-1.amazonaws.com'`
+    -  Enable CORS and replace existing CORS headers
+4.  View modifications
+    -  Resources -> `/mapping` -> appear OPTIONS
+5.  Deploy to prod
+6.  Enable CORS for **LAMBDA_PROXY** (`/houses`)
+    -  Lambda console -> `lambda-api-gateway-proxy-houses-get`
+    -  modify Lambda code
+    -  `"Access-Control-Allow-Origin": "http://art-demo-cors-apigateway.s3-website.eu-north-1.amazonaws.com"`
+    -  Deploy
+7.  Test final result
+    -  `http://art-demo-cors-apigateway.s3-website.eu-north-1.amazonaws.com/`
+    -  OK all 2 CORS endpoints
+    
+                
+    
+    
