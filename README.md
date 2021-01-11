@@ -4978,7 +4978,14 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
     -  Lambda Authorizer
     -  **or**
     -  Cognito      
-        
+
+####  Section 22: AWS Serverless: SAM - Serverless Application Model
+
+#####  304. Installing the SAM CLI
+
+-  [Installing the AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
+-  test it installed
+    -  `sam --version`        
                 
     
     
