@@ -4987,5 +4987,17 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
 -  test it installed
     -  `sam --version`        
                 
-    
+#####  305. Creating first SAM Project
+
+-  `sam init --help`
+-  using `sam init` we can create app from template
+-  [Examples for Python](https://github.com/amazon-archives/serverless-app-examples/tree/master/python)
+-  create project structure SamProject
+-  [hello-world-python3](https://github.com/amazon-archives/serverless-app-examples/tree/master/python/hello-world-python3)
+    -  view `lambda_function.py`
+    -  copy code into `app.py` -> simplify
+    -  copy `template.yml` -> modify
+        -  exclude Parameters
+        -  CodeUri -> where code is
+        -  Remove Policies    
     
