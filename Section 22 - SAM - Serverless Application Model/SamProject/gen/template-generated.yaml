@@ -7,13 +7,32 @@ Resources:
     Properties:
       Handler: app.lambda_handler
       Runtime: python3.6
-      CodeUri: s3://art-code-sam-2021/4f18fb9c89dca4816fc611b3cceb398e
+      CodeUri: s3://art-code-sam-2021/0ecdb10acb6b3554dfaaf99815d690a0
       Description: A starter AWS Lambda function.
       MemorySize: 128
       Timeout: 3
+      Environment:
+        Variables:
+          TABLE_NAME:
+            Ref: Table
+          REGION_NAME:
+            Ref: AWS::Region
       Events:
         HelloWorldSAMAPI:
           Type: Api
           Properties:
             Path: /hello
             Method: GET
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Table
+  Table:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: greeting
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2

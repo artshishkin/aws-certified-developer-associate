@@ -5054,4 +5054,59 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
             -  `https://u97q9k7s0d.execute-api.eu-north-1.amazonaws.com/Stage` -> {"message":"Missing Authentication Token"} (we have NO `/` Endpoint)
             -  `https://u97q9k7s0d.execute-api.eu-north-1.amazonaws.com/Stage/hello` -> "Hello World!"
         -  Prod
+
+#####  308. SAM DynamoDB
     
+1.  View Sample
+    -  [microservice-http-endpoint-python3](https://github.com/amazon-archives/serverless-app-examples/tree/master/python/microservice-http-endpoint-python3)
+    -  modify app.py
+2.  Modify template
+    -  Add `AWS::Serverless::SimpleTable`
+    -  google `simpletable serverless options`
+        -  find `ProvisionedThroughput: `            
+        -  find `PrimaryKey: `            
+3.  Modify app.py
+4.  Package and Deploy
+5.  CloudFormation
+    -  Resources
+        -  added DynamoDB Table
+6.  DynamoDB
+    -  created `hello-world-sam-Table-GCUET70HOGEE`
+    -  add items
+        -  greeting: hello
+        -  gretting: bonjour
+7.  Lambda
+    -  Code -> Environment Variables -> appeared 2 EnvVars
+        -  REGION_NAME: eu-north-1
+        -  TABLE_NAME:  hello-world-sam-Table-GCUET70HOGEE
+    -  test it
+    -  view Execution Role
+8.  IAM
+    -  AWSLambdaBasicExecutionRole
+    -  helloworldpython3RolePolicy0 - inline policy
+```json
+{
+    "Statement": [
+        {
+            "Action": [
+                "dynamodb:GetItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:PutItem",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:UpdateItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:BatchGetItem",
+                "dynamodb:DescribeTable",
+                "dynamodb:ConditionCheckItem"
+            ],
+            "Resource": [
+                "arn:aws:dynamodb:eu-north-1:392971033516:table/hello-world-sam-Table-GCUET70HOGEE",
+                "arn:aws:dynamodb:eu-north-1:392971033516:table/hello-world-sam-Table-GCUET70HOGEE/index/*"
+            ],
+            "Effect": "Allow"
+        }
+    ]
+}
+```    
+                               
