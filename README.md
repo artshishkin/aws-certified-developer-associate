@@ -5109,4 +5109,17 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
     ]
 }
 ```    
-                               
+
+#####  309. SAM - CloudFormation Designer and Application Repository
+
+1.  CloudFormation
+    -  Stack: `hello-world-sam`
+    -  Template -> view it (it is simple)
+    -  Template -> View processed template (a bit complicated)
+    -  View in Designer
+2.  AWS Serverless Application Repository
+    -  Lambda Console in another region
+    -  Browse serverless app Repository 
+    -  find `hello-world-python3`
+    -  we can view source code in github
+    -  view Template                                    
