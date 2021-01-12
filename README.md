@@ -5024,5 +5024,34 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
     -  was created Lambda Function
     -  was created IAM Role
 5.  Test Lambda function    
-        
+
+#####  307. SAM API Gateway
+
+1.  View Sample
+    -  [microservice-http-endpoint-python3](https://github.com/amazon-archives/serverless-app-examples/tree/master/python/microservice-http-endpoint-python3)
+2.  Copy and modify
+    -  app.py
+    -  template.yaml
+        -  `Events` section for API GateWay
+3.  Package
+    -  `sam package --s3-bucket art-code-sam-2021 --template-file template.yaml --output-template-file gen/template-generated.yaml`
+4.  Deploy
+    -  `sam deploy --template-file gen\template-generated.yaml --stack-name hello-world-sam --capabilities CAPABILITY_IAM`                      
+5.  CloudFormation
+    -  created
+        -  AWS::ApiGateway::RestApi
+        -  AWS::ApiGateway::Deployment
+        -  AWS::ApiGateway::Stage
+        -  AWS::Lambda::Function
+        -  AWS::Lambda::Permission
+        -  AWS::IAM::Role
+6.  API Gateway
+    -  Resources
+        -  `/hello` -> GET
+        -  Test it               
+    -  Stages
+        -  Stage
+            -  `https://u97q9k7s0d.execute-api.eu-north-1.amazonaws.com/Stage` -> {"message":"Missing Authentication Token"} (we have NO `/` Endpoint)
+            -  `https://u97q9k7s0d.execute-api.eu-north-1.amazonaws.com/Stage/hello` -> "Hello World!"
+        -  Prod
     
