@@ -4999,5 +4999,30 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
     -  copy `template.yml` -> modify
         -  exclude Parameters
         -  CodeUri -> where code is
-        -  Remove Policies    
+        -  Remove Policies
+
+#####  306. Deploying SAM Project
+
+1.  Create S3 bucket
+    -  `aws s3 mb s3://art-code-sam-2021`
+2.  Package CloudFormation
+    -  `aws cloudformation package --s3-bucket art-code-sam-2021 --template-file template.yaml --output-template-file gen/template-generated.yaml`                 
+    -  successfully completed with message
+    -  `Execute the following command to deploy the packaged template`
+    -  `aws cloudformation deploy --template-file C:\Users\Admin\IdeaProjects\Study\StephaneMaarek\AWS_CertifiedDeveloperAssociate\aws-certified-developer-associate\Section 22 - SAM - Serverle
+        ss Application Model\SamProject\gen\template-generated.yaml --stack-name <YOUR STACK NAME>`
+    -  the same result will be for `sam package` (instead of `aws cloudformation package`)
+3.  Deploy
+    -  `aws cloudformation deploy --template-file gen\template-generated.yaml --stack-name hello-world-sam`
+    -  response
+    -  Failed to create the changeset: Waiter ChangeSetCreateComplete failed: Waiter encountered a terminal failure state Status: FAILED. Reason: Requires capabilities : [CAPABILITY_IAM]
+    -  it needs to add capabilities
+    -  `aws cloudformation deploy --template-file gen\template-generated.yaml --stack-name hello-world-sam --capabilities CAPABILITY_IAM`
+    -  response
+    -  `Successfully created/updated stack - hello-world-sam`
+4.  View CloudFormation
+    -  was created Lambda Function
+    -  was created IAM Role
+5.  Test Lambda function    
+        
     
