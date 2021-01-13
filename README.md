@@ -5122,4 +5122,75 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
     -  Browse serverless app Repository 
     -  find `hello-world-python3`
     -  we can view source code in github
-    -  view Template                                    
+    -  view Template
+
+#####  311. SAM with CodeDeploy
+
+1.  Follow tutorial [Tutorial: Deploying a Hello World application](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started-hello-world.html)
+2.  Step 1 - Download a sample application
+    -  `cd sam-codedeploy`
+    -  `sam init --runtime python3.7`
+    -  1 - AWS Quick Start Templates
+    -  Package type: 1 - ZIP
+    -  Project name [sam-app]: Enter
+    -  AWS quick start application templates: 1 - Hello World Example
+3.  Step 2 - Build your application
+    -  `cd sam-app`
+    -  `sam build`
+    -  caught an error
+    -  `Build Failed
+        Error: PythonPipBuilder:ResolveDependencies - [Errno 2] No such file or directory: 'C:\\Users\\Admin\\IdeaProjects\\Study\\StephaneMaarek\\AWS_CertifiedDeveloperAssociate\\aws-certifie
+        d-developer-associate\\Section 22 - SAM - Serverless Application Model\\sam-codedeploy\\sam-app\\.aws-sam\\build\\HelloWorldFunction\\chardet-4.0.0.dist-info\\entry_points.txt'`
+    -  Too long PATH
+    -  moved project directory to another directory (c:\Users\Admin\Downloads\_sam-codedeploy\sam-app>)
+    -  Build Succeeded
+    -  modified name of working directory
+4.  Add CodeDeploy ability
+    -  copy code from `codedeploy.yaml` to `template.yaml`
+5.  Rebuild
+    -  `sam build` 
+6.  Step 3 - Package your application
+    -  `sam deploy --guided`
+    -  Stack name [sam-app]: Enter
+    -  AWS Region: eu-north-1
+    -  Confirm changes before deploy: Y
+    -  Allow SAM CLI IAM role creation: Y
+    -  HelloWorldFunction may not have authorization defined, Is this okay?: Y
+    -  Save arguments to configuration file: Y
+    -  SAM configuration file [samconfig.toml]: 
+    -  SAM configuration environment [default]:
+    -  Result
+    -  `Looking for resources needed for deployment: Not found.`
+    -  `Creating the required resources...`
+    -  Deploy this changeset? [y/N]: y
+    -  Successfully created/updated stack - sam-app in eu-north-1
+7.  Lambda console
+    -  Applications -> `sam-app` created
+    -  Deployments -> there were deployments
+        -  HelloWorldFunction - Lambda Function
+        -  HelloWorldFunctionAliaslive - Function alias
+    -  Functions -> `sam-app-HelloWorldFunction-7RUI24F8E3NK`
+        -  Aliases: have a `live` alias - Version 1
+        -  Test it
+8.  Modify code
+    -  `"message": "hello world v2",`
+9.  Redeploy
+    -  `sam build`
+    -  `sam deploy --guided`
+10.  Lambda Console
+    -  Versions: 1 and 2
+    -  Alias: live
+        -  v1 - 90%
+        -  v2 - 10%
+        -  Configuration -> General Configuration
+11.  CodeDeploy
+    -  Deployments ->
+    -  Deployment type: `blue/green`
+    -  in progress
+12.  Lambda console
+    -  after 10min (because of `Canary10Percent10Minutes`)
+    -  alias - to v2                                
+
+     
+               
+                                        
