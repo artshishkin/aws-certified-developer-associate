@@ -5191,6 +5191,44 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
     -  after 10min (because of `Canary10Percent10Minutes`)
     -  alias - to v2                                
 
-     
+#####  311. SAM with CodeDeploy (JAVA)
+
+1.  Init sample project
+    -  `cd sam-java-cd`
+    -  `sam init --runtime java8`
+    -  1 - AWS Quick Start Templates
+    -  Package type: 1 - ZIP
+    -  Dependency manager: 1 - maven
+    -  Project name [sam-app]: **sam-j-app**
+    -  AWS quick start application templates: 1 - Hello World Example
+2.  Add CodeDeploy section to `template.yaml`    
+3.  Build
+    -  `cd sam-j-app`
+    -  `sam build`
+4.  Deploy
+    -  `sam deploy --guided`
+5.  Invoke locally (with docker)
+    -  `sam local invoke`
+    -  it will pull docker image `amazon/aws-sam-cli-emulation-image-java8`
+    -  and invoke lambda
+    -  `sam-j-app$ sam local invoke HelloWorldFunction --event events/event.json`
+6.  Emulate your application's API
+    -  `sam local start-api`
+    -  visit `localhost:3000/hello` (or curl, or Postman)
+    -  Response
+    -  `{ "message": "hello world v3", "location": "93.170.219.16" }`
+7.  Logging
+    -  `sam logs -n HelloWorldFunction --stack-name sam-j-app --tail`
+    -  then invoke lambda function (through Test)
+    -  logs
+    -  `2021/01/13/[$LATEST]a48142bb2e9e46ccb7052834f7ffa3a7 2021-01-13T07:36:38.960000 START RequestId: 9dbdfb53-0e06-48da-9ee1-ccfbdb911f1f Version: $LATEST`
+    -  `2021/01/13/[$LATEST]a48142bb2e9e46ccb7052834f7ffa3a7 2021-01-13T07:36:42.559000 END RequestId: 9dbdfb53-0e06-48da-9ee1-ccfbdb911f1f`
+    -  `2021/01/13/[$LATEST]a48142bb2e9e46ccb7052834f7ffa3a7 2021-01-13T07:36:42.559000 REPORT RequestId: 9dbdfb53-0e06-48da-9ee1-ccfbdb911f1f       Duration: 3598.52 ms    Billed Duration: 3599 ms        Memory Size: 512 MB     Max Memory Used: 106 MB      Init Duration: 410.19 ms`
+    -  or through Invoking API Gateway -> Prod Stage `/hello` -> Version `1`
+    -  `2021/01/13/[1]41c78b715d194c3b97e92f9f33bb4b78 2021-01-13T07:39:08.196000 START RequestId: e0c7065d-07fd-403c-b9d1-1fbd33c033de Version: 1`
+    -  `2021/01/13/[1]41c78b715d194c3b97e92f9f33bb4b78 2021-01-13T07:39:12.128000 END RequestId: e0c7065d-07fd-403c-b9d1-1fbd33c033de`
+    -  `2021/01/13/[1]41c78b715d194c3b97e92f9f33bb4b78 2021-01-13T07:39:12.128000 REPORT RequestId: e0c7065d-07fd-403c-b9d1-1fbd33c033de     Duration: 3931.74 ms    Billed Duration: 3932 ms        Memory Size: 512 MB     Max Memory Used: 106 MB      Init Duration: 425.39 ms`    
+8.  Clean Up
+    -  `aws cloudformation delete-stack --stack-name sam-j-app`                        
                
                                         
