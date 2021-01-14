@@ -5284,6 +5284,37 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
 9.  Federation
 10.  Triggers                                                                
 
+#####  318. Cognito Identity Pools Hands On
 
+1.  Create Identity Pool
+    -  Federated Identities
+    -  Create new identity pool
+    -  name: `MyDemoIdentityPool`
+    -  Enable access to unauthenticated identities - **true**
+        -  this allows guest users to use our app
+    -  Allow basic (classic) flow: false
+    -  Authentication providers
+        -  Cognito
+            -  User Pool ID: `eu-north-1_Wu56tN7Ah` (copy from our `DemoPool`)
+            -  App client id: `7fpnf11rfhiof6jinhp008rupj`
+    -  Create pool
+2.  Create IAM Roles
+    -  Identify the IAM roles to use with your new identity pool
+    -  View Details
+    -  Will be created 2 roles for:
+        -  authorized user
+        -  guest
+    -  Allow
+3.  Download sample code
+    -  Getting started with Amazon Cognito
+4.  Dashboard
+    -  number of authenticated and authenticated
+5.  IAM Roles
+    -  we can customize (for Example attach policy to access to s3 and so on)
+6.  Edit identity pool
+    -  Push synchronization (using SNS)
+    -  Cognito Streams (using Kinesis)
+    -  Cognito Events (using Lambda)                
+    
 
               
