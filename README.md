@@ -5231,4 +5231,59 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
 8.  Clean Up
     -  `aws cloudformation delete-stack --stack-name sam-j-app`                        
                
-                                        
+####  Section 23: Cognito: Cognito User Pools, Cognito Identity Pools & Cognito Sync               
+               
+#####  315. Cognito User Pools Hands On
+
+1.  Steps for manual creation of User Pool 
+    -  Cognito management console
+    -  Manage User Pools
+    -  **Step through settings**
+    -  Create a pool
+    -  Pool name: `DemoPool`
+    -  Step through the settings
+    -  by `Username`
+    -  Next
+    -  Password strength: for testing untick all
+    -  Minimum length: 6 (for tests)
+    -  Next -> Next ->....
+    -  **Cancel**
+2.  Create a Pool
+    -  DemoPool
+    -  review Defaults
+    -  Create a Pool
+3.  Create App Client
+    -  App clients
+    -  Create client: `DemoAppClient`
+    -  All default -> Create
+4.  Configure App Client
+    -  Enabled Identity Providers: Cognito User Pool: tick
+    -  Callback URL: `https://cam-video-server.herokuapp.com/` or `https://courses.datacumulus.com` whatever
+    -  Allowed OAuth flows
+        -  first two
+    -  Allowed OAuth Scopes: all
+    -  Save changes
+5.  Create Hosted UI
+    -  Domain name
+    -  Domain prefix: `demo-art-cognito` -> check availability    
+    -  Save changes
+    -  `Domain cannot contain reserved word: cognito (Service: AWSCognitoIdentityProviderService; Status Code: 400; Error Code: InvalidParameterException; Request ID: e6526326-6ebd-455a-b65d-56fcb91667ec; Proxy: null)`
+    -  Domain prefix: `demo-art-cogn1to` -> check availability    
+    -  App Client Settings -> Launch Hosted UI
+6.  UI Customization
+    -  add custom logo
+7.  Visit login page (Hosted UI)
+    -  Sign Up:
+        -  Username: `art`
+        -  Mail: art@mailinator.com
+        -  Password
+    -  Verification Code
+8.  Users and Groups
+    -  User art was created
+    -  we can create user manually
+9.  Federation
+10.  Triggers                                                                
+
+
+
+              

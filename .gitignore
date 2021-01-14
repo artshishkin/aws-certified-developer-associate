@@ -144,3 +144,5 @@ Desktop.ini
 /Section 15 - AWS CICD/CodeStar/spring-web-service_v0/target/
 /java-lambda-layers/java-lambda-layer/target/
 /java-lambda-layers/java-lambda-func/target/
+/Section 21 - API Gateway/sample-pets-service/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+/Section 21 - API Gateway/sample-pets-service/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
