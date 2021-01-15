@@ -5453,9 +5453,33 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
     -  Logging
     -  XRay
 5.  Monitoring
-    -  API Metrics    
-    
-5.  Clean Up
+    -  API Metrics       
+6.  Clean Up
     -  API -> Delete
     -  DynamoDB -> Delete                
+
+#####  AppSync query using Postman
+
+-  [AppSync Security](https://docs.aws.amazon.com/appsync/latest/devguide/security.html)
+-  you can CURL `$ curl -XPOST -H "Content-Type:application/graphql" -H "x-api-key:da2-i6zjrrn74bes7gqtm4ttb3k5k4" -d '{ "query": "query { movies { id } }" }' https://n57iuwno3nazxffcosoy76oyxq.appsync-api.eu-north-1.amazonaws.com/graphql`
+-  using Postman
+    -  POST request
+    -  headers
+        -  Content-Type
+        -  x-api-key
+    -  body
+```
+query ListEvents {
+  listEvents {
+    items {
+      id
+      name
+    }
+  }
+}
+```
+
+
+
+
                             
