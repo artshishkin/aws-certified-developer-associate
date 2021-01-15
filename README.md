@@ -5424,4 +5424,38 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
   }
 }
 ```                     
-                 
+
+#####  325. AppSync Hands On
+
+1.  Create App
+    -  Getting Started
+    -  Create with Wizard
+    -  Event App
+    -  Start
+    -  Create
+2.  View result
+    -  Schema
+    -  Data Sources
+        -  2 DynamoDB Tables
+    -  Queries
+        -  Execute
+            -  ListEvents -> No Data
+            -  CreateEvent -> "My First Event"
+3.  Caching
+4.  Settings
+    -  API URL
+    -  Default authorization mode
+        -  API Key
+        -  IAM 
+        -  OpenID Connect
+        -  Cognito
+    -  Additional Authorization providers
+    -  Logging
+    -  XRay
+5.  Monitoring
+    -  API Metrics    
+    
+5.  Clean Up
+    -  API -> Delete
+    -  DynamoDB -> Delete                
+                            
