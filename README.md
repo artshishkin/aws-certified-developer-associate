@@ -5315,6 +5315,113 @@ XRAY TraceId: 1-5feb2638-6e704a3c107d70a210a02c6e	SegmentId: 6bd47775063ea543	Sa
     -  Push synchronization (using SNS)
     -  Cognito Streams (using Kinesis)
     -  Cognito Events (using Lambda)                
-    
 
-              
+####  Section 24: Other Serverless: Step Functions & AppSync
+
+##### 323. Step Functions Hands On    
+
+1.  View uses cases and samples of step function
+    -  [AWS Step Functions Use Cases](https://aws.amazon.com/step-functions/use-cases/)              
+    -  [Sample Projects for Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/create-sample-projects.html)
+2.  Simple Hello World Example
+    -  Step Functions Management Console
+    -  Get Started
+    -  View Example State Machine -> Next
+    -  Create New Role
+    -  Create Step Function
+3.  Create execution
+    -  New Execution
+    -  Input: `{"IsHelloWorldExample": true}`
+    -  Start execution
+4.  View Execution
+    -  states are highlighted
+    -  Execution event history -> all transitions are shown
+5.  New Execution
+    -  Input: `{"IsHelloWorldExample": false}`
+    -  Start execution
+    -  Execution Status: Failed
+6.  View executions
+    -  State machine -> Executions
+    -  Were 2 executions: Success and Failed
+7.  Create state machine manually (not HelloWorld)
+    -  State Machines -> Create State Machine
+    -  Start with a template
+
+-  Retry failure
+```json
+{
+  "Comment": "A Retry example of the Amazon States Language using an AWS Lambda Function",
+  "StartAt": "HelloWorld",
+  "States": {
+    "HelloWorld": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:FUNCTION_NAME",
+      "Retry": [
+        {
+          "ErrorEquals": ["CustomError"],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 2,
+          "BackoffRate": 2.0
+        },
+        {
+          "ErrorEquals": ["States.TaskFailed"],
+          "IntervalSeconds": 30,
+          "MaxAttempts": 2,
+          "BackoffRate": 2.0
+        },
+        {
+          "ErrorEquals": ["States.ALL"],
+          "IntervalSeconds": 5,
+          "MaxAttempts": 5,
+          "BackoffRate": 2.0
+        }
+      ],
+      "End": true
+    }
+  }
+}
+```
+-  Catch failure
+```json
+{
+  "Comment": "A Catch example of the Amazon States Language using an AWS Lambda Function",
+  "StartAt": "HelloWorld",
+  "States": {
+    "HelloWorld": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:FUNCTION_NAME",
+      "Catch": [
+        {
+          "ErrorEquals": ["CustomError"],
+          "Next": "CustomErrorFallback"
+        },
+        {
+          "ErrorEquals": ["States.TaskFailed"],
+          "Next": "ReservedTypeFallback"
+        },
+        {
+          "ErrorEquals": ["States.ALL"],
+          "Next": "CatchAllFallback"
+        }
+      ],
+      "End": true
+    },
+    "CustomErrorFallback": {
+      "Type": "Pass",
+      "Result": "This is a fallback from a custom lambda function exception",
+      "End": true
+    },
+    "ReservedTypeFallback": {
+      "Type": "Pass",
+      "Result": "This is a fallback from a reserved error code",
+      "End": true
+    },
+    "CatchAllFallback": {
+      "Type": "Pass",
+      "Result": "This is a fallback from a reserved error code",
+      "End": true
+    }
+  }
+}
+```                     
+                 
