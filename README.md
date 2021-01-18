@@ -5479,7 +5479,55 @@ query ListEvents {
 }
 ```
 
+####  Section 25: Advanced Identity
 
+#####  326. STS Overview
+
+#####  327. Advanced IAM
+
+-  IAM console
+-  Policies
+-  Filter policies
+    -  AWS Managed
+    -  Customer Managed
+    
+#####  328. Granting a User Permissions to Pass a Role to an AWS Service
+
+1. PassRole
+    -  To configure many AWS services you must pass an IAM role to the service
+    -  For this you need the IAM permission `iam:PassRole`
+    -  It often comes with iam:GetRole to view the role been passed
+2.  Trusted
+    -  Roles ->
+    -  Trusted entities
+    -  choose `java-layers-role-eo14htgw`
+    -  Trust relationships
+        -  Show policy document
+        -  trust policy that Allows `lambda.amazonaws.com` to  `AssumeRole` `java-layers-role-eo14htgw`     
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "lambda.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+```
+
+#####  329. Directory Services - Overview
+
+-  Directory Service console
+    -  Directory ->
+    -  Setup directory
+        -  AWS Managed Microsoft AD
+            -  Edition:  Standard or Enterprise
+        -  AD Connector
 
 
                             
