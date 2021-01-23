@@ -5529,5 +5529,26 @@ query ListEvents {
             -  Edition:  Standard or Enterprise
         -  AD Connector
 
+####  Section 26: AWS Security & Encryption: KMS, Encryption SDK, SSM
 
+#####  333. KMS Hands On w/ CLI
+
+1.  AWS Managed Keys
+    -  Key Management Service console
+    -  AWS managed keys  (s3, lambda, sns, dynamodb, ...)
+    -  aws/elasticfilesystem -> Key Policy
+2.  Customer Managed Keys 
+    -  Create key -> Symmetric
+    -  Key material origin: `KMS`
+    -  Alias: `tutorial` -> Next
+    -  Key administrator -> leave empty (will use default key policy) -> Next
+    -  Define key usage permissions (Who can use this key) -> empty -> Next
+    -  Other AWS accounts -> Add another AWS account (NO for now, Helpful for example to copy snapshots across accounts)
+    -  Next
+    -  Review and Edit Key Policy
+    -  root user can use this KMS key that allows any Users and Roles in my account to use this key
+    -  Finish
+    -  Created -> 1 $/month
+3.  CMK usage
+    -  use commands from `kms-my-cli.sh` to encrypt and decrypt data     
                             
