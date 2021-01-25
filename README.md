@@ -5551,4 +5551,21 @@ query ListEvents {
     -  Created -> 1 $/month
 3.  CMK usage
     -  use commands from `kms-my-cli.sh` to encrypt and decrypt data     
-                            
+
+#####  335. Encryption SDK CLI Hands On
+
+1.  [Installing the AWS Encryption SDK command line interface](https://docs.aws.amazon.com/encryption-sdk/latest/developer-guide/crypto-cli-install.html)
+    -  `pip install aws-encryption-sdk-cli`
+    -  `aws-encryption-cli --version`
+2.  [Examples of the AWS Encryption CLI](https://docs.aws.amazon.com/encryption-sdk/latest/developer-guide/crypto-cli-examples.html)    
+    -  copy key ARN (Customer Managed Key)  
+        -  `arn:aws:kms:eu-north-1:392971033516:key/09736...20100`
+    -  `$CmkArn = 'arn:aws:kms:eu-north-1:392971033516:key/09736...20100'`
+3.  Encrypt    
+    -  Create `Hello.txt` 
+    -  use command from `commands.txt`    
+    -  view metadata.json - then delete it - no needed
+4.  Decrypt
+    -  use command from `commands.txt`    
+            
+                                   

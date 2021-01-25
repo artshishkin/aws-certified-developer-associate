@@ -1,0 +1,13 @@
+#Encrypt
+aws-encryption-cli --encrypt `
+    --input Hello.txt `
+    --wrapping-keys key=$CmkArn `
+    --metadata-output meta\metadata_enc.json `
+    --output encrypted\
+
+#Decrypt
+aws-encryption-cli --decrypt `
+    --input encrypted\Hello.txt.encrypted `
+    --wrapping-keys key=$cmkArn `
+    --metadata-output meta\metadata_dec.json `
+    --output decrypted\
