@@ -5606,5 +5606,88 @@ query ListEvents {
   "body": "\"Super Secret Password\""
 }           
 ```
-                                
+
+#####  340. SSM Parameter Store Hands On (CLI)
+
+1.  SystemS Manager (SSM)
+    -  Getting Started -> Left Pane    
+    -  Application Management
+    -  Parameter Store
+2.  Create Parameter DEV_DB_URL
+    -  Name: `/my-app/dev/db-url`
+    -  Description: Database URL for my app in development
+    -  Value: jdbc://dev.some_url_to_my_database:3306
+    -  Create parameter
+3.  Create Parameter DEV_DB_PASSWORD
+    -  Name: `/my-app/dev/db-password`
+    -  Description: Database Password for my app in development
+    -  Type: SecureString
+    -  KMS Key ID: use AWS managed or early created CMK `tutorial`
+        -  use `alias/tutorial`
+    -  Value: SomeDevSecretPassword
+    -  Create parameter
+4.  Create Parameters PROD_DB_URL and  PROD_DB_PASSWORD
+5.  Get parameters using CLI
+    -  `aws ssm get-parameters --names '/my-app/dev/db-url' '/my-app/dev/db-password'`
+    -  got 2 results, password is encrypted   
+    -  `aws ssm get-parameters --names '/my-app/dev/db-url' '/my-app/dev/db-password' --with-decryption`
+    -  `aws ssm get-parameters-by-path --path '/my-app/dev' --with-decryption`
+```json
+{
+    "Parameters": [
+        {
+            "Name": "/my-app/dev/db-password",
+            "Type": "SecureString",
+            "Value": "SomeDevSecretPassword",
+            "Version": 1,
+            "LastModifiedDate": "2021-01-26T11:52:32.574000+02:00",
+            "ARN": "arn:aws:ssm:eu-north-1:392971033516:parameter/my-app/dev/db-password",
+            "DataType": "text"
+        },
+        {
+            "Name": "/my-app/dev/db-url",
+            "Type": "String",
+            "Value": "jdbc://dev.some_url_to_my_database:3306",
+            "Version": 1,
+            "LastModifiedDate": "2021-01-26T11:26:10.192000+02:00",
+            "ARN": "arn:aws:ssm:eu-north-1:392971033516:parameter/my-app/dev/db-url",
+            "DataType": "text"
+        }
+    ]
+}
+```    
+-  `aws ssm get-parameters-by-path --path '/my-app/' --recursive` - got all 4 parameters
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     
+                                    
                                    
