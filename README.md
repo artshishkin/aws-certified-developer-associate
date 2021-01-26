@@ -5658,14 +5658,82 @@ query ListEvents {
 ```    
 -  `aws ssm get-parameters-by-path --path '/my-app/' --recursive` - got all 4 parameters
 
+#####  341. SSM Parameter Store Hands On (AWS Lambda)
 
+-  Create Lambda
+    -  `hello-world-ssm`
+    -  Python 3.8
+    -  basic role
+-  Modify lambda function code
+```
+import json
+import boto3
 
+ssm=boto3.client("ssm",region_name="eu-north-1")
 
-
-
-
-
-
+def lambda_handler(event, context):
+    db_url=""
+    print(db_url)
+    db_password=""
+    print(db_password)
+    return "Worked"    
+```
+-  Get parameters    
+    -  `db_url=ssm.get_parameters(Names=["/my-app/dev/db-url"])`
+    -  `db_password=ssm.get_parameters(Names=["/my-app/dev/db-password"])`    
+-  Test it
+    -  `"errorMessage": "An error occurred (AccessDeniedException) when calling the GetParameters operation: User: arn:aws:sts::392971033516:assumed-role/hello-world-ssm-role-p74pk53h/hello-world-ssm is not authorized to perform: ssm:GetParameters on resource: arn:aws:ssm:eu-north-1:392971033516:parameter/my-app/dev/db-url"`    
+-  Add permission
+    -  IAM role for Lambda function
+    -  Add inline policy `AllowLambdaToGetParameters`
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "ssm:GetParametersByPath",
+                "ssm:GetParameters"
+            ],
+            "Resource": "arn:aws:ssm:*:*:parameter/my-app/*"
+        }
+    ]
+}
+```    
+-  Test it
+    -  Error - Permission Denied
+-  Wait for a minute
+-  Test it
+    -  OK
+-  Get password decrypted
+    -  `db_password=ssm.get_parameters(Names=["/my-app/dev/db-password"],WithDecryption=True)`
+    -  Test it -> Got an error
+    -  `"errorMessage": "An error occurred (AccessDeniedException) when calling the GetParameters operation: The ciphertext refers to a customer master key that does not exist, does not exist in this region, or you are not allowed to access. (Service: AWSKMS; Status Code: 400; Error Code: AccessDeniedException; Request ID: 42e61a23-4eb9-4d78-8c8b-9b18f08a86e7; Proxy: null)"`
+-  Add permission to use CMK
+    -  Add inline policy `AllowMyAppLambdaToDecryptPassword` to allow decrypt using CMK `tutorial`
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "kms:Decrypt",
+            "Resource": "arn:aws:kms:*:*:key/09736498-ff70-4181-997b-8a3714d20100"
+        }
+    ]
+}
+```
+-  or even `"Resource": "arn:aws:kms:eu-north-1:392971033516:key/09736498-ff70-4181-997b-8a3714d20100"`                         
+-  Test it
+    -  all OK -> `'Value': 'SomeDevSecretPassword'`    
+-  Profile switching
+    -  Create Env variable
+    -  PROFILE: dev
+    -  Modify lambda like in `Section 26 - AWS Security & Encryption/lambda-ssm/lambda_function.py`
+    -  Test it -> OK both for `dev` and `prod` profiles
 
 
 
