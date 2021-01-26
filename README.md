@@ -5567,5 +5567,44 @@ query ListEvents {
     -  view metadata.json - then delete it - no needed
 4.  Decrypt
     -  use command from `commands.txt`    
-            
+
+#####  337. KMS and AWS Lambda Practice
+
+1. Create Lambda function
+    -  lambda-demo-kms
+    -  Python 3.8
+    -  basic role
+2.  Add Environment variable
+    -  DB_PASSWORD: `Super Secret Password`
+3.  Encrypt password
+    -  Enable helpers for encryption in transit: true
+    -  Use a customer master key: `tutorial`
+    -  Encrypt
+    -  Execution role policy -> view it
+    -  Decrypt secrets snippet -> copy it
+    -  Encrypt -> Save
+4.  Modify lambda code
+    -  view `lambda-kms/lambda_function.py`
+5.  Test it
+    -  `{ "errorMessage": "2021-01-26T08:33:33.954Z f51f3558-b229-4637-af1d-6e73ac009807 Task timed out after 3.02 seconds" }`
+6.  Increase timeout
+    -  Basic settings: timeout 10 s        
+7.  Test it
+    -  ` "errorMessage": "An error occurred (AccessDeniedException) when calling the Decrypt operation: The ciphertext refers to a customer master key that does not exist, does not exist in this region, or you are not allowed to access."`    
+8.  Modify permission
+    -  Configuration -> Permissions -> Execution Role ->
+    -  IAM -> Add inline policy
+        -  Service: KMS
+        -  Actions: Decrypt
+        -  Resources:  ARN of CMK
+        -  Review Policy -> 
+        -  Name: `AllowKMSDecryptForTutorialKey`
+9.  Test it
+```json
+{
+  "statusCode": 200,
+  "body": "\"Super Secret Password\""
+}           
+```
+                                
                                    
