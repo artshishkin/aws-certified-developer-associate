@@ -5814,10 +5814,30 @@ def lambda_handler(event, context):
         -  MAIL_PASSWORD : `/prod/my-secret-api` : Secrets Manager
 3.  Make sure that IAM role associated with CodeBuild Project has enough permissions to access to SSM Parameters or Secrets Manager secrets               
 
+####  Section 27: AWS Other Services
 
+#####  348. AWS SES
 
+Simple Email Service
 
+#####  349. Summary of Databases (OLTP, OLAP, NOSQL, CACHE)
 
+1.  RDS: Relational databases, OLTP
+    -  PostgreSQL, MySQL, Oracle…
+    -  Aurora + Aurora Serverless
+    -  Provisioned database
+2.  DynamoDB: NoSQL DB
+    -  Managed, Key Value, Document
+    -  Serverless
+3.  ElastiCache: In memory DB
+    -  Redis / Memcached
+    -  Cache capability
+4.  Redshift: OLAP – Analytic Processing
+    -  Data Warehousing / Data Lake
+    -  Analytics queries
+5.  Neptune: Graph Database
+6.  DMS: Database Migration Service
+7.  DocumentDB: managed MongoDB for AWS
 
 
 
