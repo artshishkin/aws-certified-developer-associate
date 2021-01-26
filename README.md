@@ -5771,14 +5771,36 @@ def lambda_handler(event, context):
 3.  Cleanup
     -  remove secrets    
 
+##### 345. CloudWatch Logs Encryption
 
-
-
-
-
-
-
-
+1.  Associate with existing log group
+    -  CloudWatchLogs console
+    -  `/aws/lambda/hello-world`
+    -  choose command from [cw-logs-encryption.sh](https://github.com/artshishkin/aws-certified-developer-associate/blob/main/Section%2026%20-%20AWS%20Security%20%26%20Encryption/cloudwatchlogs-encryption/cw-logs-encryption.sh)
+    -  `aws logs associate-kms-key --log-group-name /aws/lambda/hello-world --kms-key-id arn:aws:kms:eu-north-1:392971033516:key/09736498-ff70-4181-997b-8a3714d20100 --region eu-north-1`
+    -  Got an **Error**
+    -  An error occurred (AccessDeniedException) when calling the AssociateKmsKey operation: The specified KMS key does not exist or is not allowed to be used with LogGroup 'arn:aws:logs:eu-north-1:392971033516:log-group:/aws/lambda/hello-world'
+    -  Modify key policy to look like [my-key-policy.json](https://github.com/artshishkin/aws-certified-developer-associate/blob/main/Section%2026%20-%20AWS%20Security%20%26%20Encryption/cloudwatchlogs-encryption/my-key-policy.json)
+    -  Associate KMS key (once again) -> OK
+    -  View result in `CloudWatch -> CloudWatch Logs -> Log groups -> /aws/lambda/hello-world`
+        -  KMS key ID: `arn:aws:kms:eu-north-1:392971033516:key/09736498-ff70-4181-997b-8a3714d20100`
+2.  Create new log group with associated KMS Key
+    -  run command from  [cw-logs-encryption.sh](https://github.com/artshishkin/aws-certified-developer-associate/blob/main/Section%2026%20-%20AWS%20Security%20%26%20Encryption/cloudwatchlogs-encryption/cw-logs-encryption.sh)
+    -  got an error
+    -  `An error occurred (AccessDeniedException) when calling the CreateLogGroup operation: The specified KMS key does not exist or is not allowed to be used with LogGroup 'arn:aws:logs:eu-north-1:392971033516:log-group:/example-encrypted'`
+    -  we need to modify Condition in Key Policy
+    -  "Condition":
+```json
+{
+    "ArnEquals": {
+      "kms:EncryptionContext:aws:logs:arn": [
+        "arn:aws:logs:eu-north-1:392971033516:log-group:/aws/lambda/hello-world",
+        "arn:aws:logs:eu-north-1:392971033516:log-group:/example-encrypted"
+      ]
+    }
+}
+```
+    -  now all OK
 
 
 
