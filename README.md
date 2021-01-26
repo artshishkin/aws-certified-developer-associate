@@ -5735,6 +5735,43 @@ def lambda_handler(event, context):
     -  Modify lambda like in `Section 26 - AWS Security & Encryption/lambda-ssm/lambda_function.py`
     -  Test it -> OK both for `dev` and `prod` profiles
 
+#####   343. Secrets Manager - Hands On
+
+1.  Create secrets for API calls
+    -  Secrets Manager console
+    -  Create new secret    
+    -  Credentials for RDS database
+    -  Credentials for Redshift cluster
+    -  Credentials for other database
+    -  Other type of secrets
+        -  MY_API_KEY: my API value
+        -  MY_SOME_PASS: fake password
+    -  Select the encryption key
+        -  DefaultEncryptionKey
+        -  CMS `tutorial` (use it)
+    -  Secret Name: `/prod/my-secret-api`
+    -  Enable Automatic Rotation
+        -  rotation interval: 60 days
+        -  need to create Lambda function with certain permissions
+    -  Disable automatic rotation
+    -  Next -> view Sample code
+    -  Store
+2.  Create Credentials for RDS database
+    -  Secrets Manager console
+    -  Create new secret    
+    -  Credentials for RDS database
+    -  User name: postgres
+    -  Password: 12345678
+    -  Select the encryption key: `tutorial`
+    -  Select which RDS database this secret will access: `mypostgres` (create first)
+    -  Secret name: /prod/my-postgres-secret
+    -  To enable automatic rotation we need to create lambda
+    -  Disable automatic rotation
+    -  Next -> Store     
+3.  Cleanup
+    -  remove secrets    
+
+
 
 
 
