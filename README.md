@@ -5802,7 +5802,17 @@ def lambda_handler(event, context):
 ```
     -  now all OK
 
+#####  346. CodeBuild Security
 
+1.  Using SSM Parameter Store
+    -  Create CodeBuildProject
+    -  Additional Configuration
+    -  Environment variable
+        -  DB_PASSWORD: `/my-app/dev/db-password` : Parameter
+2.  Using Secrets Manager
+    -  Environment variable
+        -  MAIL_PASSWORD : `/prod/my-secret-api` : Secrets Manager
+3.  Make sure that IAM role associated with CodeBuild Project has enough permissions to access to SSM Parameters or Secrets Manager secrets               
 
 
 
