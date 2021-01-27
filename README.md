@@ -5918,7 +5918,38 @@ Simple Email Service
     -  `https://myfirstwebappbeanstalk-env.eba-u9yvmmuz.eu-north-1.elasticbeanstalk.com/`
     -  `NET::ERR_CERT_COMMON_NAME_INVALID`                              
 
-
+####  Section 29: Preparing for the Exam - AWS Certified Developer Associate
      
-                                    
-                                   
+#####  354. State of Learning Checkpoint
+
+-  [AWS Certified Developer - Associate](https://aws.amazon.com/certification/certified-developer-associate/)                                    
+
+#####  355. Exam Tips - AWS Certified Developer Associate
+
+-  Practice makes perfect
+-  Ideas for practicing…!
+    -  Take one of your existing applications
+    -  Try deploying it manually on EC2
+    -  Try deploying it on Elastic Beanstalk and have it scale
+    -  Try creating a CICD pipeline for it
+    -  Try decoupling components using SQS / SNS
+    -  If possible, try running it on AWS Lambda & friends
+    -  Write automation scripts using the CLI / SDK
+    -  Idea 1: Shut down EC2 instances at night / start in the morning
+    -  Idea 2: Automate snapshots of EBS volumes at night
+    -  Idea 3: List all under-utilized EC2 instances (CPU Utilization < 10%)
+-  Skim the AWS Whitepapers
+-  Read each service’s FAQ
+-  Get into the AWS Community
+
+#####  356. Exam Walkthrough and Signup
+
+#####  357. Save 50% on your AWS Exam Cost!
+
+#####  358. Get an Extra 30 Minutes on your AWS Exam - Non Native English Speakers only
+
+
+
+
+
+                                       
