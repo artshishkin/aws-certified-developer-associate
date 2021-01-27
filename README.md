@@ -5839,10 +5839,84 @@ Simple Email Service
 6.  DMS: Database Migration Service
 7.  DocumentDB: managed MongoDB for AWS
 
+#####  350. Amazon Certificate Manager (ACM)
 
-
-
-
+1.  Provision certificate
+    -  ACM console
+    -  Provision certificates
+    -  Request a public certificate
+    -  Domain name: `acm-demo.shyshkin.net`
+    -  DNS validation
+    -  Create record in Route53
+    -  About 30 minutes -> Pending validation (it took about a minute for me)
+    -  Certificate issued
+2.  Create environment
+    -  Beanstalk console
+    -  Application -> `my-first-webapp-beanstalk`
+    -  Create environment -> Web server environment
+    -  Domain -> Leave blank
+    -  Node.js -> Sample application
+    -  Configure more options
+    -  High Availability (with Load Balancer)
+    -  Load Balancer -> Edit
+    -  Listeners -> Add Listener
+        -  Port: 443
+        -  Protocol: HTTPS
+        -  Certificate: `acm-demo.shyshkin.net - 327...`
+        -  SSL policy:  ELBSecurityPolicy-TLS-1-2-Ext-2018-06 (how strong security policy will be)
+        -  Add
+    -  We may disable HTTP (80), but just keep it for now
+    -  Save
+    -  This is `custom configuration`
+    -  Create environment
+3.  Create CNAME for load balancer URL
+    -  Route53 console
+    -  Hosted zone -> shyshkin.net
+    -  Add Record
+        -  Simple routing
+        -  Record name: `acm-demo`.shyshkin.net
+        -  Record type: CNAME
+        -  Value: `myfirstwebappbeanstalk-env.eba-u9yvmmuz.eu-north-1.elasticbeanstalk.com`
+4.  Wait some time
+5.  Visit HTTP and HTTPS
+    -  `http://acm-demo.shyshkin.net/` -> OK                  
+    -  `https://acm-demo.shyshkin.net/` -> OK                  
+6.  View certificate info
+    -  Chrome -> Lock sign
+    -  Certificate
+    -  Publisher
+        -  CN = Amazon
+        -  OU = Server CA 1B
+        -  O = Amazon
+        -  C = US
+7.  Verify Certificate in use
+    -  ACM console - certificate for `acm-demo.shyshkin.net`
+    -  In Use -> Yes
+    -  Associated resources:
+        -  `arn:aws:elasticloadbalancing:eu-north-1:392971033516:loadbalancer/app/awseb-AWSEB-1GA7M3H55HY8G/b7b0af32d2fb3f12`
+8.  Disable HTTP
+    -  Beanstalk
+    -  Environment: Myfirstwebappbeanstalk-env
+    -  Load Balancer -> Edit
+    -  Listeners -> HTTP -> Disable -> Apply
+    -  Test it:
+        -  `http://acm-demo.shyshkin.net/` -> Timeout
+        -  `https://acm-demo.shyshkin.net/` -> OK
+9.  Apply redirection HTTP -> HTTPS
+    -  Enable HTTP back (like in step 8)
+    -  Follow [How can I redirect HTTP requests to HTTPS using an Application Load Balancer?](https://aws.amazon.com/premiumsupport/knowledge-center/elb-redirect-http-to-https-using-alb/)
+    -  EC2 console -> Load Balancer
+    -  Find our ALB
+    -  Listeners -> HTTP -> View/Edit Rules
+    -  Edit -> DEFAULT -> Then -> Edit to 
+    -  `Redirect to` -> HTTPS -> 443
+    -  Update
+    -  Test it
+        -  `https://acm-demo.shyshkin.net/` -> OK         
+        -  `http://acm-demo.shyshkin.net/` -> redirect to `https://acm-demo.shyshkin.net/` -> OK          
+10.  But now visiting direct LoadBalancer gave an error
+    -  `https://myfirstwebappbeanstalk-env.eba-u9yvmmuz.eu-north-1.elasticbeanstalk.com/`
+    -  `NET::ERR_CERT_COMMON_NAME_INVALID`                              
 
 
      
